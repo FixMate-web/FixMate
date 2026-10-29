@@ -133,23 +133,15 @@ import { FmAlertComponent } from '../../shared/ui';
             />
             <div class="pw-requirements">
               <p>
-                {{
-                  i18n.lang() === 'ar' ? 'يجب أن تكون كلمة المرور:' : 'Your password must:'
-                }}
+                {{ i18n.lang() === 'ar' ? 'يجب أن تكون كلمة المرور:' : 'Your password must:' }}
               </p>
               <ul>
                 <li>
-                  {{
-                    i18n.lang() === 'ar'
-                      ? 'بين 8 و 72 حرفاً'
-                      : 'be 8 to 72 characters long'
-                  }}
+                  {{ i18n.lang() === 'ar' ? 'بين 8 و 72 حرفاً' : 'be 8 to 72 characters long' }}
                 </li>
                 <li>
                   {{
-                    i18n.lang() === 'ar'
-                      ? 'تحتوي على أحرف وأرقام'
-                      : 'include letters and numbers'
+                    i18n.lang() === 'ar' ? 'تحتوي على أحرف وأرقام' : 'include letters and numbers'
                   }}
                 </li>
                 <li>
@@ -180,11 +172,7 @@ import { FmAlertComponent } from '../../shared/ui';
             }}
           </p>
 
-          <button
-            type="submit"
-            class="auth-pill-submit"
-            [disabled]="auth.isLoading()"
-          >
+          <button type="submit" class="auth-pill-submit" [disabled]="auth.isLoading()">
             {{
               auth.isLoading()
                 ? i18n.lang() === 'ar'
@@ -197,9 +185,7 @@ import { FmAlertComponent } from '../../shared/ui';
 
         <p class="auth-switch-link">
           {{ i18n.lang() === 'ar' ? 'لديك حساب بالفعل؟' : 'Already have an account?' }}
-          <a routerLink="/auth/login">{{
-            i18n.lang() === 'ar' ? 'تسجيل الدخول' : 'Log in'
-          }}</a>
+          <a routerLink="/auth/login">{{ i18n.lang() === 'ar' ? 'تسجيل الدخول' : 'Log in' }}</a>
         </p>
       </div>
     </section>
@@ -218,9 +204,8 @@ import { FmAlertComponent } from '../../shared/ui';
       .auth-card {
         background: #ffffff;
         border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 32px;
-        box-shadow: 0 4px 20px rgba(7, 47, 64, 0.05);
+        border-radius: 3px;
+        padding: 26px;
       }
 
       .auth-alert-wrap {
@@ -248,7 +233,7 @@ import { FmAlertComponent } from '../../shared/ui';
 
       .fm-field__control {
         width: 100%;
-        min-height: 48px;
+        min-height: 44px;
         padding: 10px 18px;
         font-family: var(--fm-font-sans);
         font-size: 15px;
@@ -319,7 +304,7 @@ import { FmAlertComponent } from '../../shared/ui';
 
       .auth-pill-submit {
         width: 100%;
-        min-height: 48px;
+        min-height: 44px;
         background: #072f40;
         color: #ffffff;
         border: 0;

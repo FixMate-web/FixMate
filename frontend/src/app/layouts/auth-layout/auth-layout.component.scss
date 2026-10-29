@@ -11,7 +11,7 @@
 }
 
 .auth-header-inner {
-  max-width: 1240px;
+  max-width: none;
   margin: 0 auto;
   padding: 14px 24px;
   display: flex;
@@ -122,15 +122,49 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 48px 16px 72px;
+  padding: 28px 16px 72px;
 }
 
 .auth-card-wrapper {
   width: 100%;
-  max-width: 460px;
+  max-width: 410px;
 }
 
 @media (max-width: 640px) {
+  .auth-header-inner {
+    padding: 12px 16px;
+    gap: 8px;
+    min-height: 64px;
+  }
+  .auth-brand {
+    gap: 8px;
+  }
+  .auth-brand-emblem {
+    width: 28px;
+    height: 28px;
+    box-shadow: none;
+  }
+  .auth-brand-wordmark {
+    font-size: 18px;
+  }
+  .auth-top-nav {
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+  .auth-signup-pill {
+    font-size: 12px;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+  .auth-login-link {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .auth-lang-btn {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+
   .auth-nav-link {
     display: none;
   }

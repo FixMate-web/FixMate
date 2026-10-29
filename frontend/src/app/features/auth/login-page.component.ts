@@ -2,10 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
-import {
-  resolveDefaultWorkspaceByRole,
-  sanitizeReturnUrl,
-} from '../../core/guards/auth.guard';
+import { resolveDefaultWorkspaceByRole, sanitizeReturnUrl } from '../../core/guards/auth.guard';
 import { LanguageService } from '../../core/i18n/language.service';
 import { FmAlertComponent } from '../../shared/ui';
 
@@ -85,11 +82,7 @@ import { FmAlertComponent } from '../../shared/ui';
             }
           </div>
 
-          <button
-            type="submit"
-            class="auth-pill-submit"
-            [disabled]="auth.isLoading()"
-          >
+          <button type="submit" class="auth-pill-submit" [disabled]="auth.isLoading()">
             {{
               auth.isLoading()
                 ? i18n.lang() === 'ar'
@@ -135,9 +128,8 @@ import { FmAlertComponent } from '../../shared/ui';
       .auth-card {
         background: #ffffff;
         border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 32px;
-        box-shadow: 0 4px 20px rgba(7, 47, 64, 0.05);
+        border-radius: 3px;
+        padding: 26px;
       }
 
       .auth-alert-wrap {
@@ -165,7 +157,7 @@ import { FmAlertComponent } from '../../shared/ui';
 
       .fm-field__control {
         width: 100%;
-        min-height: 48px;
+        min-height: 44px;
         padding: 10px 18px;
         font-family: var(--fm-font-sans);
         font-size: 15px;
@@ -204,7 +196,7 @@ import { FmAlertComponent } from '../../shared/ui';
 
       .auth-pill-submit {
         width: 100%;
-        min-height: 48px;
+        min-height: 44px;
         margin-top: 6px;
         background: #072f40;
         color: #ffffff;

@@ -64,7 +64,7 @@
 
 .discovery-layout {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
+  grid-template-columns: 220px minmax(0, 1fr);
   gap: 36px;
   align-items: start;
 }
@@ -74,10 +74,10 @@
   top: 96px;
 
   details {
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
+    border: 0;
+    border-inline-end: 1px solid #e5e7eb;
+    border-radius: 0;
     background: #ffffff;
-    box-shadow: 0 4px 14px rgba(7, 47, 64, 0.04);
   }
 
   summary {
@@ -110,7 +110,7 @@
       min-height: 44px;
       padding: 10px 14px;
       border: 1px solid #d1d5db;
-      border-radius: 10px;
+      border-radius: 999px;
       background: #ffffff;
       font: inherit;
       font-size: 13px;

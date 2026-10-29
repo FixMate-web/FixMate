@@ -11,7 +11,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 28px;
-  min-height: 70px;
+  min-height: 72px;
+  max-width: none;
+  padding-inline: 24px;
 }
 
 .brand {
@@ -42,7 +44,6 @@
   font-size: 18px;
   font-weight: 900;
   letter-spacing: -0.5px;
-  box-shadow: 0 2px 8px rgba(0, 159, 217, 0.28);
 }
 
 .brand-wordmark {
@@ -55,10 +56,10 @@ nav {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 22px;
+  gap: 32px;
   flex: 1;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .nav-link {
@@ -93,7 +94,7 @@ nav {
   border-radius: 8px;
   font: inherit;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   color: #374151;
   cursor: pointer;
   transition:
@@ -119,7 +120,7 @@ nav {
 
 .explore-backdrop {
   position: fixed;
-  inset: 70px 0 0 0;
+  inset: 72px 0 0 0;
   background: rgba(15, 23, 42, 0.12);
   z-index: 210;
 }
@@ -127,21 +128,23 @@ nav {
 .explore-mega-menu {
   position: absolute;
   top: calc(100% + 12px);
-  inset-inline-start: 0;
-  width: 680px;
+  inset-inline-end: 0;
+  width: 560px;
   max-width: calc(100vw - 32px);
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 14px;
+  border-radius: 4px;
   box-shadow: 0 20px 48px rgba(7, 47, 64, 0.16);
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 230px 1fr;
+  max-height: calc(100svh - 100px);
+  overflow-y: auto;
   overflow: hidden;
   z-index: 220;
 }
 
 .explore-mega-left {
-  background: #f8fafc;
+  background: white;
   border-inline-end: 1px solid #e5e7eb;
   padding: 12px 0;
   display: flex;
@@ -159,7 +162,7 @@ nav {
   background: transparent;
   font: inherit;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   color: #374151;
   cursor: pointer;
   transition:
@@ -235,7 +238,7 @@ nav {
 
   .explore-service-name {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
   }
 
   .explore-service-price {
@@ -278,7 +281,7 @@ nav {
   background: #ffffff;
   font: inherit;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 400;
   color: #374151;
   cursor: pointer;
   padding: 6px 14px;
@@ -317,7 +320,7 @@ nav {
   text-decoration: none;
   color: #374151;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   padding: 8px 6px;
 
   &:hover {
@@ -334,7 +337,7 @@ nav {
 }
 
 .site-footer {
-  margin-top: 80px;
+  margin-top: 0;
   background: #072f40;
   color: #cbd5e1;
   padding: 64px 0 28px;
@@ -408,6 +411,8 @@ nav {
   .header-inner {
     flex-wrap: wrap;
     padding-block: 12px;
+    min-height: 64px;
+    padding-inline: 20px;
   }
 
   .menu-toggle {
@@ -419,7 +424,7 @@ nav {
     padding: 8px 16px;
     font: inherit;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
     color: #111827;
   }
 

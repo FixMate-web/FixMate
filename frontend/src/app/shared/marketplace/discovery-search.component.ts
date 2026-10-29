@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -13,21 +20,38 @@ import { GOVERNORATES, money } from './marketplace.utils';
   imports: [ReactiveFormsModule, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <form class="discovery-search" [formGroup]="form" (ngSubmit)="search()">
+    <form
+      class="discovery-search"
+      [class.compact]="compact()"
+      [formGroup]="form"
+      (ngSubmit)="search()"
+    >
       <!-- Top Row: Full-width Project Description Input (Reference Screenshot 1) -->
-      <div class="search-top-row">
+      <div
+        class="search-top-row"
+        (focusout)="onSearchFocusOut($event)"
+        (keydown.escape)="suggestionsOpen.set(false)"
+      >
         <svg class="search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
-          <path d="M20 20L16.5 16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path
+            d="M20 20L16.5 16.5"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
         </svg>
-        <label class="sr-only" for="discover-service">
+        <label class="sr-only" [for]="idPrefix() + '-service'">
           {{ ar() ? 'ما الخدمة التي تحتاجها؟' : 'What can we help with?' }}
         </label>
         <input
-          id="discover-service"
+          [id]="idPrefix() + '-service'"
           formControlName="q"
+          (focus)="suggestionsOpen.set(true)"
           type="search"
-          list="service-suggestions"
+          [attr.aria-controls]="
+            suggestions().length && suggestionsOpen() ? idPrefix() + '-suggestions' : null
+          "
           autocomplete="off"
           [placeholder]="
             ar()
@@ -35,25 +59,20 @@ import { GOVERNORATES, money } from './marketplace.utils';
               : 'Describe your project or problem — be as detailed as you’d like.'
           "
         />
-        <datalist id="service-suggestions">
-          @for (svc of suggestions(); track svc.id) {
-            <option [value]="svc.title[i18n.lang()]"></option>
-          }
-        </datalist>
 
-        @if (suggestions().length > 0) {
-          <div class="suggestions-popover" role="listbox">
+        @if (suggestions().length > 0 && suggestionsOpen()) {
+          <nav
+            class="suggestions-popover"
+            [id]="idPrefix() + '-suggestions'"
+            [attr.aria-label]="ar() ? 'خدمات مقترحة' : 'Suggested services'"
+          >
             @for (svc of suggestions(); track svc.id) {
-              <a
-                [routerLink]="['/services', svc.slug]"
-                class="suggestion-item"
-                role="option"
-              >
+              <a [routerLink]="['/services', svc.slug]" class="suggestion-item">
                 <span class="suggestion-title">{{ svc.title[i18n.lang()] }}</span>
                 <span class="suggestion-price">{{ formatPrice(svc) }}</span>
               </a>
             }
-          </div>
+          </nav>
         }
       </div>
 
@@ -68,11 +87,11 @@ import { GOVERNORATES, money } from './marketplace.utils';
             />
             <circle cx="12" cy="10" r="2.2" stroke="currentColor" stroke-width="1.8" />
           </svg>
-          <label class="sr-only" for="discover-location">
+          <label class="sr-only" [for]="idPrefix() + '-location'">
             {{ ar() ? 'أين تحتاج الخدمة؟' : 'Where do you need it?' }}
           </label>
-          <select id="discover-location" formControlName="governorate">
-            <option value="">{{ ar() ? 'عمّان وجميع المحافظات' : 'All Jordan Governorates' }}</option>
+          <select [id]="idPrefix() + '-location'" formControlName="governorate">
+            <option value="">{{ ar() ? 'المحافظة' : 'Location' }}</option>
             @for (g of governorates; track g[0]) {
               <option [value]="g[0]">{{ g[ar() ? 1 : 0] }}</option>
             }
@@ -91,12 +110,12 @@ import { GOVERNORATES, money } from './marketplace.utils';
       .discovery-search {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 4px;
         background: #ffffff;
         border: 1px solid rgba(229, 231, 235, 0.95);
         border-radius: 16px;
-        padding: 14px 16px;
-        box-shadow: 0 18px 44px rgba(7, 47, 64, 0.26);
+        padding: 10px 16px 16px;
+        box-shadow: 0 2px 5px rgba(7, 47, 64, 0.08);
         width: 100%;
       }
 
@@ -105,8 +124,8 @@ import { GOVERNORATES, money } from './marketplace.utils';
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 6px 8px 12px;
-        border-bottom: 1px solid #e5e7eb;
+        flex-wrap: wrap;
+        padding: 0 0 4px;
       }
 
       .search-icon {
@@ -117,7 +136,9 @@ import { GOVERNORATES, money } from './marketplace.utils';
       }
 
       input {
-        width: 100%;
+        flex: 1;
+        width: 0;
+        min-width: 0;
         border: 0;
         background: transparent;
         color: #111827;
@@ -136,9 +157,10 @@ import { GOVERNORATES, money } from './marketplace.utils';
       }
 
       .suggestions-popover {
-        position: absolute;
-        top: calc(100% + 6px);
-        inset-inline: 0;
+        position: relative;
+        flex-basis: 100%;
+        max-height: 220px;
+        overflow-y: auto;
         background: #ffffff;
         border: 1px solid #e5e7eb;
         border-radius: 12px;
@@ -190,10 +212,11 @@ import { GOVERNORATES, money } from './marketplace.utils';
         gap: 8px;
         border: 1px solid #d1d5db;
         border-radius: 999px;
-        padding: 0 16px;
-        height: 46px;
+        padding: 0 10px;
+        height: 40px;
         background: #ffffff;
-        min-width: 210px;
+        width: 160px;
+        min-width: 0;
         flex-shrink: 0;
         transition: border-color 0.15s ease;
 
@@ -231,14 +254,14 @@ import { GOVERNORATES, money } from './marketplace.utils';
         align-items: center;
         justify-content: center;
         gap: 10px;
-        height: 46px;
+        height: 40px;
         background: #072f40;
         color: #ffffff;
         border: 0;
         border-radius: 999px;
         padding: 0 24px;
         font: inherit;
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 700;
         cursor: pointer;
         white-space: nowrap;
@@ -252,24 +275,67 @@ import { GOVERNORATES, money } from './marketplace.utils';
         }
       }
 
+      .compact {
+        flex-direction: row;
+        align-items: center;
+        border-radius: 999px;
+        padding: 8px;
+        gap: 8px;
+        .search-top-row {
+          flex: 1;
+          min-width: 0;
+          padding: 0 14px;
+        }
+        .search-icon {
+          display: none;
+        }
+        .search-bottom-row {
+          width: 324px;
+          gap: 8px;
+        }
+        .location-pill {
+          width: 136px;
+          border: 0;
+          border-inline-start: 1px solid #e5e7eb;
+          border-radius: 0;
+        }
+        select {
+          font-size: 12px;
+          font-weight: 400;
+        }
+        .find-pro-btn {
+          padding-inline: 20px;
+        }
+      }
       @media (max-width: 640px) {
         .search-bottom-row {
-          flex-direction: column;
           align-items: stretch;
         }
 
         .location-pill {
-          width: 100%;
+          width: 44%;
         }
-
         .find-pro-btn {
-          width: 100%;
+          min-height: 44px;
+          padding-inline: 12px;
+        }
+        .location-pill {
+          height: 44px;
+        }
+        .discovery-search {
+          padding: 12px;
+        }
+        input {
+          font-size: 14px;
+          min-width: 0;
         }
       }
     `,
   ],
 })
 export class DiscoverySearchComponent {
+  readonly compact = input(false);
+  readonly idPrefix = input('discover');
   readonly i18n = inject(LanguageService);
   readonly ar = () => this.i18n.lang() === 'ar';
   readonly governorates = GOVERNORATES;
@@ -283,6 +349,7 @@ export class DiscoverySearchComponent {
   });
 
   readonly suggestions = signal<CatalogServiceItem[]>([]);
+  readonly suggestionsOpen = signal(false);
 
   constructor() {
     this.form.controls.q.valueChanges
@@ -292,18 +359,28 @@ export class DiscoverySearchComponent {
         switchMap((q) =>
           q.trim().length < 2
             ? of({ items: [] })
-            : this.api.getServices({ q: q.trim(), limit: 6 }).pipe(catchError(() => of({ items: [] }))),
+            : this.api
+                .getServices({ q: q.trim(), limit: 6 })
+                .pipe(catchError(() => of({ items: [] }))),
         ),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((res) => this.suggestions.set(res.items));
   }
 
+  onSearchFocusOut(event: FocusEvent) {
+    const row = event.currentTarget as HTMLElement;
+    if (!(event.relatedTarget instanceof Node) || !row.contains(event.relatedTarget)) {
+      this.suggestionsOpen.set(false);
+    }
+  }
+
   formatPrice(svc: CatalogServiceItem): string {
-    return money(svc.pricingPolicy?.indicativeAmountFils ?? 15000, this.i18n.lang());
+    return svc.pricingPolicy ? money(svc.pricingPolicy.indicativeAmountFils, this.i18n.lang()) : '';
   }
 
   search() {
+    this.suggestionsOpen.set(false);
     const v = this.form.getRawValue();
     void this.router.navigate(['/services'], {
       queryParams: { q: v.q.trim() || null, governorate: v.governorate || null },

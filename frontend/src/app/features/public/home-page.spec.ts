@@ -30,20 +30,23 @@ describe('Home discovery', () => {
   it('renders only categories supplied by the catalog', () => {
     const f = TestBed.createComponent(HomePageComponent);
     flushFeeds();
-    http.expectOne((r) => r.url.endsWith('/categories')).flush([
-      {
-        id: 'one',
-        slug: 'new-category',
-        name: { en: 'New service', ar: 'خدمة جديدة' },
-        description: { en: '', ar: '' },
-        isActive: true,
-        displayOrder: 1,
-      },
-    ]);
+    http
+      .expectOne((r) => r.url.endsWith('/categories'))
+      .flush([
+        {
+          id: 'one',
+          slug: 'new-category',
+          name: { en: 'New service', ar: 'خدمة جديدة' },
+          description: { en: '', ar: '' },
+          isActive: true,
+          displayOrder: 1,
+        },
+      ]);
     f.detectChanges();
-    const links = f.nativeElement.querySelectorAll('.category-tile');
-    expect(links.length).toBe(1);
-    expect(links[0].getAttribute('href')).toContain('categorySlug=new-category');
+    const buttons = f.nativeElement.querySelectorAll('.cat-icon-tab');
+    expect(buttons.length).toBe(2);
+    buttons[1].click();
+    expect(f.componentInstance.selectedCategorySlug()).toBe('new-category');
   });
 
   it('offers a retry after a failed catalog request', () => {
@@ -56,6 +59,9 @@ describe('Home discovery', () => {
     expect(f.nativeElement.querySelector('[role="status"]')).toBeTruthy();
     f.nativeElement.querySelector('.home-notice button').click();
     http.expectOne((r) => r.url.endsWith('/categories')).flush([]);
+    http
+      .expectOne((r) => r.url.endsWith('/services'))
+      .flush({ items: [], total: 0, totalPages: 0, page: 1, limit: 12 });
     expect(f.componentInstance.error()).toBe(false);
   });
 
@@ -79,7 +85,10 @@ describe('Home discovery', () => {
   it('sends trimmed search text and the selected governorate to discovery', () => {
     const f = TestBed.createComponent(DiscoverySearchComponent);
     const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
-    f.componentInstance.form.setValue({ q: '  plumbing  ', governorate: 'Irbid' }, { emitEvent: false });
+    f.componentInstance.form.setValue(
+      { q: '  plumbing  ', governorate: 'Irbid' },
+      { emitEvent: false },
+    );
     f.componentInstance.search();
     expect(navigate).toHaveBeenCalledWith(['/services'], {
       queryParams: { q: 'plumbing', governorate: 'Irbid' },

@@ -1,41 +1,38 @@
+@if (stickySearch()) {
+  <div class="sticky-discovery">
+    <app-discovery-search [compact]="true" idPrefix="sticky-discover" />
+  </div>
+}
 <!-- ======================================================================= -->
 <!-- SECTION 1: FULL-WIDTH EDGE-TO-EDGE HERO (Reference Screenshot 1)        -->
 <!-- ======================================================================= -->
 <section class="hero-fullbleed">
   <img
     class="hero-bg-image"
-    src="/images/hero/home-1600.webp"
+    src="/images/editorial/exterior-1920.webp"
     srcset="
-      /images/hero/home-480.webp   480w,
-      /images/hero/home-960.webp   960w,
-      /images/hero/home-1600.webp 1600w
+      /images/editorial/exterior-480.webp   480w,
+      /images/editorial/exterior-960.webp   960w,
+      /images/editorial/exterior-1920.webp 1920w
     "
     sizes="100vw"
-    width="1600"
-    height="1046"
+    width="1920"
+    height="1280"
     fetchpriority="high"
-    [alt]="
-      ar()
-        ? 'مساحة منزلية مشرقة ومرتبة في الأردن'
-        : 'Bright modern home interior in Jordan'
-    "
+    [alt]="ar() ? 'منزل عصري مع تراس خارجي' : 'Modern residential terrace and home exterior'"
   />
   <div class="hero-overlay"></div>
 
   <div class="fm-container hero-content-wrap">
     <div class="hero-left-col">
       <h1 class="hero-headline">
-        {{
-          ar()
-            ? 'صيانة وتحسين منزلك\nأصبحت أسهل.'
-            : 'Home improvement\nmade easy.'
-        }}
+        {{ ar() ? 'صيانة وتحسين منزلك\nأصبحت أسهل.' : 'For everything\nyour home could be.' }}
       </h1>
       <p class="hero-subtitle">
         {{
           ar()
             ? 'قارن أسعار الصيانة بالدينار الأردني واحجز فنيين معتمدين في عمّان وجميع المحافظات.'
-            : 'Compare upfront JOD pricing and book admin-reviewed pros across Amman & Jordan.'
+            : 'Find local pros for repairs, upgrades, and projects big or small — across Jordan.'
         }}
       </p>
 
@@ -51,45 +48,48 @@
         <span>{{
           ar()
             ? 'احجز مباشرة أو أرسل طلب خدمة — أسعار استرشادية واضحة بالدينار الأردني.'
-            : 'Book directly or request quotes — transparent indicative JOD pricing.'
+            : 'Choose your service. Compare pros. Book with confidence.'
         }}</span>
       </p>
 
       <!-- Real Marketplace Capabilities Strip below search (Reference Screenshot 1) -->
       <div class="hero-stats-strip">
         <div class="hero-stat-item">
-          <strong>{{ ar() ? '12+ خدمة منزلية' : '12+ Home Services' }}</strong>
-          <span>{{ ar() ? 'سباكة، تكييف، كهرباء، تنظيف ودهان' : 'Plumbing, AC, electrical & more' }}</span>
+          <strong>{{ ar() ? 'العناية بالمنزل' : 'Home care' }}</strong>
+          <span>{{ ar() ? 'صيانة وخدمات منزلية' : 'Repairs & upgrades' }}</span>
         </div>
-        <div class="hero-stat-divider" aria-hidden="true"></div>
         <div class="hero-stat-item">
-          <strong>{{ ar() ? 'الأسعار بالدينار (JOD)' : 'Upfront JOD Pricing' }}</strong>
-          <span>{{ ar() ? 'نطاق سعري واضح قبل الحجز' : 'Clear Amman & Jordan benchmarks' }}</span>
+          <strong>{{ ar() ? 'بالدينار' : 'JOD' }}</strong>
+          <span>{{ ar() ? 'أسعار خدمات واضحة' : 'Service pricing' }}</span>
         </div>
-        <div class="hero-stat-divider" aria-hidden="true"></div>
         <div class="hero-stat-item">
-          <strong>{{ ar() ? 'مزودون معتمدون' : 'Reviewed Professionals' }}</strong>
-          <span>{{ ar() ? 'مراجعة الإدارة لكل ملف مهني' : 'Admin-approved provider profiles' }}</span>
+          <strong>{{ ar() ? 'فنيون محليون' : 'Local pros' }}</strong>
+          <span>{{ ar() ? 'ملفات تمت مراجعتها' : 'Reviewed profiles' }}</span>
         </div>
       </div>
     </div>
-
-    <!-- Bottom-Right Project Caption Pill (Reference Screenshot 1) -->
-    <div class="hero-caption-pill">
-      <strong>{{ ar() ? 'العناية بالمنزل في الأردن:' : 'JORDAN HOME CARE:' }}</strong>
-      <span>{{
-        ar()
-          ? 'صيانة السباكة، تنظيف المكيفات، الكهرباء، والتشطيبات الداخلية.'
-          : 'Plumbing, split AC servicing, electrical & interior finishes.'
-      }}</span>
-    </div>
   </div>
+  <!-- Bottom-Right Project Caption Pill (Reference Screenshot 1) -->
+  <div class="hero-caption-pill">
+    <strong>{{ ar() ? 'العناية بالمنزل في الأردن:' : 'A FRESH START' }}</strong>
+    <span>{{
+      ar()
+        ? 'صيانة السباكة، تنظيف المكيفات، الكهرباء، والتشطيبات الداخلية.'
+        : 'Care for every corner of your home.'
+    }}</span>
+  </div>
+  <a
+    class="hero-scroll"
+    href="#discover"
+    [attr.aria-label]="ar() ? 'استكشف الخدمات' : 'Explore services'"
+    >⌄</a
+  >
 </section>
 
 <!-- ======================================================================= -->
 <!-- SECTION 2: "Pros for every project in Your Area." (Reference Screenshot 2) -->
 <!-- ======================================================================= -->
-<section class="area-discovery-section">
+<section id="discover" class="area-discovery-section">
   <div class="fm-container">
     <div class="centered-section-header">
       <h2>
@@ -98,32 +98,39 @@
       </h2>
     </div>
 
-    @if (loading()) {
+    @if (loading() || projectsLoading()) {
       <div class="portrait-cards-grid" aria-busy="true">
         @for (n of [1, 2, 3, 4]; track n) {
           <div class="skeleton portrait-card-skeleton"></div>
         }
       </div>
-    } @else if (error()) {
+    } @else if (error() || projectsError()) {
       <div class="home-notice" role="status">
         <p>{{ ar() ? 'تعذّر تحميل التصنيفات.' : 'We couldn’t load categories.' }}</p>
-        <button class="fm-link-button" (click)="loadCategories()">
+        <button class="fm-link-button" (click)="loadCategories(); loadProjects()">
           {{ ar() ? 'إعادة المحاولة' : 'Try again' }}
         </button>
       </div>
     } @else {
       <!-- Horizontal Category Icon Tabs (Reference Screenshot 2) -->
-      <div class="category-tabs-bar" role="tablist">
+      <div
+        class="category-tabs-bar"
+        role="group"
+        [attr.aria-label]="ar() ? 'تصنيفات الخدمات' : 'Service categories'"
+      >
         <button
           type="button"
-          role="tab"
+          [attr.aria-pressed]="selectedCategorySlug() === 'all'"
           class="cat-icon-tab"
           [class.active]="selectedCategorySlug() === 'all'"
-          [attr.aria-selected]="selectedCategorySlug() === 'all'"
           (click)="selectCategoryTab('all')"
         >
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 10.5L12 4L20 10.5V19A1 1 0 0 1 19 20H5A1 1 0 0 1 4 19V10.5Z" stroke="currentColor" stroke-width="1.7" />
+            <path
+              d="M4 10.5L12 4L20 10.5V19A1 1 0 0 1 19 20H5A1 1 0 0 1 4 19V10.5Z"
+              stroke="currentColor"
+              stroke-width="1.7"
+            />
           </svg>
           <span>{{ ar() ? 'الكل' : 'Featured' }}</span>
         </button>
@@ -131,17 +138,21 @@
         @for (cat of categories(); track cat.id) {
           <button
             type="button"
-            role="tab"
+            [attr.aria-pressed]="selectedCategorySlug() === cat.slug"
             class="cat-icon-tab"
             [class.active]="selectedCategorySlug() === cat.slug"
-            [attr.aria-selected]="selectedCategorySlug() === cat.slug"
             (click)="selectCategoryTab(cat.slug)"
           >
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.7" />
-              <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+              <path
+                [attr.d]="categoryIcon(cat.slug)"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
-            <span>{{ cat.name[i18n.lang()] }}</span>
+            <span>{{ categoryLabel(cat.slug, cat.name[i18n.lang()]) }}</span>
           </button>
         }
       </div>
@@ -149,44 +160,16 @@
       <!-- 4 Tall Portrait Photographic Cards (Reference Screenshot 2) -->
       <div class="portrait-cards-grid">
         @for (card of visiblePortraitCards(); track card.slug) {
-          <a
-            class="portrait-service-card"
-            [routerLink]="['/services', card.slug]"
-          >
-            <img
-              [src]="card.image"
-              [alt]="ar() ? card.titleAr : card.titleEn"
-              loading="lazy"
-            />
+          <a class="portrait-service-card" [routerLink]="['/services', card.slug]">
+            <img [src]="card.image" [alt]="ar() ? card.titleAr : card.titleEn" loading="lazy" />
             <div class="portrait-card-gradient"></div>
             <div class="portrait-card-caption">
-              <span class="portrait-price-pill">{{
-                ar() ? card.priceLabelAr : card.priceLabelEn
-              }}</span>
               <h3>{{ ar() ? card.titleAr : card.titleEn }}</h3>
             </div>
           </a>
-        }
-      </div>
-
-      <!-- Direct Category Browse Links (Preserves .category-tile contract for tests & SEO) -->
-      <div class="category-pills-row">
-        @for (cat of categories(); track cat.id) {
-          <a
-            class="category-tile"
-            routerLink="/services"
-            [queryParams]="{ categorySlug: cat.slug }"
-          >
-            <span>{{ cat.name[i18n.lang()] }}</span>
-            <span class="direction-arrow" aria-hidden="true">→</span>
-          </a>
         } @empty {
-          <p class="empty-note">
-            {{
-              ar()
-                ? 'الخدمات الجديدة ستظهر هنا قريباً.'
-                : 'New service categories will appear here soon.'
-            }}
+          <p class="home-notice">
+            {{ ar() ? 'لا توجد خدمات في هذا القسم حالياً.' : 'No services in this category yet.' }}
           </p>
         }
       </div>
@@ -206,14 +189,17 @@
     </div>
 
     <!-- 4 Project Group Tabs (Reference Screenshot 3) -->
-    <div class="explore-tabs-bar" role="tablist">
+    <div
+      class="explore-tabs-bar"
+      role="group"
+      [attr.aria-label]="ar() ? 'أنواع المشاريع' : 'Project themes'"
+    >
       @for (tab of exploreTabs; track tab.id) {
         <button
           type="button"
-          role="tab"
+          [attr.aria-pressed]="activeExploreTabId() === tab.id"
           class="explore-tab-btn"
           [class.active]="activeExploreTabId() === tab.id"
-          [attr.aria-selected]="activeExploreTabId() === tab.id"
           (click)="selectExploreTab(tab.id)"
         >
           {{ ar() ? tab.labelAr : tab.labelEn }}
@@ -231,7 +217,7 @@
       <div class="featured-banner-overlay"></div>
       <div class="featured-banner-content">
         <h3>{{ ar() ? activeExploreTab().banner.titleAr : activeExploreTab().banner.titleEn }}</h3>
-        <p>{{ ar() ? activeExploreTab().banner.subtitleAr : activeExploreTab().banner.subtitleEn }}</p>
+
         <a
           class="featured-banner-cta"
           [routerLink]="['/services', activeExploreTab().banner.linkSlug]"
@@ -247,20 +233,10 @@
     <!-- 3 Supporting Landscape Project Cards Below Banner (Reference Screenshot 3) -->
     <div class="supporting-projects-grid">
       @for (item of activeExploreTab().cards; track item.slug) {
-        <a
-          class="supporting-project-card"
-          [routerLink]="['/services', item.slug]"
-        >
-          <img
-            [src]="item.image"
-            [alt]="ar() ? item.titleAr : item.titleEn"
-            loading="lazy"
-          />
+        <a class="supporting-project-card" [routerLink]="['/services', item.slug]">
+          <img [src]="item.image" [alt]="ar() ? item.titleAr : item.titleEn" loading="lazy" />
           <div class="supporting-card-gradient"></div>
           <div class="supporting-card-caption">
-            <span class="supporting-price-tag">{{
-              ar() ? item.priceAr : item.priceEn
-            }}</span>
             <h4>{{ ar() ? item.titleAr : item.titleEn }}</h4>
           </div>
         </a>
@@ -270,46 +246,93 @@
 </section>
 
 <!-- ======================================================================= -->
+<!-- SECTION 5: "Resources for your home." (Reference Screenshot 4)          -->
+<!-- ======================================================================= -->
+<section class="resources-editorial-section">
+  <div class="fm-container">
+    <div class="centered-section-header resources-header">
+      <h2>{{ ar() ? 'موارد وأدلة لمنزلك.' : 'Resources for your home.' }}</h2>
+      <p>
+        {{
+          ar()
+            ? 'من الصيانة الموسمية إلى دليل الأسعار بالدينار الأردني، كل ما تحتاجه للتخطيط لمشروعك القادم.'
+            : 'Sometimes getting started is the hardest part.\nExplore practical guidance for your next project in Jordan.'
+        }}
+      </p>
+    </div>
+
+    <!-- 3 Portrait Photographic Editorial Cards (Reference Screenshot 4) -->
+    <div class="resources-cards-grid">
+      @for (res of resourceCards; track res.id) {
+        <button
+          type="button"
+          class="resource-editorial-card"
+          aria-haspopup="dialog"
+          (click)="selectResourceCard(res.id); resourceDialog.showModal()"
+        >
+          <img [src]="res.image" [alt]="ar() ? res.titleAr : res.titleEn" loading="lazy" />
+          <div class="resource-card-gradient"></div>
+          <div class="resource-card-content">
+            <h3>{{ ar() ? res.titleAr : res.titleEn }}</h3>
+            <p>{{ ar() ? res.subtitleAr : res.subtitleEn }}</p>
+          </div>
+        </button>
+      }
+    </div>
+
+    <!-- Interactive Jordan Resource & Cost Guide Detail Drawer -->
+    <dialog
+      #resourceDialog
+      class="resource-detail-panel"
+      aria-labelledby="resource-title"
+      (click)="$event.target === resourceDialog && resourceDialog.close()"
+    >
+      <button
+        class="resource-close"
+        (click)="resourceDialog.close()"
+        [attr.aria-label]="ar() ? 'إغلاق' : 'Close guide'"
+      >
+        ×
+      </button>
+      <div class="resource-detail-header">
+        <div>
+          <span class="eyebrow">{{
+            ar() ? activeResourceCard().badgeAr : activeResourceCard().badgeEn
+          }}</span>
+          <h3 id="resource-title">
+            {{ ar() ? activeResourceCard().titleAr : activeResourceCard().titleEn }}
+          </h3>
+        </div>
+        <a routerLink="/services" class="view-catalog-link">
+          {{ ar() ? 'تصفح جميع الخدمات والأسعار' : 'View full service catalog' }}
+          <span class="direction-arrow">→</span>
+        </a>
+      </div>
+
+      <div class="resource-items-grid">
+        @for (item of activeResourceCard().items; track item.serviceSlug) {
+          <a class="resource-detail-item" [routerLink]="['/services', item.serviceSlug]">
+            <div class="resource-item-top">
+              <h4>{{ ar() ? item.headingAr : item.headingEn }}</h4>
+              <span class="resource-meta-pill">{{ resourceMeta(item.serviceSlug) }}</span>
+            </div>
+            <p>{{ ar() ? item.detailAr : item.detailEn }}</p>
+            <span class="resource-item-cta">
+              {{ ar() ? 'عرض الخدمة والحجز' : 'View service & book' }}
+              <span class="direction-arrow">→</span>
+            </span>
+          </a>
+        }
+      </div>
+    </dialog>
+  </div>
+</section>
+
+<!-- ======================================================================= -->
 <!-- SECTION 4: WHY FIXMATE & APPROVED PROFESSIONALS IN JORDAN               -->
 <!-- ======================================================================= -->
 <section class="why-and-pros-section">
   <div class="fm-container">
-    <div class="why-grid">
-      <article class="why-card">
-        <div class="why-icon">JOD</div>
-        <h3>{{ ar() ? 'أسعار واضحة بالدينار الأردني' : 'Transparent JOD Pricing' }}</h3>
-        <p>
-          {{
-            ar()
-              ? 'اطّلع على النطاق السعري الاسترشادي لكل خدمة في عمّان والمحافظات قبل إرسال طلبك.'
-              : 'Review indicative JOD price ranges for Amman, Irbid, and Zarqa before booking.'
-          }}
-        </p>
-      </article>
-      <article class="why-card">
-        <div class="why-icon">✓</div>
-        <h3>{{ ar() ? 'مزودو خدمة معتمدون' : 'Admin-Reviewed Pros' }}</h3>
-        <p>
-          {{
-            ar()
-              ? 'يظهر في دليلنا فقط المزودون الذين تمت مراجعة ملفاتهم المهنية ومناطق تغطيتهم.'
-              : 'Every listed professional profile is reviewed for service scope and governorate coverage.'
-          }}
-        </p>
-      </article>
-      <article class="why-card">
-        <div class="why-icon">30m</div>
-        <h3>{{ ar() ? 'مواعيد دقيقة وإدارة كاملة' : '30-Min Slot Scheduling' }}</h3>
-        <p>
-          {{
-            ar()
-              ? 'احجز موعداً مباشراً مع فني محدد أو أرسل طلباً مفتوحاً وتابع حالة الطلب خطوة بخطوة.'
-              : 'Book a direct provider or submit an open request with real-time lifecycle tracking.'
-          }}
-        </p>
-      </article>
-    </div>
-
     <div class="pros-showcase-block">
       <div class="pros-header">
         <div>
@@ -318,9 +341,7 @@
           }}</span>
           <h2>
             {{
-              ar()
-                ? 'تعرّف على مزودي الخدمة المعتمدين'
-                : 'Meet approved professionals near you.'
+              ar() ? 'تعرّف على مزودي الخدمة المعتمدين' : 'Meet approved professionals near you.'
             }}
           </h2>
         </div>
@@ -370,85 +391,6 @@
           }
         </div>
       }
-    </div>
-  </div>
-</section>
-
-<!-- ======================================================================= -->
-<!-- SECTION 5: "Resources for your home." (Reference Screenshot 4)          -->
-<!-- ======================================================================= -->
-<section class="resources-editorial-section">
-  <div class="fm-container">
-    <div class="centered-section-header resources-header">
-      <h2>{{ ar() ? 'موارد وأدلة لمنزلك.' : 'Resources for your home.' }}</h2>
-      <p>
-        {{
-          ar()
-            ? 'من الصيانة الموسمية إلى دليل الأسعار بالدينار الأردني، كل ما تحتاجه للتخطيط لمشروعك القادم.'
-            : 'From seasonal maintenance to Jordan JOD cost guides, we have the resources you need to plan your next project.'
-        }}
-      </p>
-    </div>
-
-    <!-- 3 Portrait Photographic Editorial Cards (Reference Screenshot 4) -->
-    <div class="resources-cards-grid">
-      @for (res of resourceCards; track res.id) {
-        <button
-          type="button"
-          class="resource-editorial-card"
-          [class.selected]="activeResourceId() === res.id"
-          (click)="selectResourceCard(res.id)"
-        >
-          <img
-            [src]="res.image"
-            [alt]="ar() ? res.titleAr : res.titleEn"
-            loading="lazy"
-          />
-          <div class="resource-card-gradient"></div>
-          <div class="resource-card-content">
-            <span class="resource-badge">{{ ar() ? res.badgeAr : res.badgeEn }}</span>
-            <h3>{{ ar() ? res.titleAr : res.titleEn }}</h3>
-            <p>{{ ar() ? res.subtitleAr : res.subtitleEn }}</p>
-          </div>
-        </button>
-      }
-    </div>
-
-    <!-- Interactive Jordan Resource & Cost Guide Detail Drawer -->
-    <div class="resource-detail-panel">
-      <div class="resource-detail-header">
-        <div>
-          <span class="eyebrow">{{
-            ar() ? activeResourceCard().badgeAr : activeResourceCard().badgeEn
-          }}</span>
-          <h3>{{ ar() ? activeResourceCard().titleAr : activeResourceCard().titleEn }}</h3>
-        </div>
-        <a routerLink="/services" class="view-catalog-link">
-          {{ ar() ? 'تصفح جميع الخدمات والأسعار' : 'View full service catalog' }}
-          <span class="direction-arrow">→</span>
-        </a>
-      </div>
-
-      <div class="resource-items-grid">
-        @for (item of activeResourceCard().items; track item.serviceSlug) {
-          <a
-            class="resource-detail-item"
-            [routerLink]="['/services', item.serviceSlug]"
-          >
-            <div class="resource-item-top">
-              <h4>{{ ar() ? item.headingAr : item.headingEn }}</h4>
-              <span class="resource-meta-pill">{{
-                ar() ? item.metaAr : item.metaEn
-              }}</span>
-            </div>
-            <p>{{ ar() ? item.detailAr : item.detailEn }}</p>
-            <span class="resource-item-cta">
-              {{ ar() ? 'عرض الخدمة والحجز' : 'View service & book' }}
-              <span class="direction-arrow">→</span>
-            </span>
-          </a>
-        }
-      </div>
     </div>
   </div>
 </section>
