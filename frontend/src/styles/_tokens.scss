@@ -1,0 +1,96 @@
+// ============================================================================
+// FixMate Design Tokens — SCSS & CSS Custom Properties
+// Brand Palette:
+// - Brand Teal:    #126C73
+// - Deep Navy:     #1F3447
+// - Light Surface: #F4F8F8
+// - Warm Accent:   #F0A34B
+// - White:         #FFFFFF
+// ============================================================================
+
+:root {
+  --fm-color-surface: #ffffff;
+  --fm-color-text: #18372e;
+  --fm-color-disabled: #e7ebe6;
+  // Brand Core
+  --fm-color-brand-teal: #176451;
+  --fm-color-brand-teal-hover: #104c3d;
+  --fm-color-brand-teal-subtle: #eaf2e9;
+  --fm-color-deep-navy: #173c32;
+  --fm-color-deep-navy-hover: #18372e;
+  --fm-color-surface-light: #faf9f6;
+  --fm-color-surface-white: #ffffff;
+  --fm-color-warm-accent: #e4b76b;
+  --fm-color-warm-accent-hover: #dd8c2f;
+  --fm-color-warm-accent-subtle: #fef5eb;
+
+  // Text & Borders
+  --fm-color-text-primary: #18372e;
+  --fm-color-text-secondary: #55665e;
+  --fm-color-text-muted: #65736c;
+  --fm-color-border: #e0e5de;
+  --fm-color-border-strong: #aebcb2;
+
+  // Semantic Feedback
+  --fm-color-success: #1b6e44;
+  --fm-color-success-bg: #e8f6ee;
+  --fm-color-success-border: #a6dfc1;
+
+  --fm-color-warning: #8a5300;
+  --fm-color-warning-bg: #fef4e6;
+  --fm-color-warning-border: #f5ce93;
+
+  --fm-color-danger: #b42318;
+  --fm-color-danger-hover: #911b12;
+  --fm-color-danger-bg: #feeceb;
+  --fm-color-danger-border: #f7b7b2;
+
+  --fm-color-info: #176451;
+  --fm-color-info-bg: #eaf2e9;
+  --fm-color-info-border: #add4d7;
+
+  // Typography
+  --fm-font-sans:
+    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans Arabic', 'Tahoma', sans-serif;
+  --fm-font-mono:
+    'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --fm-text-xs: 0.75rem;
+  --fm-text-sm: 0.875rem;
+  --fm-text-base: 1rem;
+  --fm-text-lg: 1.125rem;
+  --fm-text-xl: 1.375rem;
+  --fm-text-2xl: 1.75rem;
+  --fm-text-3xl: 2.25rem;
+
+  // Spacing Scale
+  --fm-space-1: 0.25rem;
+  --fm-space-2: 0.5rem;
+  --fm-space-3: 0.75rem;
+  --fm-space-4: 1rem;
+  --fm-space-5: 1.25rem;
+  --fm-space-6: 1.5rem;
+  --fm-space-8: 2rem;
+  --fm-space-10: 2.5rem;
+  --fm-space-12: 3rem;
+
+  // Radii
+  --fm-radius-sm: 6px;
+  --fm-radius-md: 10px;
+  --fm-radius-lg: 18px;
+  --fm-radius-pill: 9999px;
+
+  // Elevation Shadows
+  --fm-shadow-sm: 0 1px 3px rgba(31, 52, 71, 0.07);
+  --fm-shadow-md: 0 4px 12px rgba(31, 52, 71, 0.09);
+  --fm-shadow-lg: 0 12px 28px rgba(31, 52, 71, 0.14);
+
+  // Layout
+  --fm-container-max: 1240px;
+  --fm-transition-fast: 150ms ease;
+}
+
+html[lang='ar'] {
+  --fm-font-sans: 'Noto Sans Arabic', 'Segoe UI', 'Tahoma', system-ui, -apple-system, sans-serif;
+}

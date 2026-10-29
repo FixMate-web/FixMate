@@ -1,0 +1,41 @@
+name: fixmate
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: fixmate-mongodb
+    restart: unless-stopped
+    ports:
+      - "${MONGODB_HOST_PORT:-27017}:27017"
+    environment:
+      MONGO_INITDB_DATABASE: fixmate
+    volumes:
+      - fixmate_mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "mongodb://127.0.0.1:27017/fixmate", "--eval", "db.runCommand({ ping: 1 }).ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Optional Redis service for later phases (Phase 4 caching & BullMQ queues).
+  # Not required and not started by default in Phase 1 unless "--profile phase4" is passed.
+  redis:
+    image: redis:7.2-alpine
+    container_name: fixmate-redis
+    restart: unless-stopped
+    profiles:
+      - phase4
+    ports:
+      - "${REDIS_HOST_PORT:-6379}:6379"
+    volumes:
+      - fixmate_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  fixmate_mongodb_data:
+  fixmate_redis_data:

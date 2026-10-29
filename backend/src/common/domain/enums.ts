@@ -1,0 +1,69 @@
+export enum UserRole {
+  CUSTOMER = 'CUSTOMER',
+  PROVIDER = 'PROVIDER',
+  ADMIN = 'ADMIN',
+}
+
+export enum AccountStatus {
+  ACTIVE = 'ACTIVE',
+  SUSPENDED = 'SUSPENDED',
+  DEACTIVATED = 'DEACTIVATED',
+}
+
+export enum ProviderApprovalStatus {
+  DRAFT = 'DRAFT',
+  PENDING_REVIEW = 'PENDING_REVIEW',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  SUSPENDED = 'SUSPENDED',
+}
+
+export enum PricingType {
+  FIXED = 'FIXED',
+  STARTING_AT = 'STARTING_AT',
+  INSPECTION_ONLY = 'INSPECTION_ONLY',
+}
+
+export enum CurrencyCode {
+  JOD = 'JOD',
+}
+
+export enum SupportedLanguage {
+  AR = 'ar',
+  EN = 'en',
+}
+
+export enum ReviewModerationStatus {
+  VISIBLE = 'VISIBLE',
+  HIDDEN = 'HIDDEN',
+}
+
+export enum BookingEventKind {
+  CREATED = 'CREATED',
+  STATUS_CHANGED = 'STATUS_CHANGED',
+  ADMIN_INTERVENTION = 'ADMIN_INTERVENTION',
+}
+
+export enum BookingActorRole {
+  CUSTOMER = 'CUSTOMER',
+  PROVIDER = 'PROVIDER',
+  ADMIN = 'ADMIN',
+  SYSTEM = 'SYSTEM',
+}
+
+export enum NotificationType {
+  BOOKING_REQUESTED = 'BOOKING_REQUESTED',
+  BOOKING_ACCEPTED = 'BOOKING_ACCEPTED',
+  BOOKING_REJECTED = 'BOOKING_REJECTED',
+  BOOKING_CANCELLED = 'BOOKING_CANCELLED',
+  BOOKING_WORK_DONE = 'BOOKING_WORK_DONE',
+  BOOKING_COMPLETED = 'BOOKING_COMPLETED',
+  PROVIDER_APPROVAL_UPDATED = 'PROVIDER_APPROVAL_UPDATED',
+  REVIEW_RECEIVED = 'REVIEW_RECEIVED',
+}
+
+export enum NotificationResourceType {
+  BOOKING = 'BOOKING',
+  PROVIDER_PROFILE = 'PROVIDER_PROFILE',
+  REVIEW = 'REVIEW',
+}
