@@ -1,42 +1,66 @@
-# Dependencies
+# ==============================================================================
+# FixMate — Root Git Ignore Rules
+# ==============================================================================
+
+# 1. Secrets, Credentials & Local Environment Files
+.env
+.env.*
+.env.local
+.env.*.local
+**/.env
+**/.env.*
+**/.env.local
+**/.env.*.local
+backend/.env
+backend/.env.demo.local
+frontend/.env
+!.env.example
+!**/.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# 2. Dependencies & Package Manager Caches
 node_modules/
 **/node_modules/
+.npm/
 
-# Build outputs
+# 3. Build Outputs & Compiler Caches
 dist/
 **/dist/
 out-tsc/
 **/out-tsc/
 .angular/
 **/.angular/
+*.tsbuildinfo
 
-# Environment variables & secrets (keep *.example tracked)
-.env
-.env.*
-!.env.example
-!**/.env.example
-
-# Logs & runtime data
-logs/
+# 4. Logs & Runtime Diagnostics
 *.log
 npm-debug.log*
-pids
-*.pid
-*.seed
-*.pid.lock
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# Testing & coverage
+# 5. Test, Coverage & E2E Reports
 coverage/
 **/coverage/
 .nyc_output/
+playwright-report/
+test-results/
 
-# Editor & OS files
-.vscode/*
-!.vscode/settings.json
-!.vscode/extensions.json
-.idea/
+# 6. Temporary Local Browser Verification Artifacts
+artifacts/demo-accounts/
+artifacts/hero-discovery-integration/
+artifacts/rtl-category-navigation/
+
+# 7. OS & Editor Files
 .DS_Store
 Thumbs.db
-
-# Local Docker volume data (if bind-mounted)
-.docker-data/
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+*.swp
+*.swo
+*~

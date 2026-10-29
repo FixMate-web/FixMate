@@ -2,10 +2,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  afterRenderEffect,
+  ElementRef,
   HostListener,
   DestroyRef,
   inject,
   signal,
+  viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
@@ -401,6 +404,11 @@ export class HomePageComponent {
 
   constructor() {
     this.loadProviders();
+    afterRenderEffect(() => {
+      this.i18n.lang();
+      const rail = this.categoryRailElement()?.nativeElement;
+      if (rail) this.updateRail(rail);
+    });
   }
 
   loadCategories() {
@@ -441,18 +449,49 @@ export class HomePageComponent {
 
   readonly railStart = signal(true);
   readonly railEnd = signal(false);
+  private readonly categoryRailElement = viewChild<ElementRef<HTMLElement>>('categoryRail');
+  private rtlScrollType: 'negative' | 'descending' | 'ascending' | undefined;
+
+  private getRtlScrollType() {
+    if (this.rtlScrollType) return this.rtlScrollType;
+    // RTL engines expose three scrollLeft coordinate systems. Probe separately so
+    // detecting the model never moves the user's category list or changes focus.
+    const probe = document.createElement('div');
+    probe.style.cssText = 'position:absolute;top:-9999px;width:4px;height:1px;overflow:scroll;direction:rtl';
+    const content = document.createElement('div');
+    content.style.width = '8px';
+    probe.append(content);
+    document.body.append(probe);
+    if (probe.scrollLeft > 0) this.rtlScrollType = 'descending';
+    else {
+      probe.scrollLeft = 1;
+      this.rtlScrollType = probe.scrollLeft === 0 ? 'negative' : 'ascending';
+    }
+    probe.remove();
+    return this.rtlScrollType;
+  }
+
   updateRail(rail: HTMLElement) {
-    const position = Math.abs(rail.scrollLeft);
+    const maximum = Math.max(0, rail.scrollWidth - rail.clientWidth);
+    const raw = rail.scrollLeft;
+    const type = this.ar() ? this.getRtlScrollType() : null;
+    const logicalPosition = type === 'negative' ? -raw : type === 'descending' ? maximum - raw : type === 'ascending' ? raw : Math.abs(raw);
+    // Clamp fractional boundary values and Safari elastic overscroll.
+    const position = Math.max(0, Math.min(maximum, logicalPosition));
     this.railStart.set(position < 3);
-    this.railEnd.set(position >= rail.scrollWidth - rail.clientWidth - 3);
+    this.railEnd.set(position >= maximum - 3);
   }
   scrollCategories(rail: HTMLElement, direction: number) {
     rail.scrollBy({
-      left: direction * (this.ar() ? -1 : 1) * rail.clientWidth * 0.65,
+      left: direction * (this.ar() && this.getRtlScrollType() !== 'ascending' ? -1 : 1) * rail.clientWidth * 0.65,
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
         ? 'instant'
         : 'smooth',
     });
+  }
+  @HostListener('window:resize') onCategoryRailResize() {
+    const rail = this.categoryRailElement()?.nativeElement;
+    if (rail) this.updateRail(rail);
   }
   revealTab(event: Event) {
     (event.currentTarget as HTMLElement).scrollIntoView({ block: 'nearest', inline: 'nearest' });

@@ -109,4 +109,69 @@ describe('Home discovery', () => {
     req.flush({ items: [{ id: 'one', title: { en: 'Leak repair', ar: 'إصلاح تسرب' } }] });
     expect(f.componentInstance.suggestions().length).toBe(1);
   });
+  it.each([
+    { type: 'negative', positions: [0, -300, -600], step: -195 },
+    { type: 'descending', positions: [600, 300, 0], step: -195 },
+    { type: 'ascending', positions: [0, 300, 600], step: 195 },
+  ])(
+    'normalizes RTL $type scrolling and advances without changing selection',
+    ({ type, positions, step }) => {
+      const f = TestBed.createComponent(HomePageComponent);
+      flushFeeds();
+      http.expectOne((r) => r.url.endsWith('/categories')).flush([]);
+      const c = f.componentInstance;
+      c.i18n.setLanguage('ar');
+      Object.assign(c, { rtlScrollType: type });
+      const scrollBy = vi.fn();
+      const rail = {
+        scrollWidth: 900,
+        clientWidth: 300,
+        scrollLeft: 0,
+        scrollBy,
+      } as unknown as HTMLElement;
+      const expected = [
+        [true, false],
+        [false, false],
+        [false, true],
+      ];
+      positions.forEach((position, i) => {
+        rail.scrollLeft = position;
+        c.updateRail(rail);
+        expect([c.railStart(), c.railEnd()]).toEqual(expected[i]);
+      });
+      c.scrollCategories(rail, 1);
+      expect(scrollBy).toHaveBeenCalledWith({ left: step, behavior: 'instant' });
+      expect(c.selectedCategorySlug()).toBe('cleaning');
+    },
+  );
+
+  it('preserves LTR boundaries and hides both controls when there is no overflow', () => {
+    const f = TestBed.createComponent(HomePageComponent);
+    flushFeeds();
+    http.expectOne((r) => r.url.endsWith('/categories')).flush([]);
+    const c = f.componentInstance;
+    c.i18n.setLanguage('en');
+    const scrollBy = vi.fn();
+    const rail = {
+      scrollWidth: 900,
+      clientWidth: 300,
+      scrollLeft: 0,
+      scrollBy,
+    } as unknown as HTMLElement;
+    c.updateRail(rail);
+    expect([c.railStart(), c.railEnd()]).toEqual([true, false]);
+    rail.scrollLeft = 300;
+    c.updateRail(rail);
+    expect([c.railStart(), c.railEnd()]).toEqual([false, false]);
+    rail.scrollLeft = 600;
+    c.updateRail(rail);
+    expect([c.railStart(), c.railEnd()]).toEqual([false, true]);
+    c.scrollCategories(rail, 1);
+    expect(scrollBy).toHaveBeenCalledWith({ left: 195, behavior: 'instant' });
+    for (const language of ['en', 'ar'] as const) {
+      c.i18n.setLanguage(language);
+      c.updateRail({ scrollWidth: 300, clientWidth: 300, scrollLeft: 0 } as HTMLElement);
+      expect([c.railStart(), c.railEnd()]).toEqual([true, true]);
+    }
+  });
 });

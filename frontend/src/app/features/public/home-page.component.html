@@ -11,59 +11,19 @@
 
   <div class="fm-container hero-content-wrap">
     <div class="hero-left-col">
-      <div class="hero-brand-pill">
-        <span class="hero-brand-dot" aria-hidden="true"></span>
-        <span>{{
-          ar()
-            ? 'فيكس ميت الأردن · خدمات صيانة وعناية منزلية'
-            : 'FixMate Jordan · Everyday Home Services'
-        }}</span>
-      </div>
-
       <h1 class="hero-headline">
         {{ ar() ? 'صيانة وتحسين منزلك\nأصبحت أسهل.' : 'For everything\nyour home could be.' }}
       </h1>
       <p class="hero-subtitle">
         {{
           ar()
-            ? 'قارن أسعار الصيانة بالدينار الأردني واحجز فنيين معتمدين في عمّان وجميع المحافظات.'
+            ? 'اعثر على فنيين لخدمات الصيانة والعناية بمنزلك في عمّان وجميع محافظات الأردن.'
             : 'Find local pros for repairs, upgrades, and projects big or small — across Jordan.'
         }}
       </p>
 
       <div class="hero-search-box">
         <app-discovery-search />
-      </div>
-
-      <p class="hero-lock-note">
-        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-          <rect x="4" y="9" width="12" height="8" rx="2" stroke="currentColor" stroke-width="1.6" />
-          <path d="M7 9V6a3 3 0 0 1 6 0v3" stroke="currentColor" stroke-width="1.6" />
-        </svg>
-        <span>{{
-          ar()
-            ? 'احجز مباشرة أو أرسل طلب خدمة — أسعار استرشادية واضحة بالدينار الأردني.'
-            : 'Choose your service. Compare pros. Book with confidence.'
-        }}</span>
-      </p>
-
-      <!-- Compact Horizontal Trust Chips (Distinct from reference stat counters) -->
-      <div class="hero-stats-strip">
-        <div class="hero-stat-item">
-          <span class="stat-check" aria-hidden="true">✓</span>
-          <strong>{{ ar() ? 'العناية بالمنزل' : 'Home care' }}</strong>
-          <span>· {{ ar() ? 'صيانة وخدمات منزلية' : 'Repairs & upgrades' }}</span>
-        </div>
-        <div class="hero-stat-item">
-          <span class="stat-check" aria-hidden="true">✓</span>
-          <strong>{{ ar() ? 'بالدينار' : 'JOD' }}</strong>
-          <span>· {{ ar() ? 'أسعار خدمات واضحة' : 'Service pricing' }}</span>
-        </div>
-        <div class="hero-stat-item">
-          <span class="stat-check" aria-hidden="true">✓</span>
-          <strong>{{ ar() ? 'فنيون محليون' : 'Local pros' }}</strong>
-          <span>· {{ ar() ? 'ملفات تمت مراجعتها' : 'Reviewed profiles' }}</span>
-        </div>
       </div>
     </div>
   </div>
@@ -72,33 +32,78 @@
     <strong>{{ heroSlide().caption[i18n.lang()] }}</strong>
     <span>{{ heroSlide().description[i18n.lang()] }}</span>
   </div>
-  <a
-    class="hero-scroll"
-    href="#discover"
-    [attr.aria-label]="ar() ? 'استكشف الخدمات' : 'Explore services'"
-    >⌄</a
-  >
 </section>
 
 <!-- ======================================================================= -->
 <!-- SECTION 2: SERVICE CATEGORIES (Compact Pill Selector & Structured Cards) -->
 <!-- ======================================================================= -->
-<section id="discover" class="area-discovery-section">
+<section id="discover" class="area-discovery-section" aria-labelledby="discovery-heading">
   <div class="fm-container">
-    <div appReveal class="area-header-row">
-      <div class="centered-section-header area-title-group">
-        <span class="eyebrow">{{
-          ar() ? 'تصفح الخدمات حسب القسم' : 'BROWSE BY SERVICE CATEGORY'
-        }}</span>
-        <h2>
-          {{ ar() ? 'محترفون لكل مشروع في' : 'Pros for every project in' }}
-          <span class="accent-cyan">{{ ar() ? 'منطقتك.' : 'Your Area.' }}</span>
-        </h2>
+    <div class="discovery-transition">
+      <div appReveal class="area-header-row">
+        <div class="area-title-group">
+          <h2 id="discovery-heading">{{ ar() ? 'استكشف خدماتنا' : 'Explore our services' }}</h2>
+        </div>
+        <a routerLink="/services" class="area-all-link">
+          <span>{{ ar() ? 'عرض جميع الخدمات' : 'View all services' }}</span>
+          <span class="direction-arrow" aria-hidden="true">→</span>
+        </a>
       </div>
-      <a routerLink="/services" class="area-all-link">
-        <span>{{ ar() ? 'عرض جميع الخدمات' : 'View all services' }}</span>
-        <span class="direction-arrow" aria-hidden="true">→</span>
-      </a>
+      @if (!loading() && !projectsLoading() && !error() && !projectsError()) {
+        <div appReveal [revealDelay]="60" class="category-rail">
+          <button
+            class="rail-arrow rail-prev"
+            type="button"
+            (click)="scrollCategories(categoryRail, -1)"
+            [disabled]="railStart()"
+            [attr.aria-label]="ar() ? 'التصنيفات السابقة' : 'Previous categories'"
+          >
+            ‹
+          </button>
+          <div
+            #categoryRail
+            class="category-tabs-bar"
+            role="tablist"
+            [attr.aria-label]="ar() ? 'تصنيفات الخدمات' : 'Service categories'"
+            (scroll)="updateRail(categoryRail)"
+            (keydown)="categoryKey($event, categoryRail)"
+          >
+            @for (cat of categories(); track cat.slug) {
+              <button
+                type="button"
+                role="tab"
+                class="cat-icon-tab"
+                [id]="'tab-' + cat.slug"
+                aria-controls="discovery-panel"
+                [attr.aria-selected]="selectedCategorySlug() === cat.slug"
+                [attr.tabindex]="selectedCategorySlug() === cat.slug ? 0 : -1"
+                [class.active]="selectedCategorySlug() === cat.slug"
+                (click)="selectCategoryTab(cat.slug); revealTab($event)"
+              >
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    [attr.d]="cat.icon"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <span>{{ cat.label[i18n.lang()] }}</span>
+              </button>
+            }
+          </div>
+          <button
+            class="rail-arrow rail-next"
+            type="button"
+            (click)="scrollCategories(categoryRail, 1)"
+            [disabled]="railEnd()"
+            [attr.aria-label]="ar() ? 'التصنيفات التالية' : 'Next categories'"
+          >
+            ›
+          </button>
+        </div>
+      }
     </div>
 
     @if (loading() || projectsLoading()) {
@@ -115,60 +120,6 @@
         </button>
       </div>
     } @else {
-      <div appReveal [revealDelay]="60" class="category-rail">
-        <button
-          class="rail-arrow rail-prev"
-          type="button"
-          (click)="scrollCategories(categoryRail, -1)"
-          [disabled]="railStart()"
-          [attr.aria-label]="ar() ? 'التصنيفات السابقة' : 'Previous categories'"
-        >
-          ‹
-        </button>
-        <div
-          #categoryRail
-          class="category-tabs-bar"
-          role="tablist"
-          [attr.aria-label]="ar() ? 'تصنيفات الخدمات' : 'Service categories'"
-          (scroll)="updateRail(categoryRail)"
-          (keydown)="categoryKey($event, categoryRail)"
-        >
-          @for (cat of categories(); track cat.slug) {
-            <button
-              type="button"
-              role="tab"
-              class="cat-icon-tab"
-              [id]="'tab-' + cat.slug"
-              aria-controls="discovery-panel"
-              [attr.aria-selected]="selectedCategorySlug() === cat.slug"
-              [attr.tabindex]="selectedCategorySlug() === cat.slug ? 0 : -1"
-              [class.active]="selectedCategorySlug() === cat.slug"
-              (click)="selectCategoryTab(cat.slug); revealTab($event)"
-            >
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  [attr.d]="cat.icon"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <span>{{ cat.label[i18n.lang()] }}</span>
-            </button>
-          }
-        </div>
-        <button
-          class="rail-arrow rail-next"
-          type="button"
-          (click)="scrollCategories(categoryRail, 1)"
-          [disabled]="railEnd()"
-          [attr.aria-label]="ar() ? 'التصنيفات التالية' : 'Next categories'"
-        >
-          ›
-        </button>
-      </div>
-
       <!-- 4 Structured Service Cards (Photo Top + Clean White Caption Bar) -->
       <div
         class="portrait-cards-grid"
@@ -219,9 +170,7 @@
   <div class="fm-container explore-inner">
     <div appReveal class="explore-header-bar">
       <div class="centered-section-header explore-title-block">
-        <span class="eyebrow">{{
-          ar() ? 'مشاريع منزلية متكاملة' : 'CURATED HOME PROJECTS'
-        }}</span>
+        <span class="eyebrow">{{ ar() ? 'مشاريع منزلية متكاملة' : 'CURATED HOME PROJECTS' }}</span>
         <h2>{{ ar() ? 'استكشف المزيد من المشاريع.' : 'Explore more projects.' }}</h2>
       </div>
 
@@ -255,13 +204,11 @@
         />
         <div class="featured-banner-overlay"></div>
         <div class="featured-banner-content">
-          <h3>{{ ar() ? activeExploreTab().banner.titleAr : activeExploreTab().banner.titleEn }}</h3>
+          <h3>
+            {{ ar() ? activeExploreTab().banner.titleAr : activeExploreTab().banner.titleEn }}
+          </h3>
           <p>
-            {{
-              ar()
-                ? activeExploreTab().banner.subtitleAr
-                : activeExploreTab().banner.subtitleEn
-            }}
+            {{ ar() ? activeExploreTab().banner.subtitleAr : activeExploreTab().banner.subtitleEn }}
           </p>
           <a
             class="featured-banner-cta"
