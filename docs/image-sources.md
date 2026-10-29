@@ -1,6 +1,6 @@
 # FixMate photography and fonts
 
-Updated 2026-10-29 during the visual fidelity recovery. Photographs are illustrative stock imagery, not completed FixMate projects or photographs of listed providers. No Thumbtack assets are used. All displayed homepage images are served locally as WebP.
+Updated 2026-10-30. Photographs are illustrative stock imagery or the AI-generated service scenes documented below, not completed FixMate projects or photographs of listed providers. No Thumbtack assets are used. All displayed homepage images are served locally as WebP. The seven-scene service hero inventory below supersedes the older editorial slideshow uses in the original table.
 
 ## Homepage asset provenance
 
@@ -26,3 +26,23 @@ Inherited `hero/home-*.webp` and `home-interior.jpg` remain available for existi
 ## Fonts
 
 Inter and Noto Sans Arabic are self-hosted WOFF2 files in `frontend/public/fonts/`, weights 400/500/600/700, with `font-display: swap`. Downloaded from Google Fonts and converted with FontTools/Brotli. Their SIL Open Font Licenses are included alongside the files (`Inter-LICENSE.txt`, `NotoSansArabic-LICENSE.txt`). No font CDN is required at runtime.
+
+## Seven service hero scenes — 2026-10-30
+
+These seven **AI-generated illustrative photographs** replace only the four homepage slideshow backgrounds. They are not photographs of real FixMate professionals, customers, homes or completed work. Generated with the built-in OpenAI `image_gen` tool, one independent scene per image; furniture moving received one targeted composition refinement. No third-party stock or competitor imagery was used for this set. No exclusive-rights or stock-license claim is made.
+
+Generation output is natively 1672×941 (approximately 16:9), preserved without artificial upscaling. WebP quality 87, with true 960×540 responsive versions. Full prompts, original-output references, SHA-256 hashes and asset measurements are recorded in [generation provenance](../artifacts/service-heroes/generation-provenance.json).
+
+| Asset under `frontend/public/images/hero/` | Existing category | Native WebP | 960×540 WebP |
+| --- | --- | ---: | ---: |
+| `hero-cleaning.webp` | Cleaning / خدمات التنظيف | 1672×941, 121.9 KiB | 64.9 KiB |
+| `hero-plumbing.webp` | Plumbing / خدمات السباكة | 1672×941, 166.8 KiB | 78.5 KiB |
+| `hero-electrical.webp` | Electrical / الخدمات الكهربائية | 1672×941, 90.9 KiB | 45.9 KiB |
+| `hero-air-conditioning.webp` | HVAC / التكييف والتدفئة | 1672×941, 96.6 KiB | 45.6 KiB |
+| `hero-furniture-moving.webp` | Moving / خدمات النقل | 1672×941, 143.1 KiB | 62.7 KiB |
+| `hero-interior-painting.webp` | Painting / الدهان والديكور | 1672×941, 150.1 KiB | 70.3 KiB |
+| `hero-garden-maintenance.webp` | Landscaping / تنسيق وصيانة الحدائق | 1672×941, 318.2 KiB | 156.4 KiB |
+
+Each photo is a single scene, not a collage. The foreground interface and existing overlay remain unchanged. The background image alone mirrors in RTL, preserving the scene’s quiet side behind the text; independent CSS `scale` leaves the zoom animation untouched. Per-scene focal positions accommodate desktop and mobile crops. Existing scene captions now describe the actual active service in Arabic and English.
+
+Only the first image has high fetch priority. Upcoming images use matching `srcset`/`sizes` when preloaded and decoded, so viewport/DPR selection matches the displayed image. The seven full-size images are not eagerly fetched. Rotation remains 7000ms, fade 1100ms, zoom to 1.075 over 8200ms. Existing editorial photographs remain available for their other page uses.

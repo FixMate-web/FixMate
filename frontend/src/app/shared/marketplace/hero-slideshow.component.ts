@@ -1,35 +1,14 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  output,
+  signal,
+} from '@angular/core';
 
-const SLIDES = [
-  {
-    id: 'exterior',
-    src: '/images/editorial/exterior-1920.webp',
-    small: '/images/editorial/exterior-960.webp',
-    alt: 'Modern home and outdoor terrace',
-    position: 'center 56%',
-  },
-  {
-    id: 'kitchen',
-    src: '/images/editorial/kitchen.webp',
-    small: '/images/editorial/kitchen-960.webp',
-    alt: 'Contemporary kitchen with warm wood finishes',
-    position: 'center',
-  },
-  {
-    id: 'living',
-    src: '/images/editorial/living.webp',
-    small: '/images/editorial/living-960.webp',
-    alt: 'Renovated living room with natural light',
-    position: 'center',
-  },
-  {
-    id: 'interior',
-    src: '/images/editorial/garden.webp',
-    small: '/images/editorial/garden-960.webp',
-    alt: 'Modern residential interior and staircase',
-    position: 'center',
-  },
-];
+import { HERO_SLIDES as SLIDES, HeroSlide } from './hero-slides';
+
 @Component({
   selector: 'app-hero-slideshow',
   standalone: true,
@@ -45,14 +24,15 @@ const SLIDES = [
           [class.zoom-a]="layer.animationName === 'hero-zoom-a'"
           [class.zoom-b]="layer.animationName === 'hero-zoom-b'"
           [src]="slide.src"
-          [srcset]="slide.small + ' 960w, ' + slide.src + ' 1920w'"
+          [srcset]="slide.small + ' 960w, ' + slide.src + ' 1672w'"
           sizes="100vw"
-          width="1920"
-          height="1280"
+          width="1672"
+          height="941"
           alt=""
           aria-hidden="true"
-          [style.object-position]="slide.position"
-          [attr.fetchpriority]="slide.id === 'exterior' ? 'high' : 'auto'"
+          [style.--hero-position]="slide.position"
+          [style.--hero-mobile-position]="slide.mobilePosition"
+          [attr.fetchpriority]="slide.id === 'cleaning' ? 'high' : 'auto'"
           [style.animation-play-state]="running() ? 'running' : 'paused'"
         />
       }
@@ -73,6 +53,7 @@ const SLIDES = [
         width: 100%;
         height: 100%;
         object-fit: cover;
+        object-position: var(--hero-position);
         opacity: 0;
         transition: opacity 1100ms ease-in-out;
         transform: scale(1);
@@ -86,6 +67,9 @@ const SLIDES = [
       }
       .hero-slide.motion.zoom-b {
         animation-name: hero-zoom-b;
+      }
+      :host-context([dir='rtl']) .hero-slide {
+        scale: -1 1;
       }
       .shade {
         position: absolute;
@@ -113,6 +97,9 @@ const SLIDES = [
           position: relative;
           height: 200px;
         }
+        .hero-slide {
+          object-position: var(--hero-mobile-position);
+        }
         .shade {
           display: none;
         }
@@ -127,6 +114,7 @@ const SLIDES = [
   ],
 })
 export class HeroSlideshowComponent {
+  readonly activeSlideChange = output<HeroSlide>();
   // Slots never reorder. A reused image can restart only while its layer is fully hidden.
   readonly active = signal(SLIDES[0].id);
   readonly activeSlot = signal(0);
@@ -171,25 +159,27 @@ export class HeroSlideshowComponent {
       if (this.pending) this.pending.onload = null;
     });
   }
-  private nextSource() {
+  private preloadNext() {
     const slide = SLIDES[(this.index + 1) % SLIDES.length];
-    return window.innerWidth < 1000 ? slide.small : slide.src;
+    const image = new Image();
+    // Match the displayed img's responsive selection, including high-DPR screens.
+    image.sizes = '100vw';
+    image.srcset = `${slide.small} 960w, ${slide.src} 1672w`;
+    image.src = slide.src;
+    return image;
   }
   private schedule() {
     clearTimeout(this.timer);
     clearTimeout(this.preloadTimer);
     if (this.destroyed || !this.running()) return;
     this.preloadTimer = setTimeout(() => {
-      const image = new Image();
-      image.src = this.nextSource();
-      this.pending = image;
+      this.pending = this.preloadNext();
     }, 4800);
     this.timer = setTimeout(() => void this.advance(), 7000);
   }
   private async advance() {
     const next = (this.index + 1) % SLIDES.length;
-    const image = this.pending || new Image();
-    if (!image.src) image.src = this.nextSource();
+    const image = this.pending || this.preloadNext();
     try {
       await image.decode();
     } catch {
@@ -217,6 +207,7 @@ export class HeroSlideshowComponent {
         this.index = next;
         this.activeSlot.set(nextSlot);
         this.active.set(SLIDES[next].id);
+        this.activeSlideChange.emit(SLIDES[next]);
         this.pending = undefined;
         this.schedule();
       });

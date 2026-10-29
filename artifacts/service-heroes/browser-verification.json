@@ -1,0 +1,523 @@
+{
+  "errors": [],
+  "brokenAssets": [],
+  "slides": [
+    {
+      "lang": "ar",
+      "width": 1792,
+      "height": 864,
+      "id": "cleaning",
+      "caption": "تنظيف منزلي احترافي\nعاملة تنظيف تنظّف سطح المطبخ.",
+      "image": {
+        "id": "cleaning",
+        "source": "http://localhost:4200/images/hero/hero-cleaning.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "-1 1"
+      },
+      "screenshot": "ar-1792-cleaning.png"
+    },
+    {
+      "lang": "en",
+      "width": 1792,
+      "height": 864,
+      "id": "cleaning",
+      "caption": "Professional home cleaning\nA cleaner wiping a kitchen countertop.",
+      "image": {
+        "id": "cleaning",
+        "source": "http://localhost:4200/images/hero/hero-cleaning.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-1792-cleaning.png"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "id": "cleaning",
+      "caption": "Professional home cleaningA cleaner wiping a kitchen countertop.",
+      "image": {
+        "id": "cleaning",
+        "source": "http://localhost:4200/images/hero/hero-cleaning-960.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-390-cleaning.png"
+    },
+    {
+      "lang": "en",
+      "width": 1792,
+      "height": 864,
+      "id": "plumbing",
+      "caption": "Plumbing repairs and leaks\nA plumber repairing the drain beneath a kitchen sink.",
+      "image": {
+        "id": "plumbing",
+        "source": "http://localhost:4200/images/hero/hero-plumbing.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-1792-plumbing.png"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "id": "plumbing",
+      "caption": "Plumbing repairs and leaksA plumber repairing the drain beneath a kitchen sink.",
+      "image": {
+        "id": "plumbing",
+        "source": "http://localhost:4200/images/hero/hero-plumbing-960.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-390-plumbing.png"
+    },
+    {
+      "lang": "ar",
+      "width": 1792,
+      "height": 864,
+      "id": "plumbing",
+      "caption": "إصلاح السباكة والتسريبات\nفني سباكة يصلح أنبوب التصريف أسفل حوض المطبخ.",
+      "image": {
+        "id": "plumbing",
+        "source": "http://localhost:4200/images/hero/hero-plumbing.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "-1 1"
+      },
+      "screenshot": "ar-1792-plumbing.png"
+    },
+    {
+      "lang": "en",
+      "width": 1792,
+      "height": 864,
+      "id": "electrical",
+      "caption": "Electrical repair and maintenance\nAn electrician fitting a residential wall switch.",
+      "image": {
+        "id": "electrical",
+        "source": "http://localhost:4200/images/hero/hero-electrical.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-1792-electrical.png"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "id": "electrical",
+      "caption": "Electrical repair and maintenanceAn electrician fitting a residential wall switch.",
+      "image": {
+        "id": "electrical",
+        "source": "http://localhost:4200/images/hero/hero-electrical-960.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-390-electrical.png"
+    },
+    {
+      "lang": "ar",
+      "width": 1792,
+      "height": 864,
+      "id": "electrical",
+      "caption": "صيانة وإصلاح الكهرباء\nفني كهرباء يركّب مفتاح إنارة منزلي.",
+      "image": {
+        "id": "electrical",
+        "source": "http://localhost:4200/images/hero/hero-electrical.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "-1 1"
+      },
+      "screenshot": "ar-1792-electrical.png"
+    },
+    {
+      "lang": "en",
+      "width": 1792,
+      "height": 864,
+      "id": "air-conditioning",
+      "caption": "Air conditioner care and cleaning\nA technician servicing a split air conditioner filter.",
+      "image": {
+        "id": "air-conditioning",
+        "source": "http://localhost:4200/images/hero/hero-air-conditioning.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-1792-air-conditioning.png"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "id": "air-conditioning",
+      "caption": "Air conditioner care and cleaningA technician servicing a split air conditioner filter.",
+      "image": {
+        "id": "air-conditioning",
+        "source": "http://localhost:4200/images/hero/hero-air-conditioning-960.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-390-air-conditioning.png"
+    },
+    {
+      "lang": "ar",
+      "width": 1792,
+      "height": 864,
+      "id": "air-conditioning",
+      "caption": "صيانة وتنظيف المكيفات\nفني يصون فلتر مكيف سبليت منزلي.",
+      "image": {
+        "id": "air-conditioning",
+        "source": "http://localhost:4200/images/hero/hero-air-conditioning.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "-1 1"
+      },
+      "screenshot": "ar-1792-air-conditioning.png"
+    },
+    {
+      "lang": "en",
+      "width": 1792,
+      "height": 864,
+      "id": "furniture-moving",
+      "caption": "Furniture moving and household help\nTwo movers carrying a sofa together.",
+      "image": {
+        "id": "furniture-moving",
+        "source": "http://localhost:4200/images/hero/hero-furniture-moving.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-1792-furniture-moving.png"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "id": "furniture-moving",
+      "caption": "Furniture moving and household helpTwo movers carrying a sofa together.",
+      "image": {
+        "id": "furniture-moving",
+        "source": "http://localhost:4200/images/hero/hero-furniture-moving-960.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-390-furniture-moving.png"
+    },
+    {
+      "lang": "ar",
+      "width": 1792,
+      "height": 864,
+      "id": "furniture-moving",
+      "caption": "نقل الأثاث والمساعدة المنزلية\nعاملان يتعاونان على نقل أريكة.",
+      "image": {
+        "id": "furniture-moving",
+        "source": "http://localhost:4200/images/hero/hero-furniture-moving.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "-1 1"
+      },
+      "screenshot": "ar-1792-furniture-moving.png"
+    },
+    {
+      "lang": "en",
+      "width": 1792,
+      "height": 864,
+      "id": "interior-painting",
+      "caption": "Interior painting and wall refreshes\nA painter applying fresh paint with a roller.",
+      "image": {
+        "id": "interior-painting",
+        "source": "http://localhost:4200/images/hero/hero-interior-painting.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-1792-interior-painting.png"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "id": "interior-painting",
+      "caption": "Interior painting and wall refreshesA painter applying fresh paint with a roller.",
+      "image": {
+        "id": "interior-painting",
+        "source": "http://localhost:4200/images/hero/hero-interior-painting-960.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-390-interior-painting.png"
+    },
+    {
+      "lang": "ar",
+      "width": 1792,
+      "height": 864,
+      "id": "interior-painting",
+      "caption": "دهان وتجديد الجدران\nعاملة دهان تجدّد جدارًا باستخدام رول الدهان.",
+      "image": {
+        "id": "interior-painting",
+        "source": "http://localhost:4200/images/hero/hero-interior-painting.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "-1 1"
+      },
+      "screenshot": "ar-1792-interior-painting.png"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "id": "garden-maintenance",
+      "caption": "Garden care and maintenanceA gardener pruning a hedge in a residential courtyard.",
+      "image": {
+        "id": "garden-maintenance",
+        "source": "http://localhost:4200/images/hero/hero-garden-maintenance-960.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-390-garden-maintenance.png"
+    },
+    {
+      "lang": "en",
+      "width": 1792,
+      "height": 864,
+      "id": "garden-maintenance",
+      "caption": "Garden care and maintenance\nA gardener pruning a hedge in a residential courtyard.",
+      "image": {
+        "id": "garden-maintenance",
+        "source": "http://localhost:4200/images/hero/hero-garden-maintenance.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-1792-garden-maintenance.png"
+    },
+    {
+      "lang": "ar",
+      "width": 1792,
+      "height": 864,
+      "id": "garden-maintenance",
+      "caption": "تنسيق وصيانة الحدائق\nبستاني يقلّم شجيرات في حديقة منزلية.",
+      "image": {
+        "id": "garden-maintenance",
+        "source": "http://localhost:4200/images/hero/hero-garden-maintenance.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "-1 1"
+      },
+      "screenshot": "ar-1792-garden-maintenance.png"
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "id": "cleaning",
+      "caption": "Professional home cleaningA cleaner wiping a kitchen countertop.",
+      "image": {
+        "id": "cleaning",
+        "source": "http://localhost:4200/images/hero/hero-cleaning-960.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-390-cleaning.png"
+    },
+    {
+      "lang": "en",
+      "width": 1792,
+      "height": 864,
+      "id": "cleaning",
+      "caption": "Professional home cleaning\nA cleaner wiping a kitchen countertop.",
+      "image": {
+        "id": "cleaning",
+        "source": "http://localhost:4200/images/hero/hero-cleaning.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "none"
+      },
+      "screenshot": "en-1792-cleaning.png"
+    },
+    {
+      "lang": "ar",
+      "width": 1792,
+      "height": 864,
+      "id": "cleaning",
+      "caption": "تنظيف منزلي احترافي\nعاملة تنظيف تنظّف سطح المطبخ.",
+      "image": {
+        "id": "cleaning",
+        "source": "http://localhost:4200/images/hero/hero-cleaning.webp",
+        "loaded": true,
+        "opacity": 1,
+        "mirrored": "-1 1"
+      },
+      "screenshot": "ar-1792-cleaning.png"
+    }
+  ],
+  "viewports": [
+    {
+      "lang": "en",
+      "width": 360,
+      "scrollWidth": 360
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "scrollWidth": 390
+    },
+    {
+      "lang": "en",
+      "width": 768,
+      "scrollWidth": 768
+    },
+    {
+      "lang": "en",
+      "width": 1024,
+      "scrollWidth": 1024
+    },
+    {
+      "lang": "en",
+      "width": 1440,
+      "scrollWidth": 1440
+    },
+    {
+      "lang": "en",
+      "width": 1792,
+      "scrollWidth": 1792
+    },
+    {
+      "lang": "ar",
+      "width": 360,
+      "scrollWidth": 360
+    },
+    {
+      "lang": "ar",
+      "width": 390,
+      "scrollWidth": 390
+    },
+    {
+      "lang": "ar",
+      "width": 768,
+      "scrollWidth": 768
+    },
+    {
+      "lang": "ar",
+      "width": 1024,
+      "scrollWidth": 1024
+    },
+    {
+      "lang": "ar",
+      "width": 1440,
+      "scrollWidth": 1440
+    },
+    {
+      "lang": "ar",
+      "width": 1792,
+      "scrollWidth": 1792
+    }
+  ],
+  "motion": [
+    {
+      "lang": "en",
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "samples": 632,
+      "visibleScaleResets": 0,
+      "enlarged": true,
+      "foregroundStable": true,
+      "wraparound": true
+    },
+    {
+      "lang": "en",
+      "width": 1792,
+      "height": 864,
+      "samples": 632,
+      "visibleScaleResets": 0,
+      "enlarged": true,
+      "foregroundStable": true,
+      "wraparound": true
+    },
+    {
+      "lang": "ar",
+      "width": 1792,
+      "height": 864,
+      "samples": 639,
+      "visibleScaleResets": 0,
+      "enlarged": true,
+      "foregroundStable": true,
+      "wraparound": true
+    }
+  ],
+  "initialRequests": [
+    {
+      "lang": "ar",
+      "width": 1792,
+      "requested": [
+        "http://localhost:4200/images/hero/hero-cleaning.webp"
+      ]
+    },
+    {
+      "lang": "en",
+      "width": 1792,
+      "requested": [
+        "http://localhost:4200/images/hero/hero-cleaning.webp"
+      ]
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "requested": [
+        "http://localhost:4200/images/hero/hero-cleaning-960.webp"
+      ]
+    },
+    {
+      "lang": "en",
+      "width": 1792,
+      "requested": [
+        "http://localhost:4200/images/hero/hero-cleaning.webp"
+      ]
+    }
+  ],
+  "performance": [
+    {
+      "lang": "en",
+      "width": 1792,
+      "height": 864,
+      "lcp": 612,
+      "shifts": 0.004117472642133025
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "lcp": 560,
+      "shifts": 0.005341561423818866
+    },
+    {
+      "lang": "ar",
+      "width": 1792,
+      "height": 864,
+      "lcp": 620,
+      "shifts": 0.0034400358435698565
+    }
+  ]
+}

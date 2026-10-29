@@ -1,0 +1,176 @@
+{
+  "method": "OpenAI built-in image_gen tool; one independent generation per scene, with one composition refinement for furniture moving",
+  "generatedAt": "2026-10-30",
+  "notice": "AI-generated illustrative scenes; not real FixMate providers, customers or completed jobs. No assertion of exclusive rights or stock license.",
+  "images": [
+    {
+      "id": "cleaning",
+      "prompt": "Use case: photorealistic-natural. Generate ONE independent wide 16:9 commercial photograph, ideally 1920x1080 or larger, for the FixMate home-services website hero. Scene 1 of a consistent series, PROFESSIONAL HOME CLEANING. A Middle Eastern woman professional cleaner in plain dark teal workwear and household cleaning gloves actively wiping a modest Jordanian apartment kitchen countertop with a microfiber cloth, a spray bottle and cleaning caddy nearby. A candid believable working pose, anatomically correct hands visibly pressing the cloth, welcoming ordinary middle-class home with cream plaster, practical cabinetry, subtle Mediterranean details. Bright soft natural daylight, realistic skin and textures, professional editorial photography, neutral natural color, no HDR or movie grading. COMPOSITION CRITICAL: all important person, hands, cloth, and tools grouped in the RIGHT THIRD of the image, centered around x=78%, y=50%, comfortably inside edges. Left 55% is natural quiet negative space with softly focused unoccupied wall and simple home furnishings for a website text overlay; not blank artificial studio background. Essential action must remain in the middle 65% of image height for wide desktop crops. Show enough environment to read as a home. One unified full-frame photograph only; no collage, montage, panels, UI, arrows, text, logos, brand names or watermarks. No luxury mansion. Do not place any words in the image.",
+      "source": "/home/mohammadz/.codex/generated_images/01a188f6-b5f2-79f3-8e4a-164674388414/exec-1d8425b7-7d53-4c2a-8b4f-cfb385e56549.png",
+      "originalDimensions": [
+        1672,
+        941
+      ],
+      "generatedSourceSha256": "ec871ae5f1092b61bf79b40c2737e684a861610b6fe488fd75877a325c5c861e",
+      "assets": [
+        {
+          "path": "frontend/public/images/hero/hero-cleaning.webp",
+          "width": 1672,
+          "height": 941,
+          "bytes": 124820
+        },
+        {
+          "path": "frontend/public/images/hero/hero-cleaning-960.webp",
+          "width": 960,
+          "height": 540,
+          "bytes": 66492
+        }
+      ]
+    },
+    {
+      "id": "plumbing",
+      "prompt": "Use case: photorealistic-natural. Generate ONE independent wide 16:9 commercial photograph, ideally 1920x1080 or larger, for FixMate home-services homepage. Natural editorial commercial photography, realistic Middle Eastern people and ordinary middle-class Jordanian homes, welcoming practical environment, plain navy/dark teal work clothes without logos. Real skin, natural correct anatomy and fingers, plausible tools and task. Neutral natural color, balanced daylight, no exaggerated HDR or cinematic grade, no mansion. COMPOSITION: important workers, hands, tools and activity grouped in RIGHT THIRD around x=76%, with comfortable margins; left 55% is quiet naturally unoccupied home background/negative space for web text, not an artificial blank canvas. Essential action stays inside central 65% of image height for panoramic cropping. Exactly one full-frame scene, NO collage/montage/panels, text, logos, brand names, watermark, UI or arrows. PLUMBING REPAIR: A bearded Middle Eastern male plumber kneeling beside an open under-sink kitchen cabinet, actively tightening a leaking sink drain connection with a correctly gripped adjustable wrench. Open cabinet exposes a simple credible P-trap and supply pipes. Both hands naturally engaged at a reachable connection, small catch basin below, compact toolbox beside him. Modest clean tiled Jordanian kitchen, warm daylight. Wider three-quarter side view: worker, open cabinet and hands clearly visible together on the right; left is quiet kitchen wall/counter space. Not posing at camera.",
+      "source": "/home/mohammadz/.codex/generated_images/01a188f6-b5f2-79f3-8e4a-164674388414/exec-7264d789-3fb6-4d03-981d-5cb18d86faad.png",
+      "originalDimensions": [
+        1672,
+        941
+      ],
+      "generatedSourceSha256": "a3e914ea3db39301d607ea6e634247a9b48d6af7047fbd64a1196124d6899a90",
+      "assets": [
+        {
+          "path": "frontend/public/images/hero/hero-plumbing.webp",
+          "width": 1672,
+          "height": 941,
+          "bytes": 170760
+        },
+        {
+          "path": "frontend/public/images/hero/hero-plumbing-960.webp",
+          "width": 960,
+          "height": 540,
+          "bytes": 80368
+        }
+      ]
+    },
+    {
+      "id": "electrical",
+      "prompt": "Use case: photorealistic-natural. Generate ONE independent wide 16:9 commercial photograph, ideally 1920x1080 or larger, for FixMate home-services homepage. Natural editorial commercial photography, realistic Middle Eastern people and ordinary middle-class Jordanian homes, welcoming practical environment, plain navy/dark teal work clothes without logos. Real skin, natural correct anatomy and fingers, plausible tools and task. Neutral natural color, balanced daylight, no exaggerated HDR or cinematic grade, no mansion. COMPOSITION: important workers, hands, tools and activity grouped in RIGHT THIRD around x=76%, with comfortable margins; left 55% is quiet naturally unoccupied home background/negative space for web text, not an artificial blank canvas. Essential action stays inside central 65% of image height for panoramic cropping. Exactly one full-frame scene, NO collage/montage/panels, text, logos, brand names, watermark, UI or arrows. ELECTRICAL MAINTENANCE: A Middle Eastern male electrician wearing clear safety glasses and plain navy workwear actively fastening a residential white wall switch plate with an insulated screwdriver. Electrical power is isolated: a closed small portable tester and tool pouch sit nearby, no sparks, no exposed energized wires. Realistic hands, one steadies the switch frame while other correctly turns screwdriver. Side profile medium-wide composition, electrician and switch in the right third at reachable chest height; quiet cream painted apartment wall and softly focused doorway on left. Ordinary apartment, natural daylight. Clearly identifiable electrical task, not industrial equipment or a posed portrait.",
+      "source": "/home/mohammadz/.codex/generated_images/01a188f6-b5f2-79f3-8e4a-164674388414/exec-b9c1a760-d165-4bd7-9710-798d42f81f8d.png",
+      "originalDimensions": [
+        1672,
+        941
+      ],
+      "generatedSourceSha256": "3f0df210fab2757c84495e778c496ae52c2a4564908b507e5ef4c9ca7b26c8d1",
+      "assets": [
+        {
+          "path": "frontend/public/images/hero/hero-electrical.webp",
+          "width": 1672,
+          "height": 941,
+          "bytes": 93094
+        },
+        {
+          "path": "frontend/public/images/hero/hero-electrical-960.webp",
+          "width": 960,
+          "height": 540,
+          "bytes": 46984
+        }
+      ]
+    },
+    {
+      "id": "air-conditioning",
+      "prompt": "Use case: photorealistic-natural. Generate ONE independent wide 16:9 commercial photograph, ideally 1920x1080 or larger, for FixMate home-services homepage. Natural editorial commercial photography, realistic Middle Eastern people and ordinary middle-class Jordanian homes, welcoming practical environment, plain navy/dark teal work clothes without logos. Real skin, natural correct anatomy and fingers, plausible tools and task. Neutral natural color, balanced daylight, no exaggerated HDR or cinematic grade, no mansion. COMPOSITION: important workers, hands, tools and activity grouped in RIGHT THIRD around x=76%, with comfortable margins; left 55% is quiet naturally unoccupied home background/negative space for web text, not an artificial blank canvas. Essential action stays inside central 65% of image height for panoramic cropping. Exactly one full-frame scene, NO collage/montage/panels, text, logos, brand names, watermark, UI or arrows. AIR CONDITIONING MAINTENANCE: A different Middle Eastern technician in his early 30s wearing plain dark teal workwear and light work gloves actively removing a mesh air filter from a wall-mounted white split air conditioner with its front cover raised. A short stable platform step ladder under him, safe normal reach; filter visible between both realistic hands and air conditioner. AC mounted at believable residential height in ordinary Jordanian apartment, simple curtains and beige plaster, natural daylight. Task, technician and AC entirely grouped on right around 75%, with quiet unoccupied wall on left. Medium-wide side angle, actual servicing not posing. No liquid spraying, no implausible wires or unsafe posture.",
+      "source": "/home/mohammadz/.codex/generated_images/01a188f6-b5f2-79f3-8e4a-164674388414/exec-4872d0b2-2c0c-42a5-9dfa-fe8923375b74.png",
+      "originalDimensions": [
+        1672,
+        941
+      ],
+      "generatedSourceSha256": "9151064be72573f36d3f49d2f8435f3eaf9d912dc5060e6a1b3a3cef5943a02b",
+      "assets": [
+        {
+          "path": "frontend/public/images/hero/hero-air-conditioning.webp",
+          "width": 1672,
+          "height": 941,
+          "bytes": 98876
+        },
+        {
+          "path": "frontend/public/images/hero/hero-air-conditioning-960.webp",
+          "width": 960,
+          "height": 540,
+          "bytes": 46680
+        }
+      ]
+    },
+    {
+      "id": "furniture-moving",
+      "prompt": "Use case: photorealistic-natural. Generate ONE independent wide 16:9 commercial photograph, ideally 1920x1080 or larger, for FixMate home-services homepage. Natural editorial commercial photography, realistic Middle Eastern people and ordinary middle-class Jordanian homes, welcoming practical environment, plain navy/dark teal work clothes without logos. Real skin, natural correct anatomy and fingers, plausible tools and task. Neutral natural color, balanced daylight, no exaggerated HDR or cinematic grade, no mansion. COMPOSITION: important workers, hands, tools and activity grouped in RIGHT THIRD around x=76%, with comfortable margins; left 55% is quiet naturally unoccupied home background/negative space for web text, not an artificial blank canvas. Essential action stays inside central 65% of image height for panoramic cropping. Exactly one full-frame scene, NO collage/montage/panels, text, logos, brand names, watermark, UI or arrows. FURNITURE MOVING: Two different professional male movers, one with short curly hair and one slightly older, wearing plain dark teal work shirts and practical trousers, cooperating to carefully carry a modest compact beige two-seat sofa through a middle-class Jordanian apartment living room. Each gripping a solid sofa base at opposite ends, believable stable lifting posture with bent knees, realistic furniture weight and anatomy, both hands clearly attached correctly. A few plain unmarked moving boxes and protective floor covering nearby, natural friendly focused expressions. Wide environmental three-quarter camera view. Both workers AND sofa form a compact action group in right 45% (x=58-93%), not spread across whole frame. Left half is a calm empty wall/floor area. Natural daylight. No truck-only scene, no floating furniture, no printed words.",
+      "source": "/home/mohammadz/.codex/generated_images/01a188f6-b5f2-79f3-8e4a-164674388414/exec-2a95cc5d-9dcd-4624-91b7-b7664a3a2e30.png",
+      "refinementPrompt": "Edit this photograph for a homepage hero. Preserve the same natural photorealistic Jordanian apartment, two professional movers safely carrying a compact beige sofa, color, natural lighting and plain dark teal workwear. Recompose the entire camera view wider so BOTH movers and the ENTIRE sofa fit inside the RIGHTMOST 38% of the whole wide 16:9 photograph. Their action group must run from x=61% to x=94%, not from x=43%. The LEFT 58% should show the same quiet unoccupied light wall and floor with subtle normal home context. Keep realistic proportions and correct hands gripping the furniture base. All heads, hands and sofa must stay inside middle 70% of image height for panoramic crop. One unified believable commercial photograph, not collage, no text, no UI, no logos, no watermark. It is essential that the left mover's face and hands are safely to the right of x=60%.",
+      "originalDimensions": [
+        1672,
+        941
+      ],
+      "generatedSourceSha256": "909c8c2e2a5f524d67500a56301be0c9c5427f181b635b84d9fc69977b4c30d3",
+      "assets": [
+        {
+          "path": "frontend/public/images/hero/hero-furniture-moving.webp",
+          "width": 1672,
+          "height": 941,
+          "bytes": 146568
+        },
+        {
+          "path": "frontend/public/images/hero/hero-furniture-moving-960.webp",
+          "width": 960,
+          "height": 540,
+          "bytes": 64246
+        }
+      ]
+    },
+    {
+      "id": "interior-painting",
+      "prompt": "Use case: photorealistic-natural. Generate ONE independent wide 16:9 commercial photograph, ideally 1920x1080 or larger, for FixMate home-services homepage. Natural editorial commercial photography, realistic Middle Eastern people and ordinary middle-class Jordanian homes, welcoming practical environment, plain navy/dark teal work clothes without logos. Real skin, natural correct anatomy and fingers, plausible tools and task. Neutral natural color, balanced daylight, no exaggerated HDR or cinematic grade, no mansion. COMPOSITION: important workers, hands, tools and activity grouped in RIGHT THIRD around x=76%, with comfortable margins; left 55% is quiet naturally unoccupied home background/negative space for web text, not an artificial blank canvas. Essential action stays inside central 65% of image height for panoramic cropping. Exactly one full-frame scene, NO collage/montage/panels, text, logos, brand names, watermark, UI or arrows. INTERIOR PAINTING: A professional Middle Eastern woman painter with dark hair tied back wearing plain navy overalls, actively using a short-handled paint roller to apply warm off-white paint to a muted sage interior wall. Roller visibly touches wall; a clear fresh paint edge and partially painted area make the action obvious. Simple paint tray and protective drop cloth, neatly taped skirting boards nearby. Realistic hands and roller geometry. Ordinary Jordanian living room, warm natural window daylight, candid side view. Painter, roller and paint tray grouped on right around x=78%, quiet clean wall and understated home environment on left 55%, no text or brands on paint containers. Grounded ordinary home renovation, not luxury.",
+      "source": "/home/mohammadz/.codex/generated_images/01a188f6-b5f2-79f3-8e4a-164674388414/exec-5ef8b749-ae90-4cf9-b446-b8e0ccf24fa3.png",
+      "originalDimensions": [
+        1672,
+        941
+      ],
+      "generatedSourceSha256": "a1cbbae18797d3124a6ed92f30f04f76cf931940d87601d473d176af22a52d0a",
+      "assets": [
+        {
+          "path": "frontend/public/images/hero/hero-interior-painting.webp",
+          "width": 1672,
+          "height": 941,
+          "bytes": 153728
+        },
+        {
+          "path": "frontend/public/images/hero/hero-interior-painting-960.webp",
+          "width": 960,
+          "height": 540,
+          "bytes": 71980
+        }
+      ]
+    },
+    {
+      "id": "garden-maintenance",
+      "prompt": "Use case: photorealistic-natural. Generate ONE independent wide 16:9 commercial photograph, ideally 1920x1080 or larger, for FixMate home-services homepage. Natural editorial commercial photography, realistic Middle Eastern people and ordinary middle-class Jordanian homes, welcoming practical environment, plain navy/dark teal work clothes without logos. Real skin, natural correct anatomy and fingers, plausible tools and task. Neutral natural color, balanced daylight, no exaggerated HDR or cinematic grade, no mansion. COMPOSITION: important workers, hands, tools and activity grouped in RIGHT THIRD around x=76%, with comfortable margins; left 55% is quiet naturally unoccupied home background/negative space for web text, not an artificial blank canvas. Essential action stays inside central 65% of image height for panoramic cropping. Exactly one full-frame scene, NO collage/montage/panels, text, logos, brand names, watermark, UI or arrows. GARDEN MAINTENANCE: An older Middle Eastern male gardener in plain dark teal work shirt, practical trousers and gardening gloves actively pruning a small residential hedge using correctly held manual hedge shears, hands on the two handles and blades visibly cutting a few thin leafy stems. Modest Jordanian/Mediterranean courtyard garden with olive tree, rosemary and terracotta pots near a cream limestone home wall. Bright balanced soft morning daylight, natural plants and earthy textures. Wide environmental candid photo, gardener, shears and hedge work clustered in right third x=75%, central image height; left half is quiet courtyard paving and simple light limestone wall with gentle greenery at edges for web copy. No manicured luxury estate, no tropical jungle, no text or brand marks.",
+      "source": "/home/mohammadz/.codex/generated_images/01a188f6-b5f2-79f3-8e4a-164674388414/exec-ff10001e-2c4b-4e7a-96d9-71121cabbf79.png",
+      "originalDimensions": [
+        1672,
+        941
+      ],
+      "generatedSourceSha256": "b59f3b75abd20f560904e5fd0ba9e1b919eee32c1990e6b2be64542654def598",
+      "assets": [
+        {
+          "path": "frontend/public/images/hero/hero-garden-maintenance.webp",
+          "width": 1672,
+          "height": 941,
+          "bytes": 325818
+        },
+        {
+          "path": "frontend/public/images/hero/hero-garden-maintenance-960.webp",
+          "width": 960,
+          "height": 540,
+          "bytes": 160150
+        }
+      ]
+    }
+  ]
+}

@@ -4,13 +4,22 @@
   </div>
 }
 <!-- ======================================================================= -->
-<!-- SECTION 1: FULL-WIDTH EDGE-TO-EDGE HERO (Reference Screenshot 1)        -->
+<!-- SECTION 1: FULL-WIDTH HERO WITH FIXMATE JORDAN COMPOSITION              -->
 <!-- ======================================================================= -->
 <section class="hero-fullbleed">
-  <app-hero-slideshow />
+  <app-hero-slideshow (activeSlideChange)="heroSlide.set($event)" />
 
   <div class="fm-container hero-content-wrap">
     <div class="hero-left-col">
+      <div class="hero-brand-pill">
+        <span class="hero-brand-dot" aria-hidden="true"></span>
+        <span>{{
+          ar()
+            ? 'فيكس ميت الأردن · خدمات صيانة وعناية منزلية'
+            : 'FixMate Jordan · Everyday Home Services'
+        }}</span>
+      </div>
+
       <h1 class="hero-headline">
         {{ ar() ? 'صيانة وتحسين منزلك\nأصبحت أسهل.' : 'For everything\nyour home could be.' }}
       </h1>
@@ -38,31 +47,30 @@
         }}</span>
       </p>
 
-      <!-- Real Marketplace Capabilities Strip below search (Reference Screenshot 1) -->
+      <!-- Compact Horizontal Trust Chips (Distinct from reference stat counters) -->
       <div class="hero-stats-strip">
         <div class="hero-stat-item">
+          <span class="stat-check" aria-hidden="true">✓</span>
           <strong>{{ ar() ? 'العناية بالمنزل' : 'Home care' }}</strong>
-          <span>{{ ar() ? 'صيانة وخدمات منزلية' : 'Repairs & upgrades' }}</span>
+          <span>· {{ ar() ? 'صيانة وخدمات منزلية' : 'Repairs & upgrades' }}</span>
         </div>
         <div class="hero-stat-item">
+          <span class="stat-check" aria-hidden="true">✓</span>
           <strong>{{ ar() ? 'بالدينار' : 'JOD' }}</strong>
-          <span>{{ ar() ? 'أسعار خدمات واضحة' : 'Service pricing' }}</span>
+          <span>· {{ ar() ? 'أسعار خدمات واضحة' : 'Service pricing' }}</span>
         </div>
         <div class="hero-stat-item">
+          <span class="stat-check" aria-hidden="true">✓</span>
           <strong>{{ ar() ? 'فنيون محليون' : 'Local pros' }}</strong>
-          <span>{{ ar() ? 'ملفات تمت مراجعتها' : 'Reviewed profiles' }}</span>
+          <span>· {{ ar() ? 'ملفات تمت مراجعتها' : 'Reviewed profiles' }}</span>
         </div>
       </div>
     </div>
   </div>
-  <!-- Bottom-Right Project Caption Pill (Reference Screenshot 1) -->
+
   <div class="hero-caption-pill">
-    <strong>{{ ar() ? 'العناية بالمنزل في الأردن:' : 'A FRESH START' }}</strong>
-    <span>{{
-      ar()
-        ? 'صيانة السباكة، تنظيف المكيفات، الكهرباء، والتشطيبات الداخلية.'
-        : 'Care for every corner of your home.'
-    }}</span>
+    <strong>{{ heroSlide().caption[i18n.lang()] }}</strong>
+    <span>{{ heroSlide().description[i18n.lang()] }}</span>
   </div>
   <a
     class="hero-scroll"
@@ -73,15 +81,24 @@
 </section>
 
 <!-- ======================================================================= -->
-<!-- SECTION 2: "Pros for every project in Your Area." (Reference Screenshot 2) -->
+<!-- SECTION 2: SERVICE CATEGORIES (Compact Pill Selector & Structured Cards) -->
 <!-- ======================================================================= -->
 <section id="discover" class="area-discovery-section">
   <div class="fm-container">
-    <div appReveal class="centered-section-header">
-      <h2>
-        {{ ar() ? 'محترفون لكل مشروع في' : 'Pros for every project in' }}
-        <span class="accent-cyan">{{ ar() ? 'منطقتك.' : 'Your Area.' }}</span>
-      </h2>
+    <div appReveal class="area-header-row">
+      <div class="centered-section-header area-title-group">
+        <span class="eyebrow">{{
+          ar() ? 'تصفح الخدمات حسب القسم' : 'BROWSE BY SERVICE CATEGORY'
+        }}</span>
+        <h2>
+          {{ ar() ? 'محترفون لكل مشروع في' : 'Pros for every project in' }}
+          <span class="accent-cyan">{{ ar() ? 'منطقتك.' : 'Your Area.' }}</span>
+        </h2>
+      </div>
+      <a routerLink="/services" class="area-all-link">
+        <span>{{ ar() ? 'عرض جميع الخدمات' : 'View all services' }}</span>
+        <span class="direction-arrow" aria-hidden="true">→</span>
+      </a>
     </div>
 
     @if (loading() || projectsLoading()) {
@@ -132,7 +149,7 @@
                 <path
                   [attr.d]="cat.icon"
                   stroke="currentColor"
-                  stroke-width="1.6"
+                  stroke-width="1.7"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 />
@@ -152,7 +169,7 @@
         </button>
       </div>
 
-      <!-- 4 Tall Portrait Photographic Cards (Reference Screenshot 2) -->
+      <!-- 4 Structured Service Cards (Photo Top + Clean White Caption Bar) -->
       <div
         class="portrait-cards-grid"
         id="discovery-panel"
@@ -160,14 +177,23 @@
         [attr.aria-labelledby]="'tab-' + selectedCategorySlug()"
       >
         @for (card of visiblePortraitCards(); track card.slug) {
-          <a appReveal [revealDelay]="$index * 90" class="portrait-service-card" [routerLink]="['/services', card.slug]">
-            <img
-              [src]="card.image" [srcset]="card.imageSmall + ' 480w, ' + card.image + ' 960w'" sizes="(max-width:767px) 46vw, 225px"
-              [style.object-position]="card.position"
-              [alt]="ar() ? card.titleAr : card.titleEn"
-              loading="lazy"
-            />
-            <div class="portrait-card-gradient"></div>
+          <a
+            appReveal
+            [revealDelay]="$index * 90"
+            class="portrait-service-card"
+            [routerLink]="['/services', card.slug]"
+          >
+            <div class="portrait-card-media">
+              <img
+                [src]="card.image"
+                [srcset]="card.imageSmall + ' 480w, ' + card.image + ' 960w'"
+                sizes="(max-width:767px) 46vw, 225px"
+                [style.object-position]="card.position"
+                [alt]="ar() ? card.titleAr : card.titleEn"
+                loading="lazy"
+              />
+              <div class="portrait-card-gradient"></div>
+            </div>
             <div class="portrait-card-caption">
               <h3>{{ ar() ? card.titleAr : card.titleEn }}</h3>
             </div>
@@ -185,75 +211,95 @@
 <app-how-it-works />
 
 <!-- ======================================================================= -->
-<!-- SECTION 3: "Explore more projects." (Reference Screenshot 3)            -->
+<!-- SECTION 3: EXPLORE PROJECTS (Two-Column Split Showcase Layout)          -->
 <!-- ======================================================================= -->
 <section class="explore-projects-section">
   <div class="explore-diagonal-bg" aria-hidden="true"></div>
 
   <div class="fm-container explore-inner">
-    <div appReveal class="centered-section-header">
-      <h2>{{ ar() ? 'استكشف المزيد من المشاريع.' : 'Explore more projects.' }}</h2>
-    </div>
+    <div appReveal class="explore-header-bar">
+      <div class="centered-section-header explore-title-block">
+        <span class="eyebrow">{{
+          ar() ? 'مشاريع منزلية متكاملة' : 'CURATED HOME PROJECTS'
+        }}</span>
+        <h2>{{ ar() ? 'استكشف المزيد من المشاريع.' : 'Explore more projects.' }}</h2>
+      </div>
 
-    <!-- 4 Project Group Tabs (Reference Screenshot 3) -->
-    <div
-      appReveal [revealDelay]="60" class="explore-tabs-bar"
-      role="group"
-      [attr.aria-label]="ar() ? 'أنواع المشاريع' : 'Project themes'"
-    >
-      @for (tab of exploreTabs; track tab.id) {
-        <button
-          type="button"
-          [attr.aria-pressed]="activeExploreTabId() === tab.id"
-          class="explore-tab-btn"
-          [class.active]="activeExploreTabId() === tab.id"
-          (click)="selectExploreTab(tab.id)"
-        >
-          {{ ar() ? tab.labelAr : tab.labelEn }}
-        </button>
-      }
-    </div>
-
-    <!-- Wide Featured Photographic Banner (Reference Screenshot 3) -->
-    <div appReveal class="featured-project-banner">
-      <img
-        [src]="activeExploreTab().banner.image"
-        [alt]="ar() ? activeExploreTab().banner.titleAr : activeExploreTab().banner.titleEn"
-        loading="lazy"
-      />
-      <div class="featured-banner-overlay"></div>
-      <div class="featured-banner-content">
-        <h3>{{ ar() ? activeExploreTab().banner.titleAr : activeExploreTab().banner.titleEn }}</h3>
-
-        <a
-          class="featured-banner-cta"
-          [routerLink]="['/services', activeExploreTab().banner.linkSlug]"
-        >
-          <span>{{
-            ar() ? activeExploreTab().banner.ctaTextAr : activeExploreTab().banner.ctaTextEn
-          }}</span>
-          <span class="direction-arrow" aria-hidden="true">→</span>
-        </a>
+      <!-- 4 Project Group Pill Tabs -->
+      <div
+        class="explore-tabs-bar"
+        role="group"
+        [attr.aria-label]="ar() ? 'أنواع المشاريع' : 'Project themes'"
+      >
+        @for (tab of exploreTabs; track tab.id) {
+          <button
+            type="button"
+            [attr.aria-pressed]="activeExploreTabId() === tab.id"
+            class="explore-tab-btn"
+            [class.active]="activeExploreTabId() === tab.id"
+            (click)="selectExploreTab(tab.id)"
+          >
+            {{ ar() ? tab.labelAr : tab.labelEn }}
+          </button>
+        }
       </div>
     </div>
 
-    <!-- 3 Supporting Landscape Project Cards Below Banner (Reference Screenshot 3) -->
-    <div class="supporting-projects-grid">
-      @for (item of activeExploreTab().cards; track item.slug) {
-        <a appReveal [revealDelay]="$index * 90" class="supporting-project-card" [routerLink]="['/services', item.slug]">
-          <img [src]="item.image" [alt]="ar() ? item.titleAr : item.titleEn" loading="lazy" />
-          <div class="supporting-card-gradient"></div>
-          <div class="supporting-card-caption">
-            <h4>{{ ar() ? item.titleAr : item.titleEn }}</h4>
-          </div>
-        </a>
-      }
+    <!-- Side-by-Side Split Layout: Featured Project Beside 3 Stacked Media Cards -->
+    <div class="explore-showcase-grid">
+      <div appReveal class="featured-project-banner">
+        <img
+          [src]="activeExploreTab().banner.image"
+          [alt]="ar() ? activeExploreTab().banner.titleAr : activeExploreTab().banner.titleEn"
+          loading="lazy"
+        />
+        <div class="featured-banner-overlay"></div>
+        <div class="featured-banner-content">
+          <h3>{{ ar() ? activeExploreTab().banner.titleAr : activeExploreTab().banner.titleEn }}</h3>
+          <p>
+            {{
+              ar()
+                ? activeExploreTab().banner.subtitleAr
+                : activeExploreTab().banner.subtitleEn
+            }}
+          </p>
+          <a
+            class="featured-banner-cta"
+            [routerLink]="['/services', activeExploreTab().banner.linkSlug]"
+          >
+            <span>{{
+              ar() ? activeExploreTab().banner.ctaTextAr : activeExploreTab().banner.ctaTextEn
+            }}</span>
+            <span class="direction-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3 Supporting Project Cards Stacked Beside Featured Project -->
+      <div class="supporting-projects-grid">
+        @for (item of activeExploreTab().cards; track item.slug) {
+          <a
+            appReveal
+            [revealDelay]="$index * 90"
+            class="supporting-project-card"
+            [routerLink]="['/services', item.slug]"
+          >
+            <div class="supporting-card-thumb">
+              <img [src]="item.image" [alt]="ar() ? item.titleAr : item.titleEn" loading="lazy" />
+              <div class="supporting-card-gradient"></div>
+            </div>
+            <div class="supporting-card-caption">
+              <h4>{{ ar() ? item.titleAr : item.titleEn }}</h4>
+            </div>
+          </a>
+        }
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ======================================================================= -->
-<!-- SECTION 5: "Resources for your home." (Reference Screenshot 4)          -->
+<!-- SECTION 5: RESOURCES FOR YOUR HOME                                      -->
 <!-- ======================================================================= -->
 <section class="resources-editorial-section">
   <div class="fm-container">
@@ -268,19 +314,23 @@
       </p>
     </div>
 
-    <!-- 3 Portrait Photographic Editorial Cards (Reference Screenshot 4) -->
     <div class="resources-cards-grid">
       @for (res of resourceCards; track res.id) {
         <button
           type="button"
-          appReveal [revealDelay]="$index * 90" class="resource-editorial-card"
+          appReveal
+          [revealDelay]="$index * 90"
+          class="resource-editorial-card"
           [id]="'guide-' + res.id"
           aria-haspopup="dialog"
           (click)="selectResourceCard(res.id); resourceDialog.showModal()"
         >
-          <img [src]="res.image" [alt]="ar() ? res.titleAr : res.titleEn" loading="lazy" />
-          <div class="resource-card-gradient"></div>
+          <div class="resource-card-media">
+            <img [src]="res.image" [alt]="ar() ? res.titleAr : res.titleEn" loading="lazy" />
+            <div class="resource-card-gradient"></div>
+          </div>
           <div class="resource-card-content">
+            <span class="resource-badge">{{ ar() ? res.badgeAr : res.badgeEn }}</span>
             <h3>{{ ar() ? res.titleAr : res.titleEn }}</h3>
             <p>{{ ar() ? res.subtitleAr : res.subtitleEn }}</p>
           </div>

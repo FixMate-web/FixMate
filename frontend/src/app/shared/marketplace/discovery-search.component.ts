@@ -110,12 +110,13 @@ import { GOVERNORATES, money } from './marketplace.utils';
       .discovery-search {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 8px;
         background: #ffffff;
-        border: 1px solid rgba(229, 231, 235, 0.95);
-        border-radius: 16px;
-        padding: 10px 16px 16px;
-        box-shadow: 0 2px 5px rgba(7, 47, 64, 0.08);
+        border: 1px solid rgba(226, 232, 240, 0.96);
+        border-inline-start: 4px solid #009fd9;
+        border-radius: 14px;
+        padding: 12px 14px 14px;
+        box-shadow: 0 8px 24px rgba(7, 47, 64, 0.14);
         width: 100%;
       }
 
@@ -125,13 +126,14 @@ import { GOVERNORATES, money } from './marketplace.utils';
         align-items: center;
         gap: 10px;
         flex-wrap: wrap;
-        padding: 0 0 4px;
+        padding: 2px 4px 8px;
+        border-bottom: 1px solid #eef2f6;
       }
 
       .search-icon {
         width: 20px;
         height: 20px;
-        color: #6b7280;
+        color: #009fd9;
         flex-shrink: 0;
       }
 
@@ -210,25 +212,28 @@ import { GOVERNORATES, money } from './marketplace.utils';
         display: flex;
         align-items: center;
         gap: 8px;
-        border: 1px solid #d1d5db;
-        border-radius: 999px;
-        padding: 0 10px;
-        height: 40px;
-        background: #ffffff;
-        width: 160px;
+        border: 1px solid #dbe3ec;
+        border-radius: 10px;
+        padding: 0 12px;
+        height: 42px;
+        background: #f8fafc;
+        width: 176px;
         min-width: 0;
         flex-shrink: 0;
-        transition: border-color 0.15s ease;
+        transition:
+          border-color 0.15s ease,
+          background-color 0.15s ease;
 
         &:focus-within {
           border-color: #009fd9;
+          background: #ffffff;
         }
       }
 
       .pin-icon {
         width: 18px;
         height: 18px;
-        color: #4b5563;
+        color: #009fd9;
         flex-shrink: 0;
       }
 
@@ -254,11 +259,11 @@ import { GOVERNORATES, money } from './marketplace.utils';
         align-items: center;
         justify-content: center;
         gap: 10px;
-        height: 40px;
+        height: 42px;
         background: #072f40;
         color: #ffffff;
         border: 0;
-        border-radius: 999px;
+        border-radius: 10px;
         padding: 0 24px;
         font: inherit;
         font-size: 14px;
