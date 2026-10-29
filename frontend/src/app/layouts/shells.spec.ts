@@ -24,7 +24,7 @@ describe('Application Shells & Graceful Health Check', () => {
     httpMock.verify();
   });
 
-  it('renders PublicLayoutComponent with skip-link, navigation, and handles connected health state', () => {
+  it('renders PublicLayoutComponent with skip-link, two-column Explore Services mega-menu, and handles connected health state', () => {
     const fixture = TestBed.createComponent(PublicLayoutComponent);
     fixture.detectChanges();
 
@@ -42,6 +42,11 @@ describe('Application Shells & Graceful Health Check', () => {
     expect(compiled.querySelector('.skip-link')).toBeTruthy();
     expect(compiled.querySelector('#main-content')).toBeTruthy();
     expect(fixture.componentInstance.health.connectionState()).toBe('connected');
+
+    // Open the two-column Explore Services mega-menu
+    fixture.componentInstance.toggleExploreMenu();
+    fixture.detectChanges();
+    expect(compiled.querySelector('.explore-mega-menu')).toBeTruthy();
   });
 
   it('transitions gracefully to offline state when backend health endpoint is unreachable', () => {

@@ -1,12 +1,312 @@
-import {ChangeDetectionStrategy,Component,DestroyRef,inject,signal} from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {FormControl,FormGroup,ReactiveFormsModule} from '@angular/forms';
-import {Router} from '@angular/router';
-import {catchError,debounceTime,distinctUntilChanged,of,switchMap} from 'rxjs';
-import {LanguageService} from '../../core/i18n/language.service';
-import {CatalogApiService,CatalogServiceItem} from '../../core/services/catalog-api.service';
-import {GOVERNORATES} from './marketplace.utils';
-@Component({selector:'app-discovery-search',standalone:true,imports:[ReactiveFormsModule],changeDetection:ChangeDetectionStrategy.OnPush,template:`<form class="discovery-search" [formGroup]="form" (ngSubmit)="search()"><div class="search-service"><label for="discover-service">{{ar()?'ما الخدمة التي تحتاجها؟':'What can we help with?'}}</label><input id="discover-service" formControlName="q" type="search" list="service-suggestions" autocomplete="off" [placeholder]="ar()?'جرّب: تنظيف المنزل':'Try: home cleaning'"><datalist id="service-suggestions">@for(svc of suggestions();track svc.id){<option [value]="svc.title[i18n.lang()]"></option>}</datalist></div><div class="search-location"><label for="discover-location">{{ar()?'أين تحتاج الخدمة؟':'Where do you need it?'}}</label><select id="discover-location" formControlName="governorate"><option value="">{{ar()?'جميع المحافظات':'All governorates'}}</option>@for(g of governorates;track g[0]){<option [value]="g[0]">{{g[ar()?1:0]}}</option>}</select></div><button type="submit">{{ar()?'ابحث عن خدمة':'Find a service'}} <span class="direction-arrow" aria-hidden="true">→</span></button></form>`,styles:[`.discovery-search{display:flex;align-items:center;background:white;border:1px solid #c9d4ca;border-radius:12px;padding:10px;box-shadow:0 8px 30px #172f2410;gap:12px}.search-service{flex:1;min-width:0;padding-inline:12px}.search-location{border-inline-start:1px solid #e1e7df;padding-inline:18px;width:210px}label{display:block;font-size:11px;font-weight:700;margin-bottom:3px}input,select{width:100%;border:0;background:white;color:#4f6358;font:inherit;font-size:14px;min-height:32px}button{background:#176451;color:white;border:0;border-radius:8px;padding:19px 24px;font:inherit;font-weight:650;font-size:14px;cursor:pointer;white-space:nowrap}@media(max-width:650px){.discovery-search{flex-wrap:wrap;padding:14px;gap:14px}.search-service{flex-basis:100%;padding:0}.search-location{flex:1;border-inline-start:0;padding:0;border-top:1px solid #e1e7df;padding-top:10px}button{padding:17px 14px}}`]})
-export class DiscoverySearchComponent {readonly i18n=inject(LanguageService);readonly ar=()=>this.i18n.lang()==='ar';readonly governorates=GOVERNORATES;private readonly api=inject(CatalogApiService);private readonly router=inject(Router);private readonly destroyRef=inject(DestroyRef);readonly form=new FormGroup({q:new FormControl('',{nonNullable:true}),governorate:new FormControl('',{nonNullable:true})});readonly suggestions=signal<CatalogServiceItem[]>([]);
-constructor(){this.form.controls.q.valueChanges.pipe(debounceTime(250),distinctUntilChanged(),switchMap(q=>q.trim().length<2?of({items:[]}):this.api.getServices({q:q.trim(),limit:6}).pipe(catchError(()=>of({items:[]})))),takeUntilDestroyed(this.destroyRef)).subscribe(res=>this.suggestions.set(res.items));}
-search(){const v=this.form.getRawValue();void this.router.navigate(['/services'],{queryParams:{q:v.q.trim()||null,governorate:v.governorate||null}});}}
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
+import { LanguageService } from '../../core/i18n/language.service';
+import { CatalogApiService, CatalogServiceItem } from '../../core/services/catalog-api.service';
+import { GOVERNORATES, money } from './marketplace.utils';
+
+@Component({
+  selector: 'app-discovery-search',
+  standalone: true,
+  imports: [ReactiveFormsModule, RouterLink],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <form class="discovery-search" [formGroup]="form" (ngSubmit)="search()">
+      <!-- Top Row: Full-width Project Description Input (Reference Screenshot 1) -->
+      <div class="search-top-row">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+          <path d="M20 20L16.5 16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <label class="sr-only" for="discover-service">
+          {{ ar() ? 'ما الخدمة التي تحتاجها؟' : 'What can we help with?' }}
+        </label>
+        <input
+          id="discover-service"
+          formControlName="q"
+          type="search"
+          list="service-suggestions"
+          autocomplete="off"
+          [placeholder]="
+            ar()
+              ? 'صف مشروعك أو العطل بالتفصيل — مثلاً: تنظيف مكيف، تسريب مياه...'
+              : 'Describe your project or problem — be as detailed as you’d like.'
+          "
+        />
+        <datalist id="service-suggestions">
+          @for (svc of suggestions(); track svc.id) {
+            <option [value]="svc.title[i18n.lang()]"></option>
+          }
+        </datalist>
+
+        @if (suggestions().length > 0) {
+          <div class="suggestions-popover" role="listbox">
+            @for (svc of suggestions(); track svc.id) {
+              <a
+                [routerLink]="['/services', svc.slug]"
+                class="suggestion-item"
+                role="option"
+              >
+                <span class="suggestion-title">{{ svc.title[i18n.lang()] }}</span>
+                <span class="suggestion-price">{{ formatPrice(svc) }}</span>
+              </a>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Bottom Row: Governorate Location Pill + Deep Navy "Find a pro →" Pill Button -->
+      <div class="search-bottom-row">
+        <div class="location-pill">
+          <svg class="pin-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M12 21C16 16.8 18 13.4 18 10A6 6 0 1 0 6 10C6 13.4 8 16.8 12 21Z"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+            <circle cx="12" cy="10" r="2.2" stroke="currentColor" stroke-width="1.8" />
+          </svg>
+          <label class="sr-only" for="discover-location">
+            {{ ar() ? 'أين تحتاج الخدمة؟' : 'Where do you need it?' }}
+          </label>
+          <select id="discover-location" formControlName="governorate">
+            <option value="">{{ ar() ? 'عمّان وجميع المحافظات' : 'All Jordan Governorates' }}</option>
+            @for (g of governorates; track g[0]) {
+              <option [value]="g[0]">{{ g[ar() ? 1 : 0] }}</option>
+            }
+          </select>
+        </div>
+
+        <button type="submit" class="find-pro-btn">
+          <span>{{ ar() ? 'ابحث عن محترف' : 'Find a pro' }}</span>
+          <span class="direction-arrow" aria-hidden="true">→</span>
+        </button>
+      </div>
+    </form>
+  `,
+  styles: [
+    `
+      .discovery-search {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: #ffffff;
+        border: 1px solid rgba(229, 231, 235, 0.95);
+        border-radius: 16px;
+        padding: 14px 16px;
+        box-shadow: 0 18px 44px rgba(7, 47, 64, 0.26);
+        width: 100%;
+      }
+
+      .search-top-row {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 8px 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .search-icon {
+        width: 20px;
+        height: 20px;
+        color: #6b7280;
+        flex-shrink: 0;
+      }
+
+      input {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        color: #111827;
+        font: inherit;
+        font-size: 15px;
+        font-weight: 500;
+        min-height: 34px;
+
+        &::placeholder {
+          color: #6b7280;
+        }
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      .suggestions-popover {
+        position: absolute;
+        top: calc(100% + 6px);
+        inset-inline: 0;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        box-shadow: 0 14px 32px rgba(7, 47, 64, 0.16);
+        padding: 6px;
+        z-index: 40;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .suggestion-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 9px 12px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #111827;
+        font-size: 14px;
+        font-weight: 600;
+
+        &:hover {
+          background: #eef8fc;
+          color: #009fd9;
+        }
+
+        .suggestion-price {
+          font-size: 12px;
+          font-weight: 700;
+          color: #072f40;
+          background: #f1f5f9;
+          padding: 3px 9px;
+          border-radius: 999px;
+          white-space: nowrap;
+        }
+      }
+
+      .search-bottom-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .location-pill {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid #d1d5db;
+        border-radius: 999px;
+        padding: 0 16px;
+        height: 46px;
+        background: #ffffff;
+        min-width: 210px;
+        flex-shrink: 0;
+        transition: border-color 0.15s ease;
+
+        &:focus-within {
+          border-color: #009fd9;
+        }
+      }
+
+      .pin-icon {
+        width: 18px;
+        height: 18px;
+        color: #4b5563;
+        flex-shrink: 0;
+      }
+
+      select {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        color: #111827;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        height: 100%;
+        cursor: pointer;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      .find-pro-btn {
+        flex: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        height: 46px;
+        background: #072f40;
+        color: #ffffff;
+        border: 0;
+        border-radius: 999px;
+        padding: 0 24px;
+        font: inherit;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        white-space: nowrap;
+        transition:
+          background-color 0.16s ease,
+          transform 0.16s ease;
+
+        &:hover {
+          background: #052330;
+          transform: translateY(-1px);
+        }
+      }
+
+      @media (max-width: 640px) {
+        .search-bottom-row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .location-pill {
+          width: 100%;
+        }
+
+        .find-pro-btn {
+          width: 100%;
+        }
+      }
+    `,
+  ],
+})
+export class DiscoverySearchComponent {
+  readonly i18n = inject(LanguageService);
+  readonly ar = () => this.i18n.lang() === 'ar';
+  readonly governorates = GOVERNORATES;
+  private readonly api = inject(CatalogApiService);
+  private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
+
+  readonly form = new FormGroup({
+    q: new FormControl('', { nonNullable: true }),
+    governorate: new FormControl('', { nonNullable: true }),
+  });
+
+  readonly suggestions = signal<CatalogServiceItem[]>([]);
+
+  constructor() {
+    this.form.controls.q.valueChanges
+      .pipe(
+        debounceTime(250),
+        distinctUntilChanged(),
+        switchMap((q) =>
+          q.trim().length < 2
+            ? of({ items: [] })
+            : this.api.getServices({ q: q.trim(), limit: 6 }).pipe(catchError(() => of({ items: [] }))),
+        ),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((res) => this.suggestions.set(res.items));
+  }
+
+  formatPrice(svc: CatalogServiceItem): string {
+    return money(svc.pricingPolicy?.indicativeAmountFils ?? 15000, this.i18n.lang());
+  }
+
+  search() {
+    const v = this.form.getRawValue();
+    void this.router.navigate(['/services'], {
+      queryParams: { q: v.q.trim() || null, governorate: v.governorate || null },
+    });
+  }
+}
