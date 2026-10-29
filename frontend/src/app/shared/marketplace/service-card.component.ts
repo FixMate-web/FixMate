@@ -1,8 +1,62 @@
-import {ChangeDetectionStrategy,Component,inject,input} from '@angular/core';
-import {RouterLink} from '@angular/router';
-import {LanguageService} from '../../core/i18n/language.service';
-import {CatalogServiceItem} from '../../core/services/catalog-api.service';
-import {ServiceImageComponent} from './service-image.component';
-import {money,pricingLabel} from './marketplace.utils';
-@Component({selector:'app-service-card',standalone:true,imports:[RouterLink,ServiceImageComponent],changeDetection:ChangeDetectionStrategy.OnPush,template:`<article class="service-card"><a [routerLink]="['/services',service().slug]" [queryParams]="{governorate:governorate()||null}" class="image-link" tabindex="-1" aria-hidden="true"><app-service-image [category]="service().category?.slug||''" /></a><div class="card-content"><span class="service-category">{{service().category?.name?.[i18n.lang()]}}</span><h3><a [routerLink]="['/services',service().slug]" [queryParams]="{governorate:governorate()||null}">{{service().title[i18n.lang()]}}</a></h3><p>{{service().description[i18n.lang()]}}</p><div class="service-price"><div><small>{{priceLabel(service().pricingPolicy.pricingType,ar())}}</small><strong>{{money(service().pricingPolicy.indicativeAmountFils,i18n.lang())}}</strong></div><span>{{service().defaultDurationMinutes}} {{ar()?'دقيقة':'min'}}</span></div><a class="service-pro-link" routerLink="/providers" [queryParams]="{serviceSlug:service().slug,governorate:governorate()||null}">{{ar()?'اعثر على مزود خدمة':'Find professionals'}} <span class="direction-arrow" aria-hidden="true">→</span></a></div></article>`,styleUrl:'./service-card.component.scss'})
-export class ServiceCardComponent {readonly service=input.required<CatalogServiceItem>();readonly governorate=input('');readonly i18n=inject(LanguageService);readonly ar=()=>this.i18n.lang()==='ar';readonly money=money;readonly priceLabel=pricingLabel;}
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { LanguageService } from '../../core/i18n/language.service';
+import { CatalogServiceItem } from '../../core/services/catalog-api.service';
+import { ServiceImageComponent } from './service-image.component';
+import { money, pricingLabel } from './marketplace.utils';
+@Component({
+  selector: 'app-service-card',
+  standalone: true,
+  imports: [RouterLink, ServiceImageComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `<article class="service-card">
+    <a
+      [routerLink]="['/services', service().slug]"
+      [queryParams]="{ governorate: governorate() || null }"
+      class="image-link"
+      tabindex="-1"
+      aria-hidden="true"
+      ><app-service-image
+        [category]="service().category?.slug || ''"
+        [serviceSlug]="service().slug"
+    /></a>
+    <div class="card-content">
+      <span class="service-category">{{ service().category?.name?.[i18n.lang()] }}</span>
+      <h3>
+        <a
+          [routerLink]="['/services', service().slug]"
+          [queryParams]="{ governorate: governorate() || null }"
+          >{{ service().title[i18n.lang()] }}</a
+        >
+      </h3>
+      <p>{{ service().description[i18n.lang()] }}</p>
+      <div class="service-price">
+        @if (service().pricingPolicy; as policy) {
+          <div>
+            <small>{{ priceLabel(policy.pricingType, ar()) }}</small
+            ><strong>{{ money(policy.indicativeAmountFils, i18n.lang()) }}</strong>
+          </div>
+          <span>{{ service().defaultDurationMinutes }} {{ ar() ? 'دقيقة' : 'min' }}</span>
+        } @else {
+          <strong>{{ ar() ? 'السعر حسب عرض المزود' : 'Request a quote' }}</strong>
+        }
+      </div>
+      <a
+        class="service-pro-link"
+        routerLink="/providers"
+        [queryParams]="{ serviceSlug: service().slug, governorate: governorate() || null }"
+        >{{ ar() ? 'اعثر على مزود خدمة' : 'Find professionals' }}
+        <span class="direction-arrow" aria-hidden="true">→</span></a
+      >
+    </div>
+  </article>`,
+  styleUrl: './service-card.component.scss',
+})
+export class ServiceCardComponent {
+  readonly service = input.required<CatalogServiceItem>();
+  readonly governorate = input('');
+  readonly i18n = inject(LanguageService);
+  readonly ar = () => this.i18n.lang() === 'ar';
+  readonly money = money;
+  readonly priceLabel = pricingLabel;
+}

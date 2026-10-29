@@ -1,0 +1,22 @@
+{
+  "name": "FixMate",
+  "short_name": "FixMate",
+  "icons": [
+    {
+      "src": "/brand/fixmate-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/brand/fixmate-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#072f40"
+}

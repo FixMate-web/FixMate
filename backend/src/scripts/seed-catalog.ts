@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import mongoose, { Model, Types } from 'mongoose';
 import { CurrencyCode, PricingType } from '../common/domain';
 import {
@@ -22,7 +24,7 @@ export interface CanonicalServiceSeed {
   slug: string;
   title: { ar: string; en: string };
   description: { ar: string; en: string };
-  pricingPolicy: {
+  pricingPolicy?: {
     pricingType: PricingType;
     indicativeAmountFils: number;
   };
@@ -299,6 +301,52 @@ export const CANONICAL_SERVICES: CanonicalServiceSeed[] = [
   },
 ];
 
+// Retained legacy services: featured-card replacements must not repurpose their IDs.
+CANONICAL_SERVICES.push(
+  {categorySlug:'moving',slug:'piano-moving',title:{en:'Piano Moving',ar:'نقل البيانو'},description:{en:'Specialist piano moving; agree scope, access and a quote with an available professional.',ar:'نقل البيانو بواسطة مختص؛ اتفق على نطاق العمل وترتيبات الوصول وعرض السعر مع المزود المتاح.'},defaultDurationMinutes:60},
+  {categorySlug:'ac-maintenance',slug:'heating-system-maintenance',title:{en:'Heating System Repair or Maintenance',ar:'إصلاح وصيانة أنظمة التدفئة'},description:{en:'Heating system repair and maintenance; agree the scope and quote with an available professional.',ar:'إصلاح وصيانة أنظمة التدفئة؛ اتفق على نطاق العمل وعرض السعر مع المزود المتاح.'},defaultDurationMinutes:60},
+);
+
+// One manifest drives the homepage, navigation and additive seed. Existing slugs/IDs win.
+const discovery = JSON.parse(
+  readFileSync(
+    resolve(__dirname, '../../../frontend/public/catalog/discovery-taxonomy.json'),
+    'utf8',
+  ),
+) as {
+  slug: string;
+  label: { en: string; ar: string };
+  services: { slug: string; title: { en: string; ar: string }; description?: {en:string;ar:string} }[];
+}[];
+for (const [index, category] of discovery.entries()) {
+  if (!CANONICAL_CATEGORIES.some((c) => c.slug === category.slug)) {
+    CANONICAL_CATEGORIES.push({
+      slug: category.slug,
+      name: category.label,
+      description: {
+        en: `Explore ${category.label.en.toLowerCase()} services in Jordan. Provider availability varies by area.`,
+        ar: `استكشف ${category.label.ar} في الأردن. يختلف توفر المزودين حسب المنطقة.`,
+      },
+      iconName: category.slug,
+      displayOrder: index + 10,
+    });
+  }
+  for (const service of category.services) {
+    if (!CANONICAL_SERVICES.some((s) => s.slug === service.slug)) {
+      CANONICAL_SERVICES.push({
+        categorySlug: category.slug,
+        slug: service.slug,
+        title: service.title,
+        description: service.description || {
+          en: `${service.title.en} for your home. Compare the scope with an available professional and agree a quote before booking. Catalog inclusion does not guarantee local availability.`,
+          ar: `${service.title.ar} لمنزلك. ناقش نطاق العمل مع المزود المتاح واتفق على عرض السعر قبل الحجز. إدراج الخدمة لا يضمن توفر مزود في منطقتك.`,
+        },
+        defaultDurationMinutes: 60,
+      });
+    }
+  }
+}
+
 /**
  * Idempotent catalog seeder using `$setOnInsert` so re-running never creates
  * duplicates or overwrites admin edits (`isActive`, custom titles, or prices).
@@ -354,16 +402,27 @@ export async function seedCanonicalCatalog(
       .updateOne(
         { slug: svc.slug },
         {
+          $addToSet: {
+            discoveryCategorySlugs: {
+              $each: discovery
+                .filter((c) => c.services.some((s) => s.slug === svc.slug))
+                .map((c) => c.slug),
+            },
+          },
           $setOnInsert: {
             categoryId,
             slug: svc.slug,
             title: svc.title,
             description: svc.description,
-            pricingPolicy: {
-              pricingType: svc.pricingPolicy.pricingType,
-              indicativeAmountFils: svc.pricingPolicy.indicativeAmountFils,
-              currency: CurrencyCode.JOD,
-            },
+            ...(svc.pricingPolicy
+              ? {
+                  pricingPolicy: {
+                    pricingType: svc.pricingPolicy.pricingType,
+                    indicativeAmountFils: svc.pricingPolicy.indicativeAmountFils,
+                    currency: CurrencyCode.JOD,
+                  },
+                }
+              : {}),
             defaultDurationMinutes: svc.defaultDurationMinutes,
             isActive: true,
           },

@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { getModelToken, MongooseModule } from '@nestjs/mongoose';
@@ -112,23 +114,73 @@ describe('Part 06 — Service Categories & Catalog Management Integration', () =
     await mongoose.disconnect();
   });
 
-  it('seeds the 6 canonical categories and 12 services idempotently without duplicating on rerun', async () => {
+  it('seeds the expanded catalog and preserves prices and admin edits idempotently without duplicating on rerun', async () => {
     const firstRun = await seedCanonicalCatalog(categoryModel, serviceModel);
-    expect(firstRun.categoriesInserted).toBe(6);
-    expect(firstRun.categoriesTotal).toBe(6);
-    expect(firstRun.servicesInserted).toBe(12);
-    expect(firstRun.servicesTotal).toBe(12);
+    expect(firstRun.categoriesInserted).toBe(15);
+    expect(firstRun.categoriesTotal).toBe(15);
+    expect(firstRun.servicesInserted).toBe(62);
+    expect(firstRun.servicesTotal).toBe(62);
 
     const secondRun = await seedCanonicalCatalog(categoryModel, serviceModel);
     expect(secondRun.categoriesInserted).toBe(0);
-    expect(secondRun.categoriesTotal).toBe(6);
+    expect(secondRun.categoriesTotal).toBe(15);
     expect(secondRun.servicesInserted).toBe(0);
-    expect(secondRun.servicesTotal).toBe(12);
+    expect(secondRun.servicesTotal).toBe(62);
+  });
+
+  it('exposes all 14 discovery groups and 56 service routes without inventing prices or moving legacy IDs', async () => {
+    const manifest = JSON.parse(
+      readFileSync(
+        resolve(process.cwd(), '../frontend/public/catalog/discovery-taxonomy.json'),
+        'utf8',
+      ),
+    ) as { slug: string; services: { slug: string }[] }[];
+    expect(manifest).toHaveLength(14);
+    const original = await serviceModel.findOne({ slug: 'wooden-door-and-lock-repair' }).exec();
+    const originalId = original!._id.toString();
+    let unpriced = 0;
+    for (const category of manifest) {
+      const response = await request(app.getHttpServer())
+        .get(`/api/v1/categories/${category.slug}`)
+        .expect(200);
+      for (const service of category.services) {
+        expect(response.body.services.some((s: { slug: string }) => s.slug === service.slug)).toBe(
+          true,
+        );
+        const detail = await request(app.getHttpServer())
+          .get(`/api/v1/services/${service.slug}`)
+          .expect(200);
+        if (detail.body.pricingPolicy === null) unpriced++;
+      }
+    }
+    expect(unpriced).toBe(48);
+    await serviceModel.updateOne({_id:original!._id},{$set:{'title.en':'Admin customized lock title'}});
+    await seedCanonicalCatalog(categoryModel, serviceModel);
+    const unchanged = await serviceModel.findOne({ slug: 'wooden-door-and-lock-repair' }).exec();
+    expect(unchanged!._id.toString()).toBe(originalId);
+    expect(unchanged!.title.en).toBe('Admin customized lock title');
+    expect(unchanged!.categoryId.toString()).toBe(original!.categoryId.toString());
+    expect(unchanged!.pricingPolicy!.indicativeAmountFils).toBe(15000);
+  });
+
+  it('keeps the replaced piano and heating entries, reuses the AC ID, and leaves gas exchange unpriced', async () => {
+    const piano=await serviceModel.findOne({slug:'piano-moving'}).exec();
+    const heating=await serviceModel.findOne({slug:'heating-system-maintenance'}).exec();
+    const ac=await serviceModel.findOne({slug:'ac-cooling-diagnostics-recharge'}).exec();
+    expect(piano).toBeTruthy();expect(heating).toBeTruthy();expect(ac).toBeTruthy();
+    const gas=await request(app.getHttpServer()).get('/api/v1/services/gas-cylinder-exchange').expect(200);
+    expect(gas.body.title.ar).toBe('تبديل جرة الغاز');expect(gas.body.pricingPolicy).toBeNull();
+    expect(gas.body.description.en).toContain('exchange for the empty cylinder');
+    await seedCanonicalCatalog(categoryModel, serviceModel);
+    for(const [slug,id] of [['piano-moving',piano!._id],['heating-system-maintenance',heating!._id],['ac-cooling-diagnostics-recharge',ac!._id]] as const){
+      const current=await serviceModel.findOne({slug}).exec();expect(current!._id.toString()).toBe(id.toString());
+    }
+    expect((await serviceModel.findOne({slug:'ac-cooling-diagnostics-recharge'}).exec())!.pricingPolicy!.indicativeAmountFils).toBe(15000);
   });
 
   it('returns active categories ordered by displayOrder and category details by slug', async () => {
     const listRes = await request(app.getHttpServer()).get('/api/v1/categories').expect(200);
-    expect(listRes.body).toHaveLength(6);
+    expect(listRes.body).toHaveLength(15);
     expect(listRes.body[0].slug).toBe('plumbing');
     expect(listRes.body[5].slug).toBe('carpentry');
 
@@ -147,11 +199,22 @@ describe('Part 06 — Service Categories & Catalog Management Integration', () =
       .expect(200);
 
     expect(allRes.body.items).toHaveLength(5);
-    expect(allRes.body.total).toBe(12);
-    expect(allRes.body.totalPages).toBe(3);
-    expect(allRes.body.items[0].pricingPolicy.indicativeAmountFils).toBeLessThanOrEqual(
-      allRes.body.items[1].pricingPolicy.indicativeAmountFils,
+    expect(allRes.body.total).toBe(62);
+    expect(allRes.body.totalPages).toBe(13);
+    expect(
+      allRes.body.items.every(
+        (item: { pricingPolicy: { indicativeAmountFils: number } | null }) =>
+          item.pricingPolicy === null || Number.isInteger(item.pricingPolicy.indicativeAmountFils),
+      ),
+    ).toBe(true);
+    const priced = await request(app.getHttpServer())
+      .get('/api/v1/services?limit=50&sort=price_asc&pricingType=STARTING_AT')
+      .expect(200);
+    const amounts = priced.body.items.map(
+      (item: { pricingPolicy: { indicativeAmountFils: number } }) =>
+        item.pricingPolicy.indicativeAmountFils,
     );
+    expect(amounts).toEqual([...amounts].sort((a: number, b: number) => a - b));
 
     // Filter by categorySlug and pricingType
     const filteredRes = await request(app.getHttpServer())
@@ -270,6 +333,11 @@ describe('Part 06 — Service Categories & Catalog Management Integration', () =
       .expect(201);
 
     const newServiceId = createSvcRes.body.id as string;
+    const quote = await request(app.getHttpServer()).patch(`/api/v1/services/${newServiceId}`).set('Authorization', `Bearer ${adminToken}`).send({pricingPolicy:null}).expect(200);
+    expect(quote.body.pricingPolicy).toBeNull();
+    const restored = await request(app.getHttpServer()).patch(`/api/v1/services/${newServiceId}`).set('Authorization', `Bearer ${adminToken}`).send({pricingPolicy:{pricingType:PricingType.FIXED,indicativeAmountFils:25000}}).expect(200);
+    expect(restored.body.pricingPolicy.indicativeAmountFils).toBe(25000);
+
 
     // Public detail works while active
     await request(app.getHttpServer()).get('/api/v1/services/smart-lock-install').expect(200);

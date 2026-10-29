@@ -7,21 +7,7 @@
 <!-- SECTION 1: FULL-WIDTH EDGE-TO-EDGE HERO (Reference Screenshot 1)        -->
 <!-- ======================================================================= -->
 <section class="hero-fullbleed">
-  <img
-    class="hero-bg-image"
-    src="/images/editorial/exterior-1920.webp"
-    srcset="
-      /images/editorial/exterior-480.webp   480w,
-      /images/editorial/exterior-960.webp   960w,
-      /images/editorial/exterior-1920.webp 1920w
-    "
-    sizes="100vw"
-    width="1920"
-    height="1280"
-    fetchpriority="high"
-    [alt]="ar() ? 'منزل عصري مع تراس خارجي' : 'Modern residential terrace and home exterior'"
-  />
-  <div class="hero-overlay"></div>
+  <app-hero-slideshow />
 
   <div class="fm-container hero-content-wrap">
     <div class="hero-left-col">
@@ -91,7 +77,7 @@
 <!-- ======================================================================= -->
 <section id="discover" class="area-discovery-section">
   <div class="fm-container">
-    <div class="centered-section-header">
+    <div appReveal class="centered-section-header">
       <h2>
         {{ ar() ? 'محترفون لكل مشروع في' : 'Pros for every project in' }}
         <span class="accent-cyan">{{ ar() ? 'منطقتك.' : 'Your Area.' }}</span>
@@ -107,61 +93,80 @@
     } @else if (error() || projectsError()) {
       <div class="home-notice" role="status">
         <p>{{ ar() ? 'تعذّر تحميل التصنيفات.' : 'We couldn’t load categories.' }}</p>
-        <button class="fm-link-button" (click)="loadCategories(); loadProjects()">
+        <button class="fm-link-button" (click)="loadCategories()">
           {{ ar() ? 'إعادة المحاولة' : 'Try again' }}
         </button>
       </div>
     } @else {
-      <!-- Horizontal Category Icon Tabs (Reference Screenshot 2) -->
-      <div
-        class="category-tabs-bar"
-        role="group"
-        [attr.aria-label]="ar() ? 'تصنيفات الخدمات' : 'Service categories'"
-      >
+      <div appReveal [revealDelay]="60" class="category-rail">
         <button
+          class="rail-arrow rail-prev"
           type="button"
-          [attr.aria-pressed]="selectedCategorySlug() === 'all'"
-          class="cat-icon-tab"
-          [class.active]="selectedCategorySlug() === 'all'"
-          (click)="selectCategoryTab('all')"
+          (click)="scrollCategories(categoryRail, -1)"
+          [disabled]="railStart()"
+          [attr.aria-label]="ar() ? 'التصنيفات السابقة' : 'Previous categories'"
         >
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M4 10.5L12 4L20 10.5V19A1 1 0 0 1 19 20H5A1 1 0 0 1 4 19V10.5Z"
-              stroke="currentColor"
-              stroke-width="1.7"
-            />
-          </svg>
-          <span>{{ ar() ? 'الكل' : 'Featured' }}</span>
+          ‹
         </button>
-
-        @for (cat of categories(); track cat.id) {
-          <button
-            type="button"
-            [attr.aria-pressed]="selectedCategorySlug() === cat.slug"
-            class="cat-icon-tab"
-            [class.active]="selectedCategorySlug() === cat.slug"
-            (click)="selectCategoryTab(cat.slug)"
-          >
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                [attr.d]="categoryIcon(cat.slug)"
-                stroke="currentColor"
-                stroke-width="1.6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-            <span>{{ categoryLabel(cat.slug, cat.name[i18n.lang()]) }}</span>
-          </button>
-        }
+        <div
+          #categoryRail
+          class="category-tabs-bar"
+          role="tablist"
+          [attr.aria-label]="ar() ? 'تصنيفات الخدمات' : 'Service categories'"
+          (scroll)="updateRail(categoryRail)"
+          (keydown)="categoryKey($event, categoryRail)"
+        >
+          @for (cat of categories(); track cat.slug) {
+            <button
+              type="button"
+              role="tab"
+              class="cat-icon-tab"
+              [id]="'tab-' + cat.slug"
+              aria-controls="discovery-panel"
+              [attr.aria-selected]="selectedCategorySlug() === cat.slug"
+              [attr.tabindex]="selectedCategorySlug() === cat.slug ? 0 : -1"
+              [class.active]="selectedCategorySlug() === cat.slug"
+              (click)="selectCategoryTab(cat.slug); revealTab($event)"
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  [attr.d]="cat.icon"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <span>{{ cat.label[i18n.lang()] }}</span>
+            </button>
+          }
+        </div>
+        <button
+          class="rail-arrow rail-next"
+          type="button"
+          (click)="scrollCategories(categoryRail, 1)"
+          [disabled]="railEnd()"
+          [attr.aria-label]="ar() ? 'التصنيفات التالية' : 'Next categories'"
+        >
+          ›
+        </button>
       </div>
 
       <!-- 4 Tall Portrait Photographic Cards (Reference Screenshot 2) -->
-      <div class="portrait-cards-grid">
+      <div
+        class="portrait-cards-grid"
+        id="discovery-panel"
+        role="tabpanel"
+        [attr.aria-labelledby]="'tab-' + selectedCategorySlug()"
+      >
         @for (card of visiblePortraitCards(); track card.slug) {
-          <a class="portrait-service-card" [routerLink]="['/services', card.slug]">
-            <img [src]="card.image" [alt]="ar() ? card.titleAr : card.titleEn" loading="lazy" />
+          <a appReveal [revealDelay]="$index * 90" class="portrait-service-card" [routerLink]="['/services', card.slug]">
+            <img
+              [src]="card.image" [srcset]="card.imageSmall + ' 480w, ' + card.image + ' 960w'" sizes="(max-width:767px) 46vw, 225px"
+              [style.object-position]="card.position"
+              [alt]="ar() ? card.titleAr : card.titleEn"
+              loading="lazy"
+            />
             <div class="portrait-card-gradient"></div>
             <div class="portrait-card-caption">
               <h3>{{ ar() ? card.titleAr : card.titleEn }}</h3>
@@ -177,6 +182,8 @@
   </div>
 </section>
 
+<app-how-it-works />
+
 <!-- ======================================================================= -->
 <!-- SECTION 3: "Explore more projects." (Reference Screenshot 3)            -->
 <!-- ======================================================================= -->
@@ -184,13 +191,13 @@
   <div class="explore-diagonal-bg" aria-hidden="true"></div>
 
   <div class="fm-container explore-inner">
-    <div class="centered-section-header">
+    <div appReveal class="centered-section-header">
       <h2>{{ ar() ? 'استكشف المزيد من المشاريع.' : 'Explore more projects.' }}</h2>
     </div>
 
     <!-- 4 Project Group Tabs (Reference Screenshot 3) -->
     <div
-      class="explore-tabs-bar"
+      appReveal [revealDelay]="60" class="explore-tabs-bar"
       role="group"
       [attr.aria-label]="ar() ? 'أنواع المشاريع' : 'Project themes'"
     >
@@ -208,7 +215,7 @@
     </div>
 
     <!-- Wide Featured Photographic Banner (Reference Screenshot 3) -->
-    <div class="featured-project-banner">
+    <div appReveal class="featured-project-banner">
       <img
         [src]="activeExploreTab().banner.image"
         [alt]="ar() ? activeExploreTab().banner.titleAr : activeExploreTab().banner.titleEn"
@@ -233,7 +240,7 @@
     <!-- 3 Supporting Landscape Project Cards Below Banner (Reference Screenshot 3) -->
     <div class="supporting-projects-grid">
       @for (item of activeExploreTab().cards; track item.slug) {
-        <a class="supporting-project-card" [routerLink]="['/services', item.slug]">
+        <a appReveal [revealDelay]="$index * 90" class="supporting-project-card" [routerLink]="['/services', item.slug]">
           <img [src]="item.image" [alt]="ar() ? item.titleAr : item.titleEn" loading="lazy" />
           <div class="supporting-card-gradient"></div>
           <div class="supporting-card-caption">
@@ -250,7 +257,7 @@
 <!-- ======================================================================= -->
 <section class="resources-editorial-section">
   <div class="fm-container">
-    <div class="centered-section-header resources-header">
+    <div appReveal class="centered-section-header resources-header">
       <h2>{{ ar() ? 'موارد وأدلة لمنزلك.' : 'Resources for your home.' }}</h2>
       <p>
         {{
@@ -266,7 +273,8 @@
       @for (res of resourceCards; track res.id) {
         <button
           type="button"
-          class="resource-editorial-card"
+          appReveal [revealDelay]="$index * 90" class="resource-editorial-card"
+          [id]="'guide-' + res.id"
           aria-haspopup="dialog"
           (click)="selectResourceCard(res.id); resourceDialog.showModal()"
         >
@@ -334,7 +342,7 @@
 <section class="why-and-pros-section">
   <div class="fm-container">
     <div class="pros-showcase-block">
-      <div class="pros-header">
+      <div appReveal class="pros-header">
         <div>
           <span class="eyebrow">{{
             ar() ? 'محترفون معتمدون في الأردن' : 'APPROVED PROFESSIONALS IN JORDAN'
@@ -363,9 +371,9 @@
       } @else {
         <div class="home-pros">
           @for (p of providers(); track p.id) {
-            <app-provider-card [provider]="p" />
+            <app-provider-card appReveal [revealDelay]="$index * 90" [provider]="p" />
           } @empty {
-            <div class="quiet-empty">
+            <div appReveal class="quiet-empty">
               <h3>
                 {{
                   ar()

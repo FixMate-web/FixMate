@@ -1,0 +1,30 @@
+ docs/image-sources.md                              |  42 +-
+ .../images/categories/ac-maintenance-480.webp      | Bin 31108 -> 37500 bytes
+ .../images/categories/ac-maintenance-960.webp      | Bin 96304 -> 114102 bytes
+ .../public/images/categories/carpentry-480.webp    | Bin 15960 -> 23722 bytes
+ .../public/images/categories/carpentry-960.webp    | Bin 38446 -> 63506 bytes
+ .../public/images/categories/cleaning-480.webp     | Bin 18052 -> 28590 bytes
+ .../public/images/categories/cleaning-960.webp     | Bin 46842 -> 77160 bytes
+ .../images/categories/electrical-repairs-480.webp  | Bin 19848 -> 14870 bytes
+ .../images/categories/electrical-repairs-960.webp  | Bin 53128 -> 42494 bytes
+ .../public/images/categories/painting-480.webp     | Bin 19256 -> 22662 bytes
+ .../public/images/categories/painting-960.webp     | Bin 80708 -> 91304 bytes
+ .../public/images/categories/plumbing-480.webp     | Bin 55388 -> 67252 bytes
+ .../public/images/categories/plumbing-960.webp     | Bin 174542 -> 209740 bytes
+ .../public/images/marketing/craftsman-480.webp     | Bin 15196 -> 53126 bytes
+ .../public/images/marketing/craftsman-960.webp     | Bin 38078 -> 137996 bytes
+ .../src/app/features/auth/login-page.component.ts  |  20 +-
+ .../app/features/auth/register-page.component.ts   |  33 +-
+ .../src/app/features/public/discovery-page.scss    |  10 +-
+ .../app/features/public/home-page.component.html   | 372 ++++-----
+ .../app/features/public/home-page.component.scss   | 880 +++++++++++----------
+ .../src/app/features/public/home-page.component.ts | 375 ++++-----
+ frontend/src/app/features/public/home-page.spec.ts |  37 +-
+ .../public/service-detail-page.component.html      |   2 +-
+ .../layouts/auth-layout/auth-layout.component.scss |  40 +-
+ .../public-layout/public-layout.component.scss     |  39 +-
+ .../public-layout/public-layout.component.ts       | 131 ++-
+ .../marketplace/discovery-search.component.ts      | 163 +++-
+ .../marketplace/provider-card.component.scss       |  19 +-
+ frontend/src/styles.scss                           |   1 +
+ 29 files changed, 1062 insertions(+), 1102 deletions(-)

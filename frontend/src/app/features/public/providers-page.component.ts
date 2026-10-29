@@ -33,12 +33,12 @@ export class ProvidersPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.catalogApi
-      .getServices({ limit: 50 })
+      .getAllServices()
       .pipe(
-        catchError(() => of({ items: [], page: 1, limit: 50, total: 0, totalPages: 0 })),
+        catchError(() => of([])),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe((res) => this.catalogServices.set(res.items));
+      .subscribe((res) => this.catalogServices.set(res));
 
     this.searchSubject
       .pipe(debounceTime(250), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))

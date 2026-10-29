@@ -1,0 +1,931 @@
+[
+  {
+    "slug": "cleaning",
+    "label": {
+      "en": "Cleaners",
+      "ar": "خدمات التنظيف"
+    },
+    "group": {
+      "en": "Interior",
+      "ar": "الداخلية"
+    },
+    "icon": "M9 3h6v4H9z M10 7v5l-3 3v6h10v-6l-4-3V7 M15 4h4",
+    "services": [
+      {
+        "slug": "apartment-deep-cleaning",
+        "title": {
+          "en": "House Cleaning",
+          "ar": "تنظيف المنازل"
+        },
+        "image": "/images/discovery/apartment-deep-cleaning.webp",
+        "position": "center",
+        "photoId": 9462651,
+        "source": "https://www.pexels.com/photo/9462651/",
+        "imageSmall": "/images/discovery/apartment-deep-cleaning-480.webp"
+      },
+      {
+        "slug": "carpet-cleaning",
+        "title": {
+          "en": "Carpet Cleaning",
+          "ar": "تنظيف السجاد"
+        },
+        "image": "/images/discovery/carpet-cleaning.webp",
+        "position": "center",
+        "photoId": 9462144,
+        "source": "https://www.pexels.com/photo/9462144/",
+        "imageSmall": "/images/discovery/carpet-cleaning-480.webp"
+      },
+      {
+        "slug": "junk-removal",
+        "title": {
+          "en": "Junk Removal",
+          "ar": "إزالة الأثاث والمخلفات"
+        },
+        "image": "/images/discovery/junk-removal.webp",
+        "position": "center",
+        "photoId": 28983909,
+        "source": "https://www.pexels.com/photo/28983909/",
+        "imageSmall": "/images/discovery/junk-removal-480.webp"
+      },
+      {
+        "slug": "pressure-washing",
+        "title": {
+          "en": "Pressure Washing",
+          "ar": "التنظيف بالماء المضغوط"
+        },
+        "image": "/images/discovery/pressure-washing.webp",
+        "position": "center",
+        "photoId": 14965464,
+        "source": "https://www.pexels.com/photo/14965464/",
+        "imageSmall": "/images/discovery/pressure-washing-480.webp"
+      }
+    ],
+    "menuLabel": {
+      "en": "Cleaning & Organization",
+      "ar": "التنظيف والترتيب"
+    }
+  },
+  {
+    "slug": "handyman",
+    "label": {
+      "en": "Handymen",
+      "ar": "الصيانة المنزلية العامة"
+    },
+    "group": {
+      "en": "Interior",
+      "ar": "الداخلية"
+    },
+    "icon": "M14 3a6 6 0 0 0-7 8L3 19a2 2 0 0 0 3 3l8-9a6 6 0 0 0 7-7l-5 4-3-3z",
+    "services": [
+      {
+        "slug": "appliance-repair",
+        "title": {
+          "en": "Appliance Repair or Maintenance",
+          "ar": "إصلاح وصيانة الأجهزة المنزلية"
+        },
+        "image": "/images/discovery/appliance-repair.webp",
+        "position": "center",
+        "photoId": 32588545,
+        "source": "https://www.pexels.com/photo/32588545/",
+        "imageSmall": "/images/discovery/appliance-repair-480.webp"
+      },
+      {
+        "slug": "wooden-door-and-lock-repair",
+        "title": {
+          "en": "Lock Installation and Repair",
+          "ar": "تركيب وإصلاح الأقفال"
+        },
+        "image": "/images/discovery/wooden-door-and-lock-repair.webp",
+        "position": "center",
+        "photoId": 792031,
+        "source": "https://www.pexels.com/photo/792031/",
+        "imageSmall": "/images/discovery/wooden-door-and-lock-repair-480.webp"
+      },
+      {
+        "slug": "furniture-assembly",
+        "title": {
+          "en": "Furniture Assembly",
+          "ar": "تركيب وتجميع الأثاث"
+        },
+        "image": "/images/discovery/furniture-assembly.webp",
+        "position": "center",
+        "photoId": 5805485,
+        "source": "https://www.pexels.com/photo/5805485/",
+        "imageSmall": "/images/discovery/furniture-assembly-480.webp"
+      },
+      {
+        "slug": "holiday-lighting",
+        "title": {
+          "en": "Holiday Lighting Installation and Removal",
+          "ar": "تركيب وإزالة إنارة المناسبات"
+        },
+        "image": "/images/discovery/holiday-lighting.webp",
+        "position": "center",
+        "photoId": 10636078,
+        "source": "https://www.pexels.com/photo/10636078/",
+        "imageSmall": "/images/discovery/holiday-lighting-480.webp"
+      }
+    ],
+    "menuLabel": {
+      "en": "Home Repairs & Maintenance",
+      "ar": "إصلاح وصيانة المنزل"
+    }
+  },
+  {
+    "slug": "landscaping",
+    "label": {
+      "en": "Landscapers",
+      "ar": "تنسيق وصيانة الحدائق"
+    },
+    "group": {
+      "en": "Exterior",
+      "ar": "الخارجية"
+    },
+    "icon": "M4 21C4 15 3 10 1 7 M9 21C9 12 6 6 5 3 M14 21C14 12 17 6 19 2 M19 21C19 15 21 10 23 7",
+    "services": [
+      {
+        "slug": "lawn-mowing-trimming",
+        "title": {
+          "en": "Lawn Mowing and Trimming",
+          "ar": "قص وتهذيب العشب"
+        },
+        "image": "/images/discovery/lawn-mowing-trimming.webp",
+        "position": "center",
+        "photoId": 11364122,
+        "source": "https://www.pexels.com/photo/11364122/",
+        "imageSmall": "/images/discovery/lawn-mowing-trimming-480.webp"
+      },
+      {
+        "slug": "tree-trimming-removal",
+        "title": {
+          "en": "Tree Trimming and Removal",
+          "ar": "تقليم وإزالة الأشجار"
+        },
+        "image": "/images/discovery/tree-trimming-removal.webp",
+        "position": "55% center",
+        "photoId": 35089307,
+        "source": "https://www.pexels.com/photo/35089307/",
+        "imageSmall": "/images/discovery/tree-trimming-removal-480.webp"
+      },
+      {
+        "slug": "irrigation-system-repair",
+        "title": {
+          "en": "Sprinkler and Irrigation System Repair and Maintenance",
+          "ar": "صيانة وإصلاح الرشاشات وأنظمة الري"
+        },
+        "image": "/images/discovery/irrigation-system-repair.webp",
+        "position": "center",
+        "photoId": 12887876,
+        "source": "https://www.pexels.com/photo/12887876/",
+        "imageSmall": "/images/discovery/irrigation-system-repair-480.webp"
+      },
+      {
+        "slug": "full-service-lawn-care",
+        "title": {
+          "en": "Full Service Lawn Care",
+          "ar": "العناية المتكاملة بالمسطحات الخضراء"
+        },
+        "image": "/images/discovery/full-service-lawn-care.webp",
+        "position": "center",
+        "photoId": 6728925,
+        "source": "https://www.pexels.com/photo/6728925/",
+        "imageSmall": "/images/discovery/full-service-lawn-care-480.webp"
+      }
+    ],
+    "menuLabel": {
+      "en": "Landscaping & Outdoor Services",
+      "ar": "الحدائق والخدمات الخارجية"
+    }
+  },
+  {
+    "slug": "moving",
+    "label": {
+      "en": "Movers",
+      "ar": "خدمات النقل"
+    },
+    "group": {
+      "en": "More Services",
+      "ar": "خدمات أخرى"
+    },
+    "icon": "M3 3h4l3 14h10 M10 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4 M19 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4 M9 7h11l-2 8",
+    "services": [
+      {
+        "slug": "packing-unpacking",
+        "title": {
+          "en": "Packing and Unpacking",
+          "ar": "تغليف وتفريغ الأمتعة"
+        },
+        "image": "/images/discovery/packing-unpacking.webp",
+        "position": "center",
+        "photoId": 7203849,
+        "source": "https://www.pexels.com/photo/7203849/",
+        "imageSmall": "/images/discovery/packing-unpacking-480.webp"
+      },
+      {
+        "slug": "long-distance-moving",
+        "title": {
+          "en": "Long Distance Moving",
+          "ar": "النقل بين المحافظات والمسافات البعيدة"
+        },
+        "image": "/images/discovery/long-distance-moving.webp",
+        "position": "center",
+        "photoId": 6169675,
+        "source": "https://www.pexels.com/photo/6169675/",
+        "imageSmall": "/images/discovery/long-distance-moving-480.webp"
+      },
+      {
+        "slug": "furniture-moving-heavy-lifting",
+        "title": {
+          "en": "Furniture Moving and Heavy Lifting",
+          "ar": "نقل الأثاث ورفع القطع الثقيلة"
+        },
+        "image": "/images/discovery/furniture-moving-heavy-lifting.webp",
+        "position": "center",
+        "photoId": 4971224,
+        "source": "https://www.pexels.com/photo/4971224/",
+        "imageSmall": "/images/discovery/furniture-moving-heavy-lifting-480.webp"
+      },
+      {
+        "slug": "gas-cylinder-exchange",
+        "title": {
+          "en": "Gas Cylinder Exchange",
+          "ar": "تبديل جرة الغاز"
+        },
+        "image": "/images/discovery/gas-cylinder-exchange.webp",
+        "position": "50% center",
+        "photoId": 36249354,
+        "source": "https://www.pexels.com/photo/man-loading-petron-gasul-cylinders-onto-truck-36249354/",
+        "imageSmall": "/images/discovery/gas-cylinder-exchange-480.webp",
+        "description": {
+          "en": "Delivery of a full household LPG cylinder and exchange for the empty cylinder by a qualified service provider. Discuss delivery arrangements and the quote before requesting service. Availability depends on the provider and area.",
+          "ar": "توصيل جرة غاز منزلي ممتلئة واستبدال الجرة الفارغة عن طريق مزود خدمة مؤهل. اتفق معه على ترتيبات التوصيل وعرض السعر قبل طلب الخدمة. يختلف التوفر حسب المزود والمنطقة."
+        }
+      }
+    ],
+    "menuLabel": {
+      "en": "Movers",
+      "ar": "خدمات النقل"
+    }
+  },
+  {
+    "slug": "plumbing",
+    "label": {
+      "en": "Plumbers",
+      "ar": "خدمات السباكة"
+    },
+    "group": {
+      "en": "Interior",
+      "ar": "الداخلية"
+    },
+    "icon": "M9 3C6 7 3 10 3 13a6 6 0 0 0 10 4 M16 6c-3 4-5 7-5 10a5 5 0 0 0 10 0c0-3-2-6-5-10z",
+    "services": [
+      {
+        "slug": "emergency-plumbing",
+        "title": {
+          "en": "Emergency Plumbing",
+          "ar": "خدمات السباكة الطارئة"
+        },
+        "image": "/images/discovery/emergency-plumbing.webp",
+        "position": "center",
+        "photoId": 8486975,
+        "source": "https://www.pexels.com/photo/8486975/",
+        "imageSmall": "/images/discovery/emergency-plumbing-480.webp"
+      },
+      {
+        "slug": "electric-water-heater-maintenance",
+        "title": {
+          "en": "Water Heater Repair or Maintenance",
+          "ar": "إصلاح وصيانة سخانات المياه"
+        },
+        "image": "/images/discovery/electric-water-heater-maintenance.webp",
+        "position": "22% center",
+        "photoId": 9551366,
+        "source": "https://www.pexels.com/photo/9551366/",
+        "imageSmall": "/images/discovery/electric-water-heater-maintenance-480.webp"
+      },
+      {
+        "slug": "septic-system-maintenance",
+        "title": {
+          "en": "Septic System Repair, Maintenance or Inspection",
+          "ar": "فحص وصيانة وإصلاح الحفر الامتصاصية"
+        },
+        "image": "/images/discovery/septic-system-maintenance.webp",
+        "position": "center",
+        "photoId": 12193138,
+        "source": "https://www.pexels.com/photo/12193138/",
+        "imageSmall": "/images/discovery/septic-system-maintenance-480.webp"
+      },
+      {
+        "slug": "water-leak-detection-repair",
+        "title": {
+          "en": "Plumbing Pipe Repair",
+          "ar": "إصلاح أنابيب المياه والتسربات"
+        },
+        "image": "/images/discovery/water-leak-detection-repair.webp",
+        "position": "center",
+        "photoId": 32588548,
+        "source": "https://www.pexels.com/photo/32588548/",
+        "imageSmall": "/images/discovery/water-leak-detection-repair-480.webp"
+      }
+    ],
+    "menuLabel": {
+      "en": "Plumbing & Water Systems",
+      "ar": "السباكة وأنظمة المياه"
+    }
+  },
+  {
+    "slug": "electrical-repairs",
+    "label": {
+      "en": "Electrical Pros",
+      "ar": "الخدمات الكهربائية"
+    },
+    "group": {
+      "en": "Interior",
+      "ar": "الداخلية"
+    },
+    "icon": "M8 2v6 M16 2v6 M5 8h14v3a7 7 0 0 1-14 0z M12 18v5",
+    "services": [
+      {
+        "slug": "circuit-breaker-panel-inspection",
+        "title": {
+          "en": "Electrical and Wiring Repair",
+          "ar": "إصلاح الأعطال والتمديدات الكهربائية"
+        },
+        "image": "/images/discovery/circuit-breaker-panel-inspection.webp",
+        "position": "center",
+        "photoId": 3615732,
+        "source": "https://www.pexels.com/photo/3615732/",
+        "imageSmall": "/images/discovery/circuit-breaker-panel-inspection-480.webp"
+      },
+      {
+        "slug": "lighting-and-socket-installation",
+        "title": {
+          "en": "Switch and Outlet Installation",
+          "ar": "تركيب المفاتيح والمقابس"
+        },
+        "image": "/images/discovery/lighting-switch-socket-professional.webp",
+        "position": "50% center",
+        "photoId": 5691589,
+        "source": "https://www.pexels.com/photo/an-electrician-using-screwdriver-to-repair-the-ac-power-plugs-and-sockets-5691589/",
+        "imageSmall": "/images/discovery/lighting-switch-socket-professional-480.webp"
+      },
+      {
+        "slug": "wiring-installation",
+        "title": {
+          "en": "Wiring Installation",
+          "ar": "تركيب التمديدات الكهربائية"
+        },
+        "image": "/images/discovery/wiring-installation.webp",
+        "position": "center",
+        "photoId": 3614762,
+        "source": "https://www.pexels.com/photo/3614762/",
+        "imageSmall": "/images/discovery/wiring-installation-480.webp"
+      },
+      {
+        "slug": "generator-installation",
+        "title": {
+          "en": "Generator Installation",
+          "ar": "تركيب المولدات الكهربائية"
+        },
+        "image": "/images/discovery/generator-installation.webp",
+        "position": "65% center",
+        "photoId": 18816918,
+        "source": "https://www.pexels.com/photo/18816918/",
+        "imageSmall": "/images/discovery/generator-installation-480.webp"
+      }
+    ],
+    "menuLabel": {
+      "en": "Electrical Pros",
+      "ar": "الخدمات الكهربائية"
+    }
+  },
+  {
+    "slug": "painting",
+    "label": {
+      "en": "Painters",
+      "ar": "الدهان والديكور"
+    },
+    "group": {
+      "en": "Interior",
+      "ar": "الداخلية"
+    },
+    "icon": "M5 3h14v9H5z M8 12v4h8v-4 M12 16v6",
+    "services": [
+      {
+        "slug": "wallpaper-installation-repair",
+        "title": {
+          "en": "Wallpaper Installation or Repair",
+          "ar": "تركيب وإصلاح ورق الجدران"
+        },
+        "image": "/images/discovery/wallpaper-installation-repair.webp",
+        "position": "center",
+        "photoId": 2929294,
+        "source": "https://www.pexels.com/photo/2929294/",
+        "imageSmall": "/images/discovery/wallpaper-installation-repair-480.webp"
+      },
+      {
+        "slug": "single-room-interior-painting",
+        "title": {
+          "en": "Interior Painting",
+          "ar": "الدهان الداخلي"
+        },
+        "image": "/images/discovery/single-room-interior-painting.webp",
+        "position": "center",
+        "photoId": 994164,
+        "source": "https://www.pexels.com/photo/994164/",
+        "imageSmall": "/images/discovery/single-room-interior-painting-480.webp"
+      },
+      {
+        "slug": "exterior-painting",
+        "title": {
+          "en": "Exterior Painting",
+          "ar": "دهان الواجهات الخارجية"
+        },
+        "image": "/images/discovery/exterior-painting.webp",
+        "position": "center",
+        "photoId": 31608473,
+        "source": "https://www.pexels.com/photo/31608473/",
+        "imageSmall": "/images/discovery/exterior-painting-480.webp"
+      },
+      {
+        "slug": "fence-painting",
+        "title": {
+          "en": "Fence Painting",
+          "ar": "دهان الأسوار"
+        },
+        "image": "/images/discovery/fence-painting.webp",
+        "position": "center",
+        "photoId": 31556950,
+        "source": "https://www.pexels.com/photo/31556950/",
+        "imageSmall": "/images/discovery/fence-painting-480.webp"
+      }
+    ],
+    "menuLabel": {
+      "en": "Renovations & Upgrades",
+      "ar": "التجديد والتحسينات"
+    }
+  },
+  {
+    "slug": "ac-maintenance",
+    "label": {
+      "en": "HVAC Pros",
+      "ar": "التكييف والتدفئة"
+    },
+    "group": {
+      "en": "Interior",
+      "ar": "الداخلية"
+    },
+    "icon": "M12 2v20 M3 7l18 10 M3 17L21 7 M9 4l3 3 3-3 M9 20l3-3 3 3",
+    "services": [
+      {
+        "slug": "duct-vent-cleaning",
+        "title": {
+          "en": "Duct and Vent Cleaning",
+          "ar": "تنظيف مجاري الهواء وفتحات التهوية"
+        },
+        "image": "/images/discovery/duct-vent-cleaning.webp",
+        "position": "center",
+        "photoId": 5463581,
+        "source": "https://www.pexels.com/photo/5463581/",
+        "imageSmall": "/images/discovery/duct-vent-cleaning-480.webp"
+      },
+      {
+        "slug": "heating-system-installation",
+        "title": {
+          "en": "Heating System Installation or Replacement",
+          "ar": "تركيب واستبدال أنظمة التدفئة"
+        },
+        "image": "/images/discovery/heating-system-installation.webp",
+        "position": "center",
+        "photoId": 5691536,
+        "source": "https://www.pexels.com/photo/5691536/",
+        "imageSmall": "/images/discovery/heating-system-installation-480.webp"
+      },
+      {
+        "slug": "ac-cooling-diagnostics-recharge",
+        "title": {
+          "en": "Air Conditioner Repair & Maintenance",
+          "ar": "إصلاح وصيانة المكيفات"
+        },
+        "image": "/images/discovery/ac-cooling-diagnostics-recharge.webp",
+        "position": "55% center",
+        "photoId": 5463575,
+        "source": "https://www.pexels.com/photo/man-checking-an-air-conditioner-5463575/",
+        "imageSmall": "/images/discovery/ac-cooling-diagnostics-recharge-480.webp"
+      },
+      {
+        "slug": "fireplace-chimney-maintenance",
+        "title": {
+          "en": "Fireplace and Chimney Cleaning or Repair",
+          "ar": "تنظيف وصيانة المدافئ والمداخن"
+        },
+        "image": "/images/discovery/fireplace-chimney-maintenance.webp",
+        "position": "center",
+        "photoId": 11751757,
+        "source": "https://www.pexels.com/photo/11751757/",
+        "imageSmall": "/images/discovery/fireplace-chimney-maintenance-480.webp"
+      }
+    ],
+    "menuLabel": {
+      "en": "HVAC & Appliances",
+      "ar": "التكييف والأجهزة المنزلية"
+    }
+  },
+  {
+    "slug": "contractors",
+    "label": {
+      "en": "Contractors",
+      "ar": "المقاولات والترميم"
+    },
+    "group": {
+      "en": "More Services",
+      "ar": "خدمات أخرى"
+    },
+    "icon": "M3 10l9-8 9 8 M5 9v12h14V9 M10 21v-7h4v7",
+    "services": [
+      {
+        "slug": "general-carpentry",
+        "title": {
+          "en": "General Carpentry",
+          "ar": "أعمال النجارة العامة"
+        },
+        "image": "/images/discovery/general-carpentry.webp",
+        "position": "center",
+        "photoId": 5466146,
+        "source": "https://www.pexels.com/photo/5466146/",
+        "imageSmall": "/images/discovery/general-carpentry-480.webp"
+      },
+      {
+        "slug": "home-remodeling",
+        "title": {
+          "en": "Home Remodeling",
+          "ar": "تجديد وترميم المنازل"
+        },
+        "image": "/images/discovery/home-remodeling.webp",
+        "position": "center",
+        "photoId": 15124969,
+        "source": "https://www.pexels.com/photo/15124969/",
+        "imageSmall": "/images/discovery/home-remodeling-480.webp"
+      },
+      {
+        "slug": "demolition-services",
+        "title": {
+          "en": "Demolition Services",
+          "ar": "أعمال الهدم والإزالة"
+        },
+        "image": "/images/discovery/demolition-services.webp",
+        "position": "center",
+        "photoId": 28700140,
+        "source": "https://www.pexels.com/photo/28700140/",
+        "imageSmall": "/images/discovery/demolition-services-480.webp"
+      },
+      {
+        "slug": "water-damage-restoration",
+        "title": {
+          "en": "Water Damage Cleanup and Restoration",
+          "ar": "معالجة أضرار المياه وإعادة التأهيل"
+        },
+        "image": "/images/discovery/water-damage-restoration.webp",
+        "position": "center",
+        "photoId": 28447774,
+        "source": "https://www.pexels.com/photo/28447774/",
+        "imageSmall": "/images/discovery/water-damage-restoration-480.webp"
+      }
+    ],
+    "menuLabel": {
+      "en": "Contractors",
+      "ar": "المقاولات والترميم"
+    }
+  },
+  {
+    "slug": "pool-spa",
+    "label": {
+      "en": "Pool & Spa",
+      "ar": "صيانة المسابح والجاكوزي"
+    },
+    "group": {
+      "en": "Exterior",
+      "ar": "الخارجية"
+    },
+    "icon": "M3 18c3-4 6 4 9 0s6 4 9 0 M3 22c3-4 6 4 9 0s6 4 9 0 M8 15V4a2 2 0 0 1 4 0 M8 8h9 M8 12h9 M17 15V4a2 2 0 0 1 4 0",
+    "services": [
+      {
+        "slug": "swimming-pool-repair",
+        "title": {
+          "en": "Swimming Pool Repair",
+          "ar": "إصلاح المسابح"
+        },
+        "image": "/images/discovery/swimming-pool-repair.webp",
+        "position": "center",
+        "photoId": 8028674,
+        "source": "https://www.pexels.com/photo/8028674/",
+        "imageSmall": "/images/discovery/swimming-pool-repair-480.webp"
+      },
+      {
+        "slug": "hot-tub-spa-repair",
+        "title": {
+          "en": "Hot Tub and Spa Repair",
+          "ar": "إصلاح أحواض الجاكوزي والسبا"
+        },
+        "image": "/images/discovery/hot-tub-spa-repair.webp",
+        "position": "center",
+        "photoId": 30302449,
+        "source": "https://www.pexels.com/photo/30302449/",
+        "imageSmall": "/images/discovery/hot-tub-spa-repair-480.webp"
+      },
+      {
+        "slug": "swimming-pool-maintenance",
+        "title": {
+          "en": "Swimming Pool Cleaning, Maintenance, and Inspection",
+          "ar": "تنظيف وصيانة وفحص المسابح"
+        },
+        "image": "/images/discovery/swimming-pool-maintenance.webp",
+        "position": "35% center",
+        "photoId": 6436202,
+        "source": "https://www.pexels.com/photo/6436202/",
+        "imageSmall": "/images/discovery/swimming-pool-maintenance-480.webp"
+      },
+      {
+        "slug": "hot-tub-spa-maintenance",
+        "title": {
+          "en": "Hot Tub and Spa Cleaning and Maintenance",
+          "ar": "تنظيف وصيانة الجاكوزي والسبا"
+        },
+        "image": "/images/discovery/hot-tub-spa-maintenance.webp",
+        "position": "center",
+        "photoId": 6957081,
+        "source": "https://www.pexels.com/photo/6957081/",
+        "imageSmall": "/images/discovery/hot-tub-spa-maintenance-480.webp"
+      }
+    ],
+    "menuLabel": {
+      "en": "Pool & Spa",
+      "ar": "صيانة المسابح والجاكوزي"
+    }
+  },
+  {
+    "slug": "roofing",
+    "label": {
+      "en": "Roofing",
+      "ar": "صيانة وعزل الأسطح"
+    },
+    "group": {
+      "en": "Exterior",
+      "ar": "الخارجية"
+    },
+    "icon": "M2 12L12 3l10 9 M5 10v11h14V10 M9 7l10 9 M5 12l10 9",
+    "services": [
+      {
+        "slug": "gutter-cleaning",
+        "title": {
+          "en": "Gutter Cleaning and Maintenance",
+          "ar": "تنظيف وصيانة مزاريب المياه"
+        },
+        "image": "/images/discovery/gutter-cleaning.webp",
+        "position": "center",
+        "photoId": 34006744,
+        "source": "https://www.pexels.com/photo/34006744/",
+        "imageSmall": "/images/discovery/gutter-cleaning-480.webp"
+      },
+      {
+        "slug": "roof-maintenance",
+        "title": {
+          "en": "Roof Repair or Maintenance",
+          "ar": "إصلاح وصيانة الأسطح"
+        },
+        "image": "/images/discovery/roof-maintenance.webp",
+        "position": "center",
+        "photoId": 38781390,
+        "source": "https://www.pexels.com/photo/38781390/",
+        "imageSmall": "/images/discovery/roof-maintenance-480.webp"
+      },
+      {
+        "slug": "duct-vent-installation",
+        "title": {
+          "en": "Duct and Vent Installation or Removal",
+          "ar": "تركيب وإزالة مجاري الهواء وفتحات التهوية"
+        },
+        "image": "/images/discovery/duct-vent-installation.webp",
+        "position": "center",
+        "photoId": 29086539,
+        "source": "https://www.pexels.com/photo/29086539/",
+        "imageSmall": "/images/discovery/duct-vent-installation-480.webp"
+      },
+      {
+        "slug": "roof-installation",
+        "title": {
+          "en": "Roof Installation or Replacement",
+          "ar": "تركيب واستبدال الأسقف"
+        },
+        "image": "/images/discovery/roof-installation.webp",
+        "position": "center",
+        "photoId": 38781399,
+        "source": "https://www.pexels.com/photo/38781399/",
+        "imageSmall": "/images/discovery/roof-installation-480.webp"
+      }
+    ],
+    "menuLabel": {
+      "en": "Roofing",
+      "ar": "صيانة وعزل الأسطح"
+    }
+  },
+  {
+    "slug": "windows-doors",
+    "label": {
+      "en": "Windows & Doors",
+      "ar": "الأبواب والنوافذ"
+    },
+    "group": {
+      "en": "Exterior",
+      "ar": "الخارجية"
+    },
+    "icon": "M3 3h18v18H3z M12 3v18 M3 12h18",
+    "services": [
+      {
+        "slug": "garage-door-repair",
+        "title": {
+          "en": "Garage Door Repair",
+          "ar": "إصلاح أبواب الكراج"
+        },
+        "image": "/images/discovery/garage-door-repair.webp",
+        "position": "center",
+        "photoId": 28384138,
+        "source": "https://www.pexels.com/photo/28384138/",
+        "imageSmall": "/images/discovery/garage-door-repair-480.webp"
+      },
+      {
+        "slug": "window-repair",
+        "title": {
+          "en": "Window Repair",
+          "ar": "إصلاح النوافذ"
+        },
+        "image": "/images/discovery/window-repair.webp",
+        "position": "center",
+        "photoId": 5768107,
+        "source": "https://www.pexels.com/photo/5768107/",
+        "imageSmall": "/images/discovery/window-repair-480.webp"
+      },
+      {
+        "slug": "window-treatment-installation",
+        "title": {
+          "en": "Window Treatment Installation or Repair",
+          "ar": "تركيب وإصلاح الستائر وتغطيات النوافذ"
+        },
+        "image": "/images/discovery/window-treatment-installation.webp",
+        "position": "center",
+        "photoId": 7373484,
+        "source": "https://www.pexels.com/photo/7373484/",
+        "imageSmall": "/images/discovery/window-treatment-installation-480.webp"
+      },
+      {
+        "slug": "door-installation",
+        "title": {
+          "en": "Door Installation",
+          "ar": "تركيب الأبواب"
+        },
+        "image": "/images/discovery/door-installation.webp",
+        "position": "left center",
+        "photoId": 5691545,
+        "source": "https://www.pexels.com/photo/5691545/",
+        "imageSmall": "/images/discovery/door-installation-480.webp"
+      }
+    ],
+    "menuLabel": {
+      "en": "Windows & Doors",
+      "ar": "الأبواب والنوافذ"
+    }
+  },
+  {
+    "slug": "concrete-masonry",
+    "label": {
+      "en": "Concrete & Masonry",
+      "ar": "الخرسانة وأعمال البناء"
+    },
+    "group": {
+      "en": "More Services",
+      "ar": "خدمات أخرى"
+    },
+    "icon": "M2 7h20v14H2z M2 14h20 M8 7v7 M15 14v7 M15 7v7 M7 2h10v5",
+    "services": [
+      {
+        "slug": "concrete-maintenance",
+        "title": {
+          "en": "Concrete Repair and Maintenance",
+          "ar": "إصلاح وصيانة الخرسانة"
+        },
+        "image": "/images/discovery/concrete-maintenance.webp",
+        "position": "center",
+        "photoId": 5214202,
+        "source": "https://www.pexels.com/photo/5214202/",
+        "imageSmall": "/images/discovery/concrete-maintenance-480.webp"
+      },
+      {
+        "slug": "concrete-installation",
+        "title": {
+          "en": "Concrete Installation",
+          "ar": "صب وتنفيذ الخرسانة"
+        },
+        "image": "/images/discovery/concrete-installation.webp",
+        "position": "center",
+        "photoId": 26107203,
+        "source": "https://www.pexels.com/photo/26107203/",
+        "imageSmall": "/images/discovery/concrete-installation-480.webp"
+      },
+      {
+        "slug": "stucco-application",
+        "title": {
+          "en": "Stucco Application",
+          "ar": "أعمال القصارة والتلييس"
+        },
+        "image": "/images/discovery/stucco-application.webp",
+        "position": "center",
+        "photoId": 5242049,
+        "source": "https://www.pexels.com/photo/5242049/",
+        "imageSmall": "/images/discovery/stucco-application-480.webp"
+      },
+      {
+        "slug": "masonry-construction",
+        "title": {
+          "en": "Masonry Construction Services",
+          "ar": "أعمال البناء والحجر والطوب"
+        },
+        "image": "/images/discovery/masonry-construction.webp",
+        "position": "center",
+        "photoId": 33894661,
+        "source": "https://www.pexels.com/photo/33894661/",
+        "imageSmall": "/images/discovery/masonry-construction-480.webp"
+      }
+    ],
+    "menuLabel": {
+      "en": "Concrete & Masonry",
+      "ar": "الخرسانة وأعمال البناء"
+    }
+  },
+  {
+    "slug": "pest-control",
+    "label": {
+      "en": "Exterminators",
+      "ar": "مكافحة الحشرات والآفات"
+    },
+    "group": {
+      "en": "More Services",
+      "ar": "خدمات أخرى"
+    },
+    "icon": "M9 7h6l3 5v7l-6 3-6-3v-7z M9 7L6 3 M15 7l3-4 M2 11l4 3 M22 11l-4 3 M2 21l4-3 M22 21l-4-3 M12 8v13",
+    "services": [
+      {
+        "slug": "rodent-animal-removal",
+        "title": {
+          "en": "Rodent and Animal Removal",
+          "ar": "إبعاد القوارض والحيوانات غير المرغوبة"
+        },
+        "image": "/images/discovery/rodent-animal-removal.webp",
+        "position": "center",
+        "photoId": 19029037,
+        "source": "https://www.pexels.com/photo/19029037/",
+        "imageSmall": "/images/discovery/rodent-animal-removal-480.webp"
+      },
+      {
+        "slug": "termite-control",
+        "title": {
+          "en": "Termite Control Services",
+          "ar": "مكافحة النمل الأبيض"
+        },
+        "image": "/images/discovery/termite-control.webp",
+        "position": "center",
+        "photoId": 12895278,
+        "source": "https://www.pexels.com/photo/12895278/",
+        "imageSmall": "/images/discovery/termite-control-480.webp"
+      },
+      {
+        "slug": "bed-bug-extermination",
+        "title": {
+          "en": "Bed Bug Extermination",
+          "ar": "مكافحة بق الفراش"
+        },
+        "image": "/images/discovery/bed-bug-extermination.webp",
+        "position": "center",
+        "photoId": 9899874,
+        "source": "https://www.pexels.com/photo/9899874/",
+        "imageNote": "Illustrative mattress context; not a photograph of treatment or a claimed infestation.",
+        "imageSmall": "/images/discovery/bed-bug-extermination-480.webp"
+      },
+      {
+        "slug": "pest-control-services",
+        "title": {
+          "en": "Pest Control Services",
+          "ar": "مكافحة الحشرات والآفات"
+        },
+        "image": "/images/discovery/pest-control-services.webp",
+        "position": "center",
+        "photoId": 19789841,
+        "source": "https://www.pexels.com/photo/19789841/",
+        "imageSmall": "/images/discovery/pest-control-services-480.webp"
+      }
+    ],
+    "menuLabel": {
+      "en": "Exterminators",
+      "ar": "مكافحة الحشرات والآفات"
+    }
+  }
+]

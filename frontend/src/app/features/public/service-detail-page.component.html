@@ -1,1 +1,122 @@
-<div class="fm-container detail-page"><nav class="breadcrumb" aria-label="Breadcrumb"><a routerLink="/">{{ar()?'الرئيسية':'Home'}}</a><span>/</span><a routerLink="/services">{{i18n.t().nav.services}}</a></nav>@if(loading()){<div class="skeleton detail-skeleton" aria-busy="true"></div>} @else if(error()){<section class="detail-error" role="alert"><h1>{{ar()?'الخدمة غير متاحة حالياً':'This service is currently unavailable'}}</h1><p>{{ar()?'قد تكون الخدمة غير متاحة، أو حدث خطأ في الاتصال.':'The service may be unavailable, or the connection may have failed.'}}</p><a class="fm-link-button" routerLink="/services">{{ar()?'العودة للخدمات':'Back to services'}}</a></section>} @else if(service();as svc){<header class="detail-heading"><span class="eyebrow">{{svc.category?.name?.[i18n.lang()]}}</span><h1>{{svc.title[i18n.lang()]}}</h1><p>{{svc.description[i18n.lang()]}}</p></header><div class="detail-layout"><div class="detail-main"><app-service-image class="detail-photo" [category]="svc.category?.slug||''" [priority]="true" sizes="(max-width:800px) 100vw, 65vw"/><section class="detail-section"><h2>{{ar()?'ما الذي تتضمنه الخدمة؟':'A clearer view of the service'}}</h2><p>{{svc.description[i18n.lang()]}}</p><div class="fact-grid"><div><small>{{ar()?'المدة التقديرية':'Estimated duration'}}</small><strong>{{svc.defaultDurationMinutes}} {{ar()?'دقيقة':'minutes'}}</strong></div><div><small>{{ar()?'نوع التسعير':'Pricing'}}</small><strong>{{pricingLabel(svc.pricingPolicy.pricingType,ar())}}</strong></div></div></section><section class="detail-section"><h2>{{ar()?'قبل اختيار المزود':'Before choosing a professional'}}</h2><p>{{ar()?'قارن عرض المزود ونطاق العمل ومناطق التغطية. السعر المعروض في الدليل استرشادي وقد يختلف عن عرض المزود.':'Compare the professional’s offering, scope, and coverage. Catalog prices are indicative and may differ from provider offerings.'}}</p><a routerLink="/faq">{{ar()?'أسئلة حول الأسعار والاعتماد':'Questions about pricing and approval'}}</a></section></div><aside class="action-panel"><span class="eyebrow">{{ar()?'خطّط لمشروعك':'PLAN YOUR PROJECT'}}</span><small>{{pricingLabel(svc.pricingPolicy.pricingType,ar())}}</small><strong class="large-price">{{money(svc.pricingPolicy.indicativeAmountFils,i18n.lang())}}</strong><p>{{ar()?'سعر استرشادي للخدمة':'Indicative service price'}}</p><a class="fm-link-button" routerLink="/providers" [queryParams]="{serviceSlug:svc.slug,governorate:governorate()||null}">{{ar()?'اعثر على مزود خدمة':'Find professionals'}} <span class="direction-arrow">→</span></a><hr><h3>{{ar()?'اختر بثقة أكبر':'Know your options'}}</h3><p>{{ar()?'اطلع على الملفات والخبرة وساعات العمل. اختر مزوداً للاطلاع على خدماته ومواعيده المتاحة.':'Explore profiles, experience, and working hours. Choose a professional to explore their offerings and available appointments.'}}</p></aside></div>@if(related().length){<section class="related-section"><h2>{{ar()?'خدمات قد تحتاجها أيضاً':'More for your home'}}</h2><div class="related-grid">@for(item of related();track item.id){<app-service-card [service]="item" [governorate]="governorate()"/>}</div></section>}}</div>
+<div class="fm-container detail-page">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a routerLink="/">{{ ar() ? 'الرئيسية' : 'Home' }}</a
+    ><span>/</span><a routerLink="/services">{{ i18n.t().nav.services }}</a>
+  </nav>
+  @if (loading()) {
+    <div class="skeleton detail-skeleton" aria-busy="true"></div>
+  } @else if (error()) {
+    <section class="detail-error" role="alert">
+      <h1>{{ ar() ? 'الخدمة غير متاحة حالياً' : 'This service is currently unavailable' }}</h1>
+      <p>
+        {{
+          ar()
+            ? 'قد تكون الخدمة غير متاحة، أو حدث خطأ في الاتصال.'
+            : 'The service may be unavailable, or the connection may have failed.'
+        }}
+      </p>
+      <a class="fm-link-button" routerLink="/services">{{
+        ar() ? 'العودة للخدمات' : 'Back to services'
+      }}</a>
+    </section>
+  } @else if (service(); as svc) {
+    <header class="detail-heading">
+      <span class="eyebrow">{{ svc.category?.name?.[i18n.lang()] }}</span>
+      <h1>{{ svc.title[i18n.lang()] }}</h1>
+      <p>{{ svc.description[i18n.lang()] }}</p>
+    </header>
+    <div class="detail-layout">
+      <div class="detail-main">
+        <app-service-image
+          class="detail-photo"
+          [category]="svc.category?.slug || ''"
+          [serviceSlug]="svc.slug"
+          [priority]="true"
+          sizes="(max-width:800px) 100vw, 65vw"
+        />
+        <section class="detail-section">
+          <h2>{{ ar() ? 'ما الذي تتضمنه الخدمة؟' : 'A clearer view of the service' }}</h2>
+          <p>{{ svc.description[i18n.lang()] }}</p>
+          @if (svc.pricingPolicy) {
+            <div class="fact-grid">
+              <div>
+                <small>{{ ar() ? 'المدة التقديرية' : 'Estimated duration' }}</small
+                ><strong>{{ svc.defaultDurationMinutes }} {{ ar() ? 'دقيقة' : 'minutes' }}</strong>
+              </div>
+              <div>
+                <small>{{ ar() ? 'نوع التسعير' : 'Pricing' }}</small
+                ><strong>{{ pricingLabel(svc.pricingPolicy.pricingType, ar()) }}</strong>
+              </div>
+            </div>
+          } @else {
+            <p>
+              {{
+                ar()
+                  ? 'يتم الاتفاق على السعر والمدة مع المزود بعد مراجعة نطاق العمل.'
+                  : 'Agree the price and duration with an available professional after discussing the scope.'
+              }}
+            </p>
+          }
+        </section>
+        <section class="detail-section">
+          <h2>{{ ar() ? 'قبل اختيار المزود' : 'Before choosing a professional' }}</h2>
+          <p>
+            {{
+              ar()
+                ? 'قارن عرض المزود ونطاق العمل ومناطق التغطية. السعر المعروض في الدليل استرشادي وقد يختلف عن عرض المزود.'
+                : 'Compare the professional’s offering, scope, and coverage. Catalog prices are indicative and may differ from provider offerings.'
+            }}
+          </p>
+          <a routerLink="/faq">{{
+            ar() ? 'أسئلة حول الأسعار والاعتماد' : 'Questions about pricing and approval'
+          }}</a>
+        </section>
+      </div>
+      <aside class="action-panel">
+        <span class="eyebrow">{{ ar() ? 'خطّط لمشروعك' : 'PLAN YOUR PROJECT' }}</span>
+        @if (svc.pricingPolicy) {
+          <small>{{ pricingLabel(svc.pricingPolicy.pricingType, ar()) }}</small
+          ><strong class="large-price">{{
+            money(svc.pricingPolicy.indicativeAmountFils, i18n.lang())
+          }}</strong>
+          <p>{{ ar() ? 'سعر استرشادي للخدمة' : 'Indicative service price' }}</p>
+        } @else {
+          <h2>{{ ar() ? 'اطلب عرض سعر' : 'Request a quote' }}</h2>
+          <p>
+            {{
+              ar()
+                ? 'لا يتوفر سعر استرشادي منشور لهذه الخدمة. تحقق من توفر المزودين في منطقتك.'
+                : 'No indicative price is published for this service. Check professional availability in your area.'
+            }}
+          </p>
+        }
+        <a
+          class="fm-link-button"
+          routerLink="/providers"
+          [queryParams]="{ serviceSlug: svc.slug, governorate: governorate() || null }"
+          >{{ ar() ? 'اعثر على مزود خدمة' : 'Find professionals' }}
+          <span class="direction-arrow">→</span></a
+        >
+        <hr />
+        <h3>{{ ar() ? 'اختر بثقة أكبر' : 'Know your options' }}</h3>
+        <p>
+          {{
+            ar()
+              ? 'اطلع على الملفات والخبرة وساعات العمل. اختر مزوداً للاطلاع على خدماته ومواعيده المتاحة.'
+              : 'Explore profiles, experience, and working hours. Choose a professional to explore their offerings and available appointments.'
+          }}
+        </p>
+      </aside>
+    </div>
+    @if (related().length) {
+      <section class="related-section">
+        <h2>{{ ar() ? 'خدمات قد تحتاجها أيضاً' : 'More for your home' }}</h2>
+        <div class="related-grid">
+          @for (item of related(); track item.id) {
+            <app-service-card [service]="item" [governorate]="governorate()" />
+          }
+        </div>
+      </section>
+    }
+  }
+</div>

@@ -1,6 +1,8 @@
 import { Transform, Type } from 'class-transformer';
 import {
   IsBoolean,
+  IsDefined,
+  ValidateIf,
   IsEnum,
   IsInt,
   IsMongoId,
@@ -156,9 +158,11 @@ export class CreateServiceDto {
   @Type(() => LocalizedTextDto)
   description!: LocalizedTextDto;
 
+  @ValidateIf((o: CreateServiceDto) => o.pricingPolicy !== null)
+  @IsDefined()
   @ValidateNested()
   @Type(() => ServicePricingPolicyDto)
-  pricingPolicy!: ServicePricingPolicyDto;
+  pricingPolicy!: ServicePricingPolicyDto | null;
 
   @Type(() => Number)
   @IsInt()
@@ -202,7 +206,7 @@ export class UpdateServiceDto {
   @IsOptional()
   @ValidateNested()
   @Type(() => ServicePricingPolicyDto)
-  pricingPolicy?: ServicePricingPolicyDto;
+  pricingPolicy?: ServicePricingPolicyDto | null;
 
   @IsOptional()
   @Type(() => Number)

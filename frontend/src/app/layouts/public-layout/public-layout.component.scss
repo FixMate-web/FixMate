@@ -33,17 +33,10 @@
 }
 
 .brand-emblem {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #009fd9;
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 900;
-  letter-spacing: -0.5px;
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .brand-wordmark {
@@ -121,151 +114,8 @@ nav {
 .explore-backdrop {
   position: fixed;
   inset: 72px 0 0 0;
-  background: rgba(15, 23, 42, 0.12);
+  background: rgba(15, 23, 42, 0.28);
   z-index: 210;
-}
-
-.explore-mega-menu {
-  position: absolute;
-  top: calc(100% + 12px);
-  inset-inline-end: 0;
-  width: 560px;
-  max-width: calc(100vw - 32px);
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 4px;
-  box-shadow: 0 20px 48px rgba(7, 47, 64, 0.16);
-  display: grid;
-  grid-template-columns: 230px 1fr;
-  max-height: calc(100svh - 100px);
-  overflow-y: auto;
-  overflow: hidden;
-  z-index: 220;
-}
-
-.explore-mega-left {
-  background: white;
-  border-inline-end: 1px solid #e5e7eb;
-  padding: 12px 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.explore-cat-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  text-align: start;
-  padding: 12px 18px;
-  border: 0;
-  background: transparent;
-  font: inherit;
-  font-size: 14px;
-  font-weight: 400;
-  color: #374151;
-  cursor: pointer;
-  transition:
-    background-color 0.14s ease,
-    color 0.14s ease;
-
-  &:hover,
-  &.selected {
-    background: #eef8fc;
-    color: #009fd9;
-  }
-}
-
-.explore-mega-right {
-  padding: 20px 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.explore-mega-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #f1f5f9;
-
-  h3 {
-    margin: 0;
-    font-size: 15px;
-    font-weight: 800;
-    color: #111827;
-  }
-
-  .explore-cat-link {
-    font-size: 13px;
-    font-weight: 700;
-    color: #009fd9;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-}
-
-.explore-service-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.explore-service-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  text-decoration: none;
-  color: #1f2937;
-  transition: background-color 0.14s ease;
-
-  &:hover {
-    background: #f8fafc;
-    color: #009fd9;
-  }
-
-  .explore-service-name {
-    font-size: 14px;
-    font-weight: 400;
-  }
-
-  .explore-service-price {
-    font-size: 12px;
-    font-weight: 700;
-    color: #072f40;
-    background: #eef8fc;
-    padding: 4px 10px;
-    border-radius: 999px;
-    white-space: nowrap;
-  }
-}
-
-.explore-mega-footer {
-  padding-top: 12px;
-  border-top: 1px solid #f1f5f9;
-
-  .browse-all-link {
-    font-size: 13px;
-    font-weight: 700;
-    color: #009fd9;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 }
 
 .nav-actions {
@@ -342,6 +192,7 @@ nav {
   color: #cbd5e1;
   padding: 64px 0 28px;
 
+  .brand-emblem { background:white; border-radius:6px; padding:2px; }
   .footer-brand {
     color: #ffffff;
     margin-bottom: 14px;
@@ -410,6 +261,7 @@ nav {
 @media (max-width: 960px) {
   .header-inner {
     flex-wrap: wrap;
+    row-gap: 8px;
     padding-block: 12px;
     min-height: 64px;
     padding-inline: 20px;
@@ -433,22 +285,18 @@ nav {
     width: 100%;
     flex-basis: 100%;
     flex-direction: column;
+    justify-content: flex-start;
     align-items: stretch;
     gap: 12px;
+    > * { flex-shrink:0; }
     padding: 16px 0 8px;
     border-top: 1px solid #f1f5f9;
   }
 
   nav.open {
     display: flex;
-  }
-
-  .explore-mega-menu {
-    position: static;
-    width: 100%;
-    grid-template-columns: 1fr;
-    box-shadow: none;
-    margin-top: 8px;
+    max-height: calc(100svh - 80px);
+    overflow-y: auto;
   }
 
   .explore-backdrop {

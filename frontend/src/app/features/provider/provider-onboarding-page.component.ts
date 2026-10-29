@@ -1,5 +1,5 @@
-import {GOVERNORATES,DAYS} from '../../shared/marketplace/marketplace.utils';
-import {FmConfirmDialogComponent} from '../../shared/ui/fm-confirm-dialog.component';
+import { GOVERNORATES, DAYS } from '../../shared/marketplace/marketplace.utils';
+import { FmConfirmDialogComponent } from '../../shared/ui/fm-confirm-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -36,7 +36,9 @@ import {
   template: `
     <div class="provider-onboarding-page">
       <header class="page-header">
-        <span class="eyebrow">{{ar() ? 'مساحة العمل المهنية' : 'YOUR PROFESSIONAL WORKSPACE'}}</span>
+        <span class="eyebrow">{{
+          ar() ? 'مساحة العمل المهنية' : 'YOUR PROFESSIONAL WORKSPACE'
+        }}</span>
         <h1>{{ i18n.t().providers.onboardingTitle }}</h1>
         <p>{{ i18n.t().providers.onboardingSubtitle }}</p>
       </header>
@@ -56,8 +58,14 @@ import {
       @if (profile(); as p) {
         <!-- Status & Submission Banner -->
         <app-fm-card
-          [title]="i18n.lang() === 'ar' ? 'حالة طلب الإدراج والاعتماد' : 'Marketplace Approval Status'"
-          [subtitle]="ar() ? 'أكمل بياناتك وخدماتك وساعات عملك، ثم أرسل الملف للمراجعة.' : 'Complete your profile, services, and working hours, then submit for review.'"
+          [title]="
+            i18n.lang() === 'ar' ? 'حالة طلب الإدراج والاعتماد' : 'Marketplace Approval Status'
+          "
+          [subtitle]="
+            ar()
+              ? 'أكمل بياناتك وخدماتك وساعات عملك، ثم أرسل الملف للمراجعة.'
+              : 'Complete your profile, services, and working hours, then submit for review.'
+          "
         >
           <div class="status-row">
             <div class="status-meta">
@@ -66,7 +74,9 @@ import {
               </app-fm-badge>
               @if (p.approvalFeedback.rejectionOrSuspensionReason) {
                 <p class="reason-text">
-                  <strong>{{ i18n.lang() === 'ar' ? 'ملاحظات المراجعة:' : 'Review Reason:' }}</strong>
+                  <strong>{{
+                    i18n.lang() === 'ar' ? 'ملاحظات المراجعة:' : 'Review Reason:'
+                  }}</strong>
                   {{ p.approvalFeedback.rejectionOrSuspensionReason }}
                 </p>
               }
@@ -92,7 +102,11 @@ import {
         <div class="onboarding-grid">
           <!-- Profile & Coverage Form -->
           <app-fm-card
-            [title]="i18n.lang() === 'ar' ? 'البيانات المهنية ومناطق التغطية' : 'Professional Profile & Coverage'"
+            [title]="
+              i18n.lang() === 'ar'
+                ? 'البيانات المهنية ومناطق التغطية'
+                : 'Professional Profile & Coverage'
+            "
             id="professional-profile"
           >
             <form class="provider-form" [formGroup]="profileForm" (ngSubmit)="saveProfile()">
@@ -118,22 +132,47 @@ import {
 
               <div class="field">
                 <label for="prov-bio-ar">
-                  {{ i18n.lang() === 'ar' ? 'النبذة المهنية (بالعربية - ١٠ أحرف على الأقل)' : 'Biography (Arabic, min 10 chars)' }}
+                  {{
+                    i18n.lang() === 'ar'
+                      ? 'النبذة المهنية (بالعربية - ١٠ أحرف على الأقل)'
+                      : 'Biography (Arabic, min 10 chars)'
+                  }}
                 </label>
                 <textarea id="prov-bio-ar" rows="3" formControlName="bioAr"></textarea>
               </div>
 
               <div class="field">
                 <label for="prov-bio-en">
-                  {{ i18n.lang() === 'ar' ? 'النبذة المهنية (بالإنجليزية - ١٠ أحرف على الأقل)' : 'Biography (English, min 10 chars)' }}
+                  {{
+                    i18n.lang() === 'ar'
+                      ? 'النبذة المهنية (بالإنجليزية - ١٠ أحرف على الأقل)'
+                      : 'Biography (English, min 10 chars)'
+                  }}
                 </label>
                 <textarea id="prov-bio-en" rows="3" formControlName="bioEn" dir="ltr"></textarea>
               </div>
 
-              <fieldset class="region-picker"><legend>{{ar()?'محافظات تقديم الخدمة':'Service governorates'}}</legend><div>@for(g of governorates;track g[0]){<label><input type="checkbox" [checked]="selectedGovernorate(g[0])" (change)="toggleGovernorate(g[0])">{{g[ar()?1:0]}}</label>}</div></fieldset>
+              <fieldset class="region-picker">
+                <legend>{{ ar() ? 'محافظات تقديم الخدمة' : 'Service governorates' }}</legend>
+                <div>
+                  @for (g of governorates; track g[0]) {
+                    <label
+                      ><input
+                        type="checkbox"
+                        [checked]="selectedGovernorate(g[0])"
+                        (change)="toggleGovernorate(g[0])"
+                      />{{ g[ar() ? 1 : 0] }}</label
+                    >
+                  }
+                </div>
+              </fieldset>
               <div class="field">
                 <label for="prov-areas">
-                  {{ i18n.lang() === 'ar' ? 'المناطق / الأحياء المغطاة (مفصولة بفاصلة)' : 'Coverage Areas / Neighborhoods (comma-separated)' }}
+                  {{
+                    i18n.lang() === 'ar'
+                      ? 'المناطق / الأحياء المغطاة (مفصولة بفاصلة)'
+                      : 'Coverage Areas / Neighborhoods (comma-separated)'
+                  }}
                 </label>
                 <input
                   id="prov-areas"
@@ -156,20 +195,30 @@ import {
 
           <!-- Attach / Upsert Service Offering -->
           <app-fm-card
-            [title]="i18n.lang() === 'ar' ? 'إضافة أو تحديث خدمة مقدمة' : 'Attach Catalog Service Offering'"
+            [title]="
+              i18n.lang() === 'ar' ? 'إضافة أو تحديث خدمة مقدمة' : 'Attach Catalog Service Offering'
+            "
             id="professional-offerings"
           >
             <form class="provider-form" [formGroup]="offeringForm" (ngSubmit)="saveOffering()">
               <div class="field">
                 <label for="off-service">
-                  {{ i18n.lang() === 'ar' ? 'اختر الخدمة من الكتالوج' : 'Select Active Catalog Service' }}
+                  {{
+                    i18n.lang() === 'ar'
+                      ? 'اختر الخدمة من الكتالوج'
+                      : 'Select Active Catalog Service'
+                  }}
                 </label>
                 <select id="off-service" formControlName="serviceId">
-                  <option value="">{{ar()?'اختر خدمة':'Select a service'}}</option>
+                  <option value="">{{ ar() ? 'اختر خدمة' : 'Select a service' }}</option>
                   @for (svc of catalogServices(); track svc.id) {
                     <option [value]="svc.id">
                       {{ i18n.lang() === 'ar' ? svc.title.ar : svc.title.en }} ({{
-                        formatFils(svc.pricingPolicy.indicativeAmountFils)
+                        svc.pricingPolicy
+                          ? formatFils(svc.pricingPolicy.indicativeAmountFils)
+                          : ar()
+                            ? 'حدد عرضك'
+                            : 'Set your offering price'
                       }})
                     </option>
                   }
@@ -178,16 +227,20 @@ import {
 
               <div class="field-row">
                 <div class="field">
-                  <label for="off-pricing-type">{{ar()?'نوع التسعير':'Pricing type'}}</label>
+                  <label for="off-pricing-type">{{ ar() ? 'نوع التسعير' : 'Pricing type' }}</label>
                   <select id="off-pricing-type" formControlName="pricingType">
-                    <option value="FIXED">{{i18n.t().catalog.pricingFixed}}</option>
-                    <option value="STARTING_AT">{{i18n.t().catalog.pricingStartingAt}}</option>
-                    <option value="INSPECTION_ONLY">{{i18n.t().catalog.pricingInspectionOnly}}</option>
+                    <option value="FIXED">{{ i18n.t().catalog.pricingFixed }}</option>
+                    <option value="STARTING_AT">{{ i18n.t().catalog.pricingStartingAt }}</option>
+                    <option value="INSPECTION_ONLY">
+                      {{ i18n.t().catalog.pricingInspectionOnly }}
+                    </option>
                   </select>
                 </div>
 
                 <div class="field">
-                  <label for="off-price-fils">{{ar()?'السعر بالدينار الأردني':'Price in Jordanian dinars'}}</label>
+                  <label for="off-price-fils">{{
+                    ar() ? 'السعر بالدينار الأردني' : 'Price in Jordanian dinars'
+                  }}</label>
                   <input
                     id="off-price-fils"
                     type="number"
@@ -200,7 +253,9 @@ import {
               </div>
 
               <div class="field">
-                <label for="off-duration">{{ar()?'المدة التقديرية':'Estimated duration'}}</label>
+                <label for="off-duration">{{
+                  ar() ? 'المدة التقديرية' : 'Estimated duration'
+                }}</label>
                 <select id="off-duration" formControlName="estimatedDurationMinutes">
                   <option [ngValue]="60">60 min</option>
                   <option [ngValue]="90">90 min</option>
@@ -223,7 +278,11 @@ import {
             <!-- Attached Offerings List -->
             <div class="offerings-section">
               <h3>
-                {{ i18n.lang() === 'ar' ? 'الخدمات المربوطة بملفك' : 'Your Attached Service Offerings' }}
+                {{
+                  i18n.lang() === 'ar'
+                    ? 'الخدمات المربوطة بملفك'
+                    : 'Your Attached Service Offerings'
+                }}
               </h3>
               @if (p.offerings.length === 0) {
                 <p class="muted-note">
@@ -267,17 +326,155 @@ import {
           </app-fm-card>
         </div>
 
-        <app-fm-card id="professional-availability" [title]="ar()?'ساعات العمل الأسبوعية':'Weekly working hours'" [subtitle]="ar()?'بتوقيت عمّان، بفواصل نصف ساعة. احفظ التعديلات لتحديث ملفك.':'Amman time, in 30-minute steps. Save changes to update your profile.'">
-          <form [formGroup]="scheduleForm" (ngSubmit)="saveSchedule()"><div formArrayName="windows" class="schedule-editor">@for(window of windows.controls;track window;let n=$index){<div class="schedule-row" [formGroupName]="n"><div class="field"><label [for]="'day-'+n">{{ar()?'اليوم':'Day'}}</label><select [id]="'day-'+n" formControlName="dayOfWeek">@for(day of days;track day[0];let d=$index){<option [ngValue]="d">{{day[ar()?1:0]}}</option>}</select></div><div class="field"><label [for]="'start-'+n">{{ar()?'من':'From'}}</label><select [id]="'start-'+n" formControlName="startMinuteOfDay">@for(time of startTimes;track time){<option [ngValue]="time">{{formatMin(time)}}</option>}</select></div><div class="field"><label [for]="'end-'+n">{{ar()?'إلى':'To'}}</label><select [id]="'end-'+n" formControlName="endMinuteOfDay">@for(time of endTimes;track time){<option [ngValue]="time">{{formatMin(time)}}</option>}</select></div><button type="button" class="text-button" (click)="windows.removeAt(n)" [attr.aria-label]="(ar()?'حذف الفترة ':'Remove window ')+(n+1)">{{ar()?'حذف':'Remove'}}</button></div>} @empty {<p>{{ar()?'لم تحدد ساعات عمل بعد. أضف فترة واحدة على الأقل قبل تقديم الملف.':'No working hours yet. Add at least one window before submitting your profile.'}}</p>}</div><div class="schedule-actions"><button type="button" class="text-button" [disabled]="windows.length>=28" (click)="addWindow()">+ {{ar()?'إضافة فترة عمل':'Add working hours'}}</button><app-fm-button type="submit" [loading]="savingSchedule()" [disabled]="savingSchedule()">{{ar()?'حفظ ساعات العمل':'Save working hours'}}</app-fm-button></div></form>
+        <app-fm-card
+          id="professional-availability"
+          [title]="ar() ? 'ساعات العمل الأسبوعية' : 'Weekly working hours'"
+          [subtitle]="
+            ar()
+              ? 'بتوقيت عمّان، بفواصل نصف ساعة. احفظ التعديلات لتحديث ملفك.'
+              : 'Amman time, in 30-minute steps. Save changes to update your profile.'
+          "
+        >
+          <form [formGroup]="scheduleForm" (ngSubmit)="saveSchedule()">
+            <div formArrayName="windows" class="schedule-editor">
+              @for (window of windows.controls; track window; let n = $index) {
+                <div class="schedule-row" [formGroupName]="n">
+                  <div class="field">
+                    <label [for]="'day-' + n">{{ ar() ? 'اليوم' : 'Day' }}</label
+                    ><select [id]="'day-' + n" formControlName="dayOfWeek">
+                      @for (day of days; track day[0]; let d = $index) {
+                        <option [ngValue]="d">{{ day[ar() ? 1 : 0] }}</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label [for]="'start-' + n">{{ ar() ? 'من' : 'From' }}</label
+                    ><select [id]="'start-' + n" formControlName="startMinuteOfDay">
+                      @for (time of startTimes; track time) {
+                        <option [ngValue]="time">{{ formatMin(time) }}</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label [for]="'end-' + n">{{ ar() ? 'إلى' : 'To' }}</label
+                    ><select [id]="'end-' + n" formControlName="endMinuteOfDay">
+                      @for (time of endTimes; track time) {
+                        <option [ngValue]="time">{{ formatMin(time) }}</option>
+                      }
+                    </select>
+                  </div>
+                  <button
+                    type="button"
+                    class="text-button"
+                    (click)="windows.removeAt(n)"
+                    [attr.aria-label]="(ar() ? 'حذف الفترة ' : 'Remove window ') + (n + 1)"
+                  >
+                    {{ ar() ? 'حذف' : 'Remove' }}
+                  </button>
+                </div>
+              } @empty {
+                <p>
+                  {{
+                    ar()
+                      ? 'لم تحدد ساعات عمل بعد. أضف فترة واحدة على الأقل قبل تقديم الملف.'
+                      : 'No working hours yet. Add at least one window before submitting your profile.'
+                  }}
+                </p>
+              }
+            </div>
+            <div class="schedule-actions">
+              <button
+                type="button"
+                class="text-button"
+                [disabled]="windows.length >= 28"
+                (click)="addWindow()"
+              >
+                + {{ ar() ? 'إضافة فترة عمل' : 'Add working hours' }}</button
+              ><app-fm-button
+                type="submit"
+                [loading]="savingSchedule()"
+                [disabled]="savingSchedule()"
+                >{{ ar() ? 'حفظ ساعات العمل' : 'Save working hours' }}</app-fm-button
+              >
+            </div>
+          </form>
         </app-fm-card>
       }
     </div>
-    <app-fm-confirm-dialog [open]="!!pendingRemoval()" [title]="ar()?'حذف الخدمة من ملفك؟':'Remove this offering?'" [message]="ar()?'لن تظهر هذه الخدمة ضمن عروضك بعد حذفها. يمكنك إضافتها مجدداً.':'This service will no longer appear in your offerings. You can add it again later.'" [confirmLabel]="ar()?'حذف':'Remove'" [cancelLabel]="ar()?'إلغاء':'Cancel'" [destructive]="true" (confirmed)="confirmRemoval()" (cancelled)="pendingRemoval.set(null)"/>
+    <app-fm-confirm-dialog
+      [open]="!!pendingRemoval()"
+      [title]="ar() ? 'حذف الخدمة من ملفك؟' : 'Remove this offering?'"
+      [message]="
+        ar()
+          ? 'لن تظهر هذه الخدمة ضمن عروضك بعد حذفها. يمكنك إضافتها مجدداً.'
+          : 'This service will no longer appear in your offerings. You can add it again later.'
+      "
+      [confirmLabel]="ar() ? 'حذف' : 'Remove'"
+      [cancelLabel]="ar() ? 'إلغاء' : 'Cancel'"
+      [destructive]="true"
+      (confirmed)="confirmRemoval()"
+      (cancelled)="pendingRemoval.set(null)"
+    />
   `,
   styles: [
     `
-      .region-picker{border:1px solid var(--fm-color-border);border-radius:10px;padding:16px;legend{font-size:13px;font-weight:600}div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}label{display:flex;gap:8px;align-items:center;font-size:13px}input{accent-color:var(--fm-color-brand-teal)}}
-      .schedule-editor{display:grid;gap:16px}.schedule-row{display:grid;grid-template-columns:1.5fr 1fr 1fr auto;align-items:end;gap:16px;border-bottom:1px solid var(--fm-color-border);padding-bottom:16px}.schedule-actions{display:flex;gap:20px;align-items:center;justify-content:space-between;margin-top:24px;flex-wrap:wrap}@media(max-width:650px){.schedule-row{grid-template-columns:1fr 1fr}.region-picker div{grid-template-columns:1fr 1fr}.onboarding-grid{grid-template-columns:minmax(0,1fr)!important}.offering-row{flex-wrap:wrap}}
+      .region-picker {
+        border: 1px solid var(--fm-color-border);
+        border-radius: 10px;
+        padding: 16px;
+        legend {
+          font-size: 13px;
+          font-weight: 600;
+        }
+        div {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 12px;
+        }
+        label {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+          font-size: 13px;
+        }
+        input {
+          accent-color: var(--fm-color-brand-teal);
+        }
+      }
+      .schedule-editor {
+        display: grid;
+        gap: 16px;
+      }
+      .schedule-row {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr auto;
+        align-items: end;
+        gap: 16px;
+        border-bottom: 1px solid var(--fm-color-border);
+        padding-bottom: 16px;
+      }
+      .schedule-actions {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 24px;
+        flex-wrap: wrap;
+      }
+      @media (max-width: 650px) {
+        .schedule-row {
+          grid-template-columns: 1fr 1fr;
+        }
+        .region-picker div {
+          grid-template-columns: 1fr 1fr;
+        }
+        .onboarding-grid {
+          grid-template-columns: minmax(0, 1fr) !important;
+        }
+        .offering-row {
+          flex-wrap: wrap;
+        }
+      }
       .provider-onboarding-page {
         display: flex;
         flex-direction: column;
@@ -391,7 +588,20 @@ export class ProviderOnboardingPageComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly providersApi = inject(ProvidersApiService);
   private readonly catalogApi = inject(CatalogApiService);
-  readonly i18n = inject(LanguageService);readonly ar=()=>this.i18n.lang()==='ar';readonly governorates=GOVERNORATES;readonly days=DAYS;readonly startTimes=Array.from({length:48},(_,i)=>i*30);readonly endTimes=Array.from({length:48},(_,i)=>(i+1)*30);readonly savingSchedule=signal(false);readonly pendingRemoval=signal<string|null>(null);readonly scheduleForm=this.fb.group({windows:this.fb.array<ReturnType<typeof this.windowGroup>>([])});get windows(){return this.scheduleForm.controls.windows;}
+  readonly i18n = inject(LanguageService);
+  readonly ar = () => this.i18n.lang() === 'ar';
+  readonly governorates = GOVERNORATES;
+  readonly days = DAYS;
+  readonly startTimes = Array.from({ length: 48 }, (_, i) => i * 30);
+  readonly endTimes = Array.from({ length: 48 }, (_, i) => (i + 1) * 30);
+  readonly savingSchedule = signal(false);
+  readonly pendingRemoval = signal<string | null>(null);
+  readonly scheduleForm = this.fb.group({
+    windows: this.fb.array<ReturnType<typeof this.windowGroup>>([]),
+  });
+  get windows() {
+    return this.scheduleForm.controls.windows;
+  }
 
   readonly profile = signal<OwnerProviderProfile | null>(null);
   readonly catalogServices = signal<CatalogServiceItem[]>([]);
@@ -417,19 +627,79 @@ export class ProviderOnboardingPageComponent implements OnInit {
     estimatedDurationMinutes: [60, [Validators.required]],
   });
 
-  private windowGroup(day=0,start=540,end=1020){return this.fb.nonNullable.group({dayOfWeek:[day,Validators.required],startMinuteOfDay:[start,Validators.required],endMinuteOfDay:[end,Validators.required]});}
-  addWindow(){this.windows.push(this.windowGroup());}
-  selectedGovernorate(g:string){return this.profileForm.controls.governoratesCsv.value.split(',').map(v=>v.trim()).includes(g);}
-  toggleGovernorate(g:string){const values=this.profileForm.controls.governoratesCsv.value.split(',').map(v=>v.trim()).filter(Boolean);this.profileForm.controls.governoratesCsv.setValue((values.includes(g)?values.filter(v=>v!==g):[...values,g]).join(', '));}
-  confirmRemoval(){const id=this.pendingRemoval();this.pendingRemoval.set(null);if(id)this.removeOffering(id);}
-  saveSchedule(){const values=this.windows.getRawValue();this.errorMessage.set(null);this.successMessage.set(null);const invalid=values.some((w,i)=>w.startMinuteOfDay>=w.endMinuteOfDay||values.some((other,j)=>j!==i&&other.dayOfWeek===w.dayOfWeek&&w.startMinuteOfDay<other.endMinuteOfDay&&other.startMinuteOfDay<w.endMinuteOfDay));if(invalid){this.errorMessage.set(this.ar()?'يجب أن تكون النهاية بعد البداية، وأن لا تتداخل فترات اليوم نفسه.':'End time must follow start time, and windows on the same day must not overlap.');return;}this.savingSchedule.set(true);this.providersApi.updateMyProfile({weeklyAvailability:values}).subscribe({next:p=>{this.profile.set(p);this.savingSchedule.set(false);this.successMessage.set(this.ar()?'تم حفظ ساعات العمل.':'Working hours saved.');},error:(e:HttpErrorResponse)=>{this.savingSchedule.set(false);this.handleError(e);}});}
+  private windowGroup(day = 0, start = 540, end = 1020) {
+    return this.fb.nonNullable.group({
+      dayOfWeek: [day, Validators.required],
+      startMinuteOfDay: [start, Validators.required],
+      endMinuteOfDay: [end, Validators.required],
+    });
+  }
+  addWindow() {
+    this.windows.push(this.windowGroup());
+  }
+  selectedGovernorate(g: string) {
+    return this.profileForm.controls.governoratesCsv.value
+      .split(',')
+      .map((v) => v.trim())
+      .includes(g);
+  }
+  toggleGovernorate(g: string) {
+    const values = this.profileForm.controls.governoratesCsv.value
+      .split(',')
+      .map((v) => v.trim())
+      .filter(Boolean);
+    this.profileForm.controls.governoratesCsv.setValue(
+      (values.includes(g) ? values.filter((v) => v !== g) : [...values, g]).join(', '),
+    );
+  }
+  confirmRemoval() {
+    const id = this.pendingRemoval();
+    this.pendingRemoval.set(null);
+    if (id) this.removeOffering(id);
+  }
+  saveSchedule() {
+    const values = this.windows.getRawValue();
+    this.errorMessage.set(null);
+    this.successMessage.set(null);
+    const invalid = values.some(
+      (w, i) =>
+        w.startMinuteOfDay >= w.endMinuteOfDay ||
+        values.some(
+          (other, j) =>
+            j !== i &&
+            other.dayOfWeek === w.dayOfWeek &&
+            w.startMinuteOfDay < other.endMinuteOfDay &&
+            other.startMinuteOfDay < w.endMinuteOfDay,
+        ),
+    );
+    if (invalid) {
+      this.errorMessage.set(
+        this.ar()
+          ? 'يجب أن تكون النهاية بعد البداية، وأن لا تتداخل فترات اليوم نفسه.'
+          : 'End time must follow start time, and windows on the same day must not overlap.',
+      );
+      return;
+    }
+    this.savingSchedule.set(true);
+    this.providersApi.updateMyProfile({ weeklyAvailability: values }).subscribe({
+      next: (p) => {
+        this.profile.set(p);
+        this.savingSchedule.set(false);
+        this.successMessage.set(this.ar() ? 'تم حفظ ساعات العمل.' : 'Working hours saved.');
+      },
+      error: (e: HttpErrorResponse) => {
+        this.savingSchedule.set(false);
+        this.handleError(e);
+      },
+    });
+  }
   ngOnInit(): void {
     this.loadData();
   }
 
   loadData(): void {
-    this.catalogApi.getServices({ limit: 50 }).subscribe({
-      next: (res) => this.catalogServices.set(res.items),
+    this.catalogApi.getAllServices().subscribe({
+      next: (res) => this.catalogServices.set(res),
     });
 
     this.providersApi.getMyProfile().subscribe({
@@ -446,9 +716,7 @@ export class ProviderOnboardingPageComponent implements OnInit {
     return formatMinuteOfDay(minute);
   }
 
-  badgeVariantFor(
-    status: string,
-  ): 'success' | 'warning' | 'danger' | 'info' | 'neutral' {
+  badgeVariantFor(status: string): 'success' | 'warning' | 'danger' | 'info' | 'neutral' {
     switch (status) {
       case 'APPROVED':
         return 'success';
@@ -466,7 +734,12 @@ export class ProviderOnboardingPageComponent implements OnInit {
     this.errorMessage.set(null);
     this.successMessage.set(null);
     if (this.profileForm.invalid) {
-      this.profileForm.markAllAsTouched();this.errorMessage.set(this.ar()?'يرجى إكمال البيانات المطلوبة والنبذة باللغتين.':'Please complete the required fields and both biographies.');
+      this.profileForm.markAllAsTouched();
+      this.errorMessage.set(
+        this.ar()
+          ? 'يرجى إكمال البيانات المطلوبة والنبذة باللغتين.'
+          : 'Please complete the required fields and both biographies.',
+      );
       return;
     }
 
@@ -506,7 +779,12 @@ export class ProviderOnboardingPageComponent implements OnInit {
     this.errorMessage.set(null);
     this.successMessage.set(null);
     if (this.offeringForm.invalid) {
-      this.offeringForm.markAllAsTouched();this.errorMessage.set(this.ar()?'يرجى اختيار الخدمة وإدخال سعر صحيح.':'Please select a service and enter a valid price.');
+      this.offeringForm.markAllAsTouched();
+      this.errorMessage.set(
+        this.ar()
+          ? 'يرجى اختيار الخدمة وإدخال سعر صحيح.'
+          : 'Please select a service and enter a valid price.',
+      );
       return;
     }
 
@@ -516,7 +794,7 @@ export class ProviderOnboardingPageComponent implements OnInit {
       .upsertMyService({
         serviceId: v.serviceId,
         pricingType: v.pricingType,
-        priceAmountFils: Math.round(Number(v.priceJod)*1000),
+        priceAmountFils: Math.round(Number(v.priceJod) * 1000),
         estimatedDurationMinutes: Number(v.estimatedDurationMinutes),
         isEnabled: true,
       })
@@ -562,7 +840,10 @@ export class ProviderOnboardingPageComponent implements OnInit {
   }
 
   private applyProfileToState(prof: OwnerProviderProfile): void {
-    this.profile.set(prof);this.windows.clear();for(const w of prof.weeklyAvailability)this.windows.push(this.windowGroup(w.dayOfWeek,w.startMinuteOfDay,w.endMinuteOfDay));
+    this.profile.set(prof);
+    this.windows.clear();
+    for (const w of prof.weeklyAvailability)
+      this.windows.push(this.windowGroup(w.dayOfWeek, w.startMinuteOfDay, w.endMinuteOfDay));
     this.profileForm.patchValue({
       displayName: prof.displayName,
       yearsOfExperience: prof.yearsOfExperience,

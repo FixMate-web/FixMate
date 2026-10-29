@@ -9,6 +9,12 @@ describe('Home discovery', () => {
   let http: HttpTestingController;
 
   beforeEach(() => {
+    Element.prototype.scrollIntoView = vi.fn();
+    vi.stubGlobal('matchMedia', () => ({
+      matches: true,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }));
     TestBed.configureTestingModule({
       imports: [HomePageComponent, DiscoverySearchComponent],
       providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
@@ -35,7 +41,7 @@ describe('Home discovery', () => {
       .flush([
         {
           id: 'one',
-          slug: 'new-category',
+          slug: 'cleaning',
           name: { en: 'New service', ar: 'خدمة جديدة' },
           description: { en: '', ar: '' },
           isActive: true,
@@ -44,9 +50,9 @@ describe('Home discovery', () => {
       ]);
     f.detectChanges();
     const buttons = f.nativeElement.querySelectorAll('.cat-icon-tab');
-    expect(buttons.length).toBe(2);
-    buttons[1].click();
-    expect(f.componentInstance.selectedCategorySlug()).toBe('new-category');
+    expect(buttons.length).toBe(1);
+    buttons[0].click();
+    expect(f.componentInstance.selectedCategorySlug()).toBe('cleaning');
   });
 
   it('offers a retry after a failed catalog request', () => {

@@ -46,6 +46,8 @@ describe('Application Shells & Graceful Health Check', () => {
     // Open the two-column Explore Services mega-menu
     fixture.componentInstance.toggleExploreMenu();
     fixture.detectChanges();
+    httpMock.expectOne((r) => r.url.endsWith('/categories')).flush([]);
+    httpMock.expectOne((r) => r.url.endsWith('/services')).flush({ items: [], totalPages: 0 });
     expect(compiled.querySelector('.explore-mega-menu')).toBeTruthy();
   });
 

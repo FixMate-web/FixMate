@@ -42,7 +42,7 @@ export interface PublicServiceView {
     pricingType: PricingType;
     indicativeAmountFils: number;
     currency: CurrencyCode;
-  };
+  } | null;
   defaultDurationMinutes: number;
   isActive: boolean;
 }
@@ -81,8 +81,13 @@ export class CatalogService {
     }
 
     const categoryView = this.toCategoryView(category);
+    const activePrimaryCategories = await this.categoryModel.find({isActive:true}).select('_id').exec();
     const services = await this.serviceModel
-      .find({ categoryId: category._id, isActive: true })
+      .find({
+        isActive: true,
+        categoryId: {$in: activePrimaryCategories.map(c=>c._id)},
+        $or: [{ categoryId: category._id }, { discoveryCategorySlugs: category.slug }],
+      })
       .sort({ _id: 1 })
       .exec();
 
@@ -122,12 +127,22 @@ export class CatalogService {
       if (!matchedCategory) {
         return { items: [], page, limit, total: 0, totalPages: 0 };
       }
-      filter.categoryId = matchedCategory._id;
+      filter.$and = [
+        {
+          $or: [
+            { categoryId: matchedCategory._id },
+            { discoveryCategorySlugs: matchedCategory.slug },
+          ],
+        },
+      ];
     } else if (query.categoryId) {
       if (!categoryMap.has(query.categoryId)) {
         return { items: [], page, limit, total: 0, totalPages: 0 };
       }
-      filter.categoryId = new Types.ObjectId(query.categoryId);
+      const category = categoryMap.get(query.categoryId)!;
+      filter.$and = [
+        { $or: [{ categoryId: category._id }, { discoveryCategorySlugs: category.slug }] },
+      ];
     }
 
     if (query.pricingType) {
@@ -268,11 +283,13 @@ export class CatalogService {
         slug: dto.slug.trim().toLowerCase(),
         title: dto.title,
         description: dto.description,
-        pricingPolicy: {
-          pricingType: dto.pricingPolicy.pricingType,
-          indicativeAmountFils: dto.pricingPolicy.indicativeAmountFils,
-          currency: CurrencyCode.JOD,
-        },
+        pricingPolicy: dto.pricingPolicy
+          ? {
+              pricingType: dto.pricingPolicy.pricingType,
+              indicativeAmountFils: dto.pricingPolicy.indicativeAmountFils,
+              currency: CurrencyCode.JOD,
+            }
+          : null,
         defaultDurationMinutes: dto.defaultDurationMinutes,
         isActive: dto.isActive ?? true,
       });
@@ -306,11 +323,13 @@ export class CatalogService {
     if (dto.title !== undefined) update.title = dto.title;
     if (dto.description !== undefined) update.description = dto.description;
     if (dto.pricingPolicy !== undefined) {
-      update.pricingPolicy = {
-        pricingType: dto.pricingPolicy.pricingType,
-        indicativeAmountFils: dto.pricingPolicy.indicativeAmountFils,
-        currency: CurrencyCode.JOD,
-      };
+      update.pricingPolicy = dto.pricingPolicy
+        ? {
+            pricingType: dto.pricingPolicy.pricingType,
+            indicativeAmountFils: dto.pricingPolicy.indicativeAmountFils,
+            currency: CurrencyCode.JOD,
+          }
+        : null;
     }
     if (dto.defaultDurationMinutes !== undefined) {
       update.defaultDurationMinutes = dto.defaultDurationMinutes;
@@ -382,11 +401,13 @@ export class CatalogService {
       slug: doc.slug,
       title: { ar: doc.title.ar, en: doc.title.en },
       description: { ar: doc.description.ar, en: doc.description.en },
-      pricingPolicy: {
-        pricingType: doc.pricingPolicy.pricingType,
-        indicativeAmountFils: doc.pricingPolicy.indicativeAmountFils,
-        currency: doc.pricingPolicy.currency,
-      },
+      pricingPolicy: doc.pricingPolicy
+        ? {
+            pricingType: doc.pricingPolicy.pricingType,
+            indicativeAmountFils: doc.pricingPolicy.indicativeAmountFils,
+            currency: doc.pricingPolicy.currency,
+          }
+        : null,
       defaultDurationMinutes: doc.defaultDurationMinutes,
       isActive: doc.isActive,
     };

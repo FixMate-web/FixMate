@@ -21,6 +21,10 @@ import {
 } from '../../core/services/providers-api.service';
 import { DiscoverySearchComponent } from '../../shared/marketplace/discovery-search.component';
 import { ProviderCardComponent } from '../../shared/marketplace/provider-card.component';
+import { ScrollRevealDirective } from '../../shared/ui/scroll-reveal.directive';
+import { HowItWorksComponent } from '../../shared/marketplace/how-it-works.component';
+import { HeroSlideshowComponent } from '../../shared/marketplace/hero-slideshow.component';
+import { DiscoveryCatalogStore } from '../../shared/marketplace/discovery-catalog.store';
 import { money, pricingLabel } from '../../shared/marketplace/marketplace.utils';
 
 export interface CuratedPortraitCard {
@@ -334,7 +338,7 @@ const HOME_RESOURCE_CARDS: HomeResourceCard[] = [
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [RouterLink, DiscoverySearchComponent, ProviderCardComponent],
+  imports: [RouterLink, DiscoverySearchComponent, ProviderCardComponent, HeroSlideshowComponent, HowItWorksComponent, ScrollRevealDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
@@ -351,18 +355,19 @@ export class HomePageComponent {
     this.stickySearch.set(window.scrollY > Math.max(640, window.innerHeight - 80));
   }
 
-  readonly categories = signal<CatalogCategory[]>([]);
-  readonly services = signal<CatalogServiceItem[]>([]);
+  readonly catalog = inject(DiscoveryCatalogStore);
+  readonly categories = this.catalog.discovery;
+  readonly services = this.catalog.services;
   readonly providers = signal<PublicProviderSummary[]>([]);
-  readonly loading = signal(true);
-  readonly error = signal(false);
-  readonly projectsLoading = signal(true);
-  readonly projectsError = signal(false);
+  readonly loading = this.catalog.categoriesLoading;
+  readonly error = this.catalog.categoryError;
+  readonly projectsLoading = this.catalog.loading;
+  readonly projectsError = this.catalog.error;
   readonly providersLoading = signal(true);
   readonly providersError = signal(false);
 
   // Interactive Thumbtack-style state signals
-  readonly selectedCategorySlug = signal<string>('all');
+  readonly selectedCategorySlug = signal<string>('cleaning');
   readonly exploreTabs = EXPLORE_PROJECT_TABS;
   readonly activeExploreTabId = signal<string>('maintenance');
   readonly resourceCards = HOME_RESOURCE_CARDS;
@@ -378,110 +383,29 @@ export class HomePageComponent {
     () => this.resourceCards.find((r) => r.id === this.activeResourceId()) ?? this.resourceCards[0],
   );
 
-  readonly visiblePortraitCards = computed<CuratedPortraitCard[]>(() => {
-    const selected = this.selectedCategorySlug();
-    const apiServices = this.services();
-
-    // Only publish cards backed by the live catalog; never fabricate service availability.
-    const source = apiServices.filter((s) => selected === 'all' || s.category?.slug === selected);
-    const featured =
-      selected === 'all'
-        ? ['cleaning', 'painting', 'plumbing', 'carpentry']
-            .map((slug) => source.find((s) => s.category?.slug === slug))
-            .filter((s): s is CatalogServiceItem => !!s)
-        : source;
-    return featured.slice(0, 4).map((s) => ({
+  readonly selectedCategory = computed(() =>
+    this.categories().find((c) => c.slug === this.selectedCategorySlug()),
+  );
+  readonly visiblePortraitCards = computed(() =>
+    this.catalog.cards(this.selectedCategory()).map((s) => ({
       slug: s.slug,
-      categorySlug: s.category?.slug || '',
-      titleEn: this.shortServiceName(s, false),
-      titleAr: this.shortServiceName(s, true),
-      image: this.serviceImage(s),
-    }));
-  });
-
-  shortServiceName(s: CatalogServiceItem, ar: boolean): string {
-    const names: Record<string, [string, string]> = {
-      'apartment-deep-cleaning': ['House Cleaning', 'تنظيف المنازل'],
-      'roof-water-tank-sanitization': ['Water Tank Cleaning', 'تنظيف خزانات المياه'],
-      'single-room-interior-painting': ['Interior Painting', 'الدهان الداخلي'],
-      'water-leak-detection-repair': ['Plumbing Repairs', 'إصلاح تسربات المياه'],
-      'wooden-door-and-lock-repair': ['Door & Lock Repair', 'صيانة الأبواب والأقفال'],
-      'kitchen-cabinet-hinge-and-drawer-repair': ['Kitchen Cabinet Repair', 'صيانة خزائن المطبخ'],
-    };
-    return names[s.slug]?.[ar ? 1 : 0] || s.title[ar ? 'ar' : 'en'];
-  }
-
-  serviceImage(s: CatalogServiceItem): string {
-    if (s.slug === 'lighting-and-socket-installation') return '/images/editorial/lights.webp';
-    if (s.slug === 'kitchen-cabinet-hinge-and-drawer-repair')
-      return '/images/editorial/kitchen.webp';
-    return this.resolveCategoryImage(s.category?.slug || '');
-  }
-
-  categoryLabel(slug: string, fallback: string): string {
-    const names: Record<string, [string, string]> = {
-      cleaning: ['Cleaners', 'التنظيف'],
-      plumbing: ['Plumbers', 'السباكة'],
-      'electrical-repairs': ['Electrical pros', 'الكهرباء'],
-      'ac-maintenance': ['AC specialists', 'التكييف'],
-      painting: ['Painters', 'الدهان'],
-      carpentry: ['Carpenters', 'النجارة'],
-    };
-    return names[slug]?.[this.ar() ? 1 : 0] || fallback;
-  }
-
-  categoryIcon(slug: string): string {
-    const paths: Record<string, string> = {
-      cleaning: 'M9 3h6v4H9z M10 7v5l-3 3v6h10v-6l-4-3V7 M15 4h4',
-      plumbing: 'M14 3a6 6 0 0 0-7 8L3 19a2 2 0 0 0 3 3l8-9a6 6 0 0 0 7-7l-5 4-3-3z',
-      'electrical-repairs': 'M8 2v6 M16 2v6 M5 8h14v3a7 7 0 0 1-14 0z M12 18v5',
-      'ac-maintenance': 'M12 2v20 M3 7l18 10 M3 17L21 7 M9 4l3 3 3-3 M9 20l3-3 3 3',
-      painting: 'M5 3h14v9H5z M8 12v4h8v-4 M12 16v6',
-      carpentry: 'M4 5l3-3 14 14-4 4z M9 10l-6 8 3 3 7-8',
-    };
-    return paths[slug] || 'M3 11l9-8 9 8 M5 10v11h14V10 M10 21v-7h4v7';
-  }
+      titleEn: s.title.en,
+      titleAr: s.title.ar,
+      image: s.image,
+        imageSmall: s.imageSmall,
+      position: s.position,
+    })),
+  );
 
   constructor() {
-    this.loadCategories();
-    this.loadProjects();
     this.loadProviders();
   }
 
   loadCategories() {
-    this.loading.set(true);
-    this.error.set(false);
-    this.api
-      .getCategories()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (cats) => {
-          this.categories.set(cats);
-          this.loading.set(false);
-        },
-        error: () => {
-          this.error.set(true);
-          this.loading.set(false);
-        },
-      });
+    this.catalog.load();
   }
-
   loadProjects() {
-    this.projectsLoading.set(true);
-    this.projectsError.set(false);
-    this.api
-      .getServices({ limit: 12 })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (r) => {
-          this.services.set(r.items);
-          this.projectsLoading.set(false);
-        },
-        error: () => {
-          this.projectsError.set(true);
-          this.projectsLoading.set(false);
-        },
-      });
+    this.catalog.load();
   }
 
   loadProviders() {
@@ -511,6 +435,40 @@ export class HomePageComponent {
       : this.ar()
         ? 'اطّلع على سعر الخدمة'
         : 'See service pricing';
+  }
+
+  readonly railStart = signal(true);
+  readonly railEnd = signal(false);
+  updateRail(rail: HTMLElement) {
+    const position = Math.abs(rail.scrollLeft);
+    this.railStart.set(position < 3);
+    this.railEnd.set(position >= rail.scrollWidth - rail.clientWidth - 3);
+  }
+  scrollCategories(rail: HTMLElement, direction: number) {
+    rail.scrollBy({
+      left: direction * (this.ar() ? -1 : 1) * rail.clientWidth * 0.65,
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'instant'
+        : 'smooth',
+    });
+  }
+  revealTab(event: Event) {
+    (event.currentTarget as HTMLElement).scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+  categoryKey(event: KeyboardEvent, rail: HTMLElement) {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const tabs = Array.from(rail.querySelectorAll<HTMLButtonElement>('[role=tab]'));
+    const current = tabs.indexOf(event.target as HTMLButtonElement);
+    const delta = (event.key === 'ArrowRight' ? 1 : -1) * (this.ar() ? -1 : 1);
+    const next =
+      event.key === 'Home'
+        ? 0
+        : event.key === 'End'
+          ? tabs.length - 1
+          : (current + delta + tabs.length) % tabs.length;
+    tabs[next]?.focus();
+    tabs[next]?.click();
   }
 
   selectCategoryTab(slug: string) {

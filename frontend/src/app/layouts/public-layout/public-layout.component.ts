@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  DestroyRef,
   inject,
   OnInit,
   signal,
@@ -10,142 +11,13 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { resolveDefaultWorkspaceByRole } from '../../core/guards/auth.guard';
 import { AuthService } from '../../core/auth/auth.service';
 import { LanguageService } from '../../core/i18n/language.service';
+import { ExploreMenuComponent } from '../../shared/marketplace/explore-menu.component';
 import { ApiHealthService } from '../../core/services/api-health.service';
-
-interface ExploreCategoryGroup {
-  slug: string;
-  labelEn: string;
-  labelAr: string;
-  headingEn: string;
-  headingAr: string;
-  services: {
-    slug: string;
-    nameEn: string;
-    nameAr: string;
-  }[];
-}
-
-const EXPLORE_GROUPS: ExploreCategoryGroup[] = [
-  {
-    slug: 'plumbing',
-    labelEn: 'Plumbing & Water Systems',
-    labelAr: 'السباكة وأنظمة المياه',
-    headingEn: 'Plumbing & Roof Tank Care',
-    headingAr: 'خدمات السباكة وخزانات المياه',
-    services: [
-      {
-        slug: 'water-leak-detection-repair',
-        nameEn: 'Water Leak Detection & Pipe Repair',
-        nameAr: 'كشف وإصلاح تسربات المياه والأنابيب',
-      },
-      {
-        slug: 'electric-water-heater-maintenance',
-        nameEn: 'Electric Water Heater Maintenance',
-        nameAr: 'صيانة سخانات المياه الكهربائية',
-      },
-    ],
-  },
-  {
-    slug: 'electrical-repairs',
-    labelEn: 'Electrical & Lighting',
-    labelAr: 'الكهرباء والإنارة',
-    headingEn: 'Electrical Faults, Panels & Lighting',
-    headingAr: 'أعطال الكهرباء واللوحات والإنارة',
-    services: [
-      {
-        slug: 'circuit-breaker-panel-inspection',
-        nameEn: 'Electrical Fault Diagnosis & Breaker Repair',
-        nameAr: 'فحص الأعطال الكهربائية وإصلاح القواطع',
-      },
-      {
-        slug: 'lighting-and-socket-installation',
-        nameEn: 'Lighting, Chandeliers & Wall Socket Installation',
-        nameAr: 'تركيب الإنارة والثريات والمفاتيح الكهربائية',
-      },
-    ],
-  },
-  {
-    slug: 'ac-maintenance',
-    labelEn: 'AC & Split-Unit Cooling',
-    labelAr: 'التكييف والتبريد',
-    headingEn: 'Split AC Servicing & Installation',
-    headingAr: 'صيانة وتنظيف وتركيب المكيفات',
-    services: [
-      {
-        slug: 'split-ac-deep-cleaning-service',
-        nameEn: 'Split AC Deep Cleaning & Gas Check',
-        nameAr: 'تنظيف وصيانة مكيفات سبليت وفحص الغاز',
-      },
-      {
-        slug: 'ac-cooling-diagnostics-recharge',
-        nameEn: 'AC Cooling Diagnostics',
-        nameAr: 'فحص كفاءة التكييف والتبريد',
-      },
-    ],
-  },
-  {
-    slug: 'cleaning',
-    labelEn: 'Home & Tank Cleaning',
-    labelAr: 'تنظيف المنازل والخزانات',
-    headingEn: 'Deep Home Cleaning & Tank Sanitization',
-    headingAr: 'التنظيف العميق وتعقيم الخزانات',
-    services: [
-      {
-        slug: 'apartment-deep-cleaning',
-        nameEn: 'Deep Apartment & Move-In Cleaning',
-        nameAr: 'تنظيف عميق للشقق والمنازل قبل السكن',
-      },
-      {
-        slug: 'roof-water-tank-sanitization',
-        nameEn: 'Roof & Ground Water Tank Sanitization',
-        nameAr: 'تنظيف وتعقيم خزانات المياه العلوية والأرضية',
-      },
-    ],
-  },
-  {
-    slug: 'painting',
-    labelEn: 'Painting & Gypsum Walls',
-    labelAr: 'الدهان ومعالجة الجدران',
-    headingEn: 'Interior Painting & Dampness Treatment',
-    headingAr: 'دهان الغرف ومعالجة الرطوبة والتشققات',
-    services: [
-      {
-        slug: 'single-room-interior-painting',
-        nameEn: 'Interior Room & Apartment Wall Painting',
-        nameAr: 'دهان الغرف والجدران الداخلية',
-      },
-      {
-        slug: 'dampness-and-mold-wall-treatment',
-        nameEn: 'Wall Dampness, Crack & Gypsum Repair',
-        nameAr: 'معالجة الرطوبة وتشققات الجدران والجبس',
-      },
-    ],
-  },
-  {
-    slug: 'carpentry',
-    labelEn: 'Carpentry, Doors & Locks',
-    labelAr: 'النجارة والأبواب والأقفال',
-    headingEn: 'Door Repair, Hinges & Furniture Assembly',
-    headingAr: 'صيانة الأبواب والمفصلات وتركيب الأثاث',
-    services: [
-      {
-        slug: 'wooden-door-and-lock-repair',
-        nameEn: 'Wooden Door, Lock & Hinge Adjustment',
-        nameAr: 'صيانة الأبواب الخشبية والأقفال والمفصلات',
-      },
-      {
-        slug: 'kitchen-cabinet-hinge-and-drawer-repair',
-        nameEn: 'Furniture Assembly & Kitchen Cabinet Hinges',
-        nameAr: 'تركيب الأثاث وصيانة خزائن المطبخ',
-      },
-    ],
-  },
-];
 
 @Component({
   selector: 'app-public-layout',
   standalone: true,
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink, ExploreMenuComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a class="skip-link" href="#main-content">{{ i18n.t().skipToContent }}</a>
@@ -153,7 +25,13 @@ const EXPLORE_GROUPS: ExploreCategoryGroup[] = [
     <header class="site-header" (keydown.escape)="closeAllMenus(); focusExploreTrigger()">
       <div class="fm-container header-inner">
         <a routerLink="/" class="brand" aria-label="FixMate home" (click)="closeAllMenus()">
-          <span class="brand-emblem" aria-hidden="true">F</span>
+          <img
+            class="brand-emblem"
+            src="/brand/fixmate-logo-80.webp"
+            width="36"
+            height="36"
+            alt=""
+          />
           <span class="brand-wordmark">FixMate</span>
         </a>
 
@@ -169,7 +47,12 @@ const EXPLORE_GROUPS: ExploreCategoryGroup[] = [
 
         <nav id="public-primary-nav" [class.open]="mobileMenuOpen()" aria-label="Main navigation">
           <!-- Two-Column Explore Services Mega-Dropdown (Reference Screenshot 7) -->
-          <div class="explore-dropdown-wrapper" (focusout)="onExploreFocusOut($event)">
+          <div
+            class="explore-dropdown-wrapper"
+            (focusout)="onExploreFocusOut($event)"
+            (mouseenter)="cancelExploreClose()"
+            (mouseleave)="scheduleExploreClose()"
+          >
             <button
               type="button"
               class="explore-trigger"
@@ -178,7 +61,7 @@ const EXPLORE_GROUPS: ExploreCategoryGroup[] = [
               aria-controls="explore-services-panel"
               (click)="toggleExploreMenu()"
             >
-              <span>{{ ar() ? 'استكشف الخدمات' : 'Explore Services' }}</span>
+              <span>{{ ar() ? 'استكشف خدماتنا' : 'Explore Services' }}</span>
               <svg class="chevron-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                 <path
                   d="M5 7.5L10 12.5L15 7.5"
@@ -192,65 +75,7 @@ const EXPLORE_GROUPS: ExploreCategoryGroup[] = [
 
             @if (exploreMenuOpen()) {
               <div class="explore-backdrop" (click)="closeExploreMenu()"></div>
-              <div
-                class="explore-mega-menu"
-                id="explore-services-panel"
-                role="region"
-                [attr.aria-label]="ar() ? 'قائمة الخدمات' : 'Explore Services Menu'"
-              >
-                <div class="explore-mega-left">
-                  @for (group of exploreGroups; track group.slug) {
-                    <button
-                      type="button"
-                      class="explore-cat-item"
-                      [class.selected]="activeGroup().slug === group.slug"
-                      (mouseenter)="selectExploreGroup(group)"
-                      (focus)="selectExploreGroup(group)"
-                      (click)="selectExploreGroup(group)"
-                    >
-                      <span>{{ ar() ? group.labelAr : group.labelEn }}</span>
-                      <span class="direction-arrow" aria-hidden="true">›</span>
-                    </button>
-                  }
-                </div>
-
-                <div class="explore-mega-right">
-                  <div class="explore-mega-header">
-                    <h3>{{ ar() ? activeGroup().headingAr : activeGroup().headingEn }}</h3>
-                    <a
-                      class="explore-cat-link"
-                      routerLink="/services"
-                      [queryParams]="{ categorySlug: activeGroup().slug }"
-                      (click)="closeAllMenus()"
-                    >
-                      {{ ar() ? 'عرض القسم بالكامل' : 'View category' }}
-                      <span class="direction-arrow">→</span>
-                    </a>
-                  </div>
-
-                  <ul class="explore-service-list">
-                    @for (svc of activeGroup().services; track svc.slug) {
-                      <li>
-                        <a
-                          [routerLink]="['/services', svc.slug]"
-                          (click)="closeAllMenus()"
-                          class="explore-service-link"
-                        >
-                          <span class="explore-service-name">{{
-                            ar() ? svc.nameAr : svc.nameEn
-                          }}</span>
-                        </a>
-                      </li>
-                    }
-                  </ul>
-
-                  <div class="explore-mega-footer">
-                    <a routerLink="/services" (click)="closeAllMenus()" class="browse-all-link">
-                      {{ ar() ? 'تصفح جميع الخدمات (12 خدمة)' : 'Browse all services' }}
-                    </a>
-                  </div>
-                </div>
-              </div>
+              <app-explore-menu (navigate)="closeAllMenus()" />
             }
           </div>
 
@@ -297,7 +122,13 @@ const EXPLORE_GROUPS: ExploreCategoryGroup[] = [
         <div class="footer-grid">
           <div class="footer-brand-col">
             <a routerLink="/" class="brand footer-brand">
-              <span class="brand-emblem" aria-hidden="true">F</span>
+              <img
+                class="brand-emblem"
+                src="/brand/fixmate-logo-80.webp"
+                width="36"
+                height="36"
+                alt=""
+              />
               <span class="brand-wordmark">FixMate</span>
             </a>
             <p class="footer-tagline">
@@ -371,13 +202,16 @@ export class PublicLayoutComponent implements OnInit {
 
   readonly mobileMenuOpen = signal(false);
   readonly exploreMenuOpen = signal(false);
-  readonly exploreGroups = EXPLORE_GROUPS;
-  readonly activeGroup = signal<ExploreCategoryGroup>(EXPLORE_GROUPS[0]);
+  private closeTimer: ReturnType<typeof setTimeout> | undefined;
 
   readonly ar = () => this.i18n.lang() === 'ar';
 
   workspace() {
     return resolveDefaultWorkspaceByRole(this.auth.currentUser()?.role);
+  }
+
+  constructor() {
+    inject(DestroyRef).onDestroy(() => clearTimeout(this.closeTimer));
   }
 
   ngOnInit() {
@@ -386,6 +220,7 @@ export class PublicLayoutComponent implements OnInit {
 
   toggleMobileMenu() {
     this.mobileMenuOpen.update((v) => !v);
+    if (this.mobileMenuOpen()) this.resetNavScroll();
     if (!this.mobileMenuOpen()) {
       this.exploreMenuOpen.set(false);
     }
@@ -397,9 +232,15 @@ export class PublicLayoutComponent implements OnInit {
 
   toggleExploreMenu() {
     this.exploreMenuOpen.update((v) => !v);
+    if (this.exploreMenuOpen()) this.resetNavScroll();
+  }
+
+  private resetNavScroll() {
+    setTimeout(()=>{const nav=this.element.nativeElement.querySelector<HTMLElement>('#public-primary-nav');if(nav)nav.scrollTop=0;});
   }
 
   closeExploreMenu() {
+    clearTimeout(this.closeTimer);
     this.exploreMenuOpen.set(false);
   }
 
@@ -408,12 +249,20 @@ export class PublicLayoutComponent implements OnInit {
     this.exploreMenuOpen.set(false);
   }
 
-  selectExploreGroup(group: ExploreCategoryGroup) {
-    this.activeGroup.set(group);
+  cancelExploreClose() {
+    clearTimeout(this.closeTimer);
+  }
+  scheduleExploreClose() {
+    if (window.matchMedia('(min-width:961px)').matches)
+      this.closeTimer = setTimeout(() => this.closeExploreMenu(), 250);
   }
 
   focusExploreTrigger() {
-    this.element.nativeElement.querySelector<HTMLButtonElement>('.explore-trigger')?.focus();
+    this.element.nativeElement
+      .querySelector<HTMLButtonElement>(
+        window.innerWidth <= 960 ? '.menu-toggle' : '.explore-trigger',
+      )
+      ?.focus();
   }
 
   onExploreFocusOut(event: FocusEvent) {

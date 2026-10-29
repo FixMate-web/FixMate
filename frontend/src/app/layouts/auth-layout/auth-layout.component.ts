@@ -13,7 +13,13 @@ import { LanguageService } from '../../core/i18n/language.service';
       <header class="auth-header">
         <div class="auth-header-inner">
           <a routerLink="/" class="auth-brand" aria-label="FixMate home">
-            <span class="auth-brand-emblem" aria-hidden="true">F</span>
+            <img
+              class="auth-brand-emblem"
+              src="/brand/fixmate-logo-80.webp"
+              width="36"
+              height="36"
+              alt=""
+            />
             <span class="auth-brand-wordmark">FixMate</span>
           </a>
 

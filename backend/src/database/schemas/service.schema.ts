@@ -48,6 +48,9 @@ export class Service {
   })
   categoryId!: Types.ObjectId;
 
+  @Prop({ type: [String], default: [], index: true })
+  discoveryCategorySlugs!: string[];
+
   @Prop({
     required: true,
     unique: true,
@@ -73,9 +76,9 @@ export class Service {
 
   @Prop({
     type: ServicePricingPolicySchema,
-    required: true,
+    required: false,
   })
-  pricingPolicy!: ServicePricingPolicy;
+  pricingPolicy?: ServicePricingPolicy;
 
   @Prop({
     required: true,

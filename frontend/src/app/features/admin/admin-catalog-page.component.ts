@@ -51,13 +51,25 @@ import {
       <div class="admin-grid">
         <!-- Create / Update Category -->
         <app-fm-card
-          [title]="editingCategory() ? (ar()?'تعديل التصنيف':'Edit category') : (ar()?'إضافة تصنيف':'New category')"
-          [subtitle]="ar()?'اسم ووصف واضحان باللغتين':'Clear names and descriptions in both languages'"
+          [title]="
+            editingCategory()
+              ? ar()
+                ? 'تعديل التصنيف'
+                : 'Edit category'
+              : ar()
+                ? 'إضافة تصنيف'
+                : 'New category'
+          "
+          [subtitle]="
+            ar() ? 'اسم ووصف واضحان باللغتين' : 'Clear names and descriptions in both languages'
+          "
         >
           <form class="catalog-form" [formGroup]="categoryForm" (ngSubmit)="submitCategory()">
             <div class="field-row">
               <div class="field">
-                <label for="cat-slug">{{ar()?'معرّف الرابط بالإنجليزية':'Slug (kebab-case)'}}</label>
+                <label for="cat-slug">{{
+                  ar() ? 'معرّف الرابط بالإنجليزية' : 'Slug (kebab-case)'
+                }}</label>
                 <input
                   id="cat-slug"
                   type="text"
@@ -67,29 +79,33 @@ import {
                 />
               </div>
               <div class="field">
-                <label for="cat-order">{{ar()?'ترتيب العرض':'Display Order'}}</label>
+                <label for="cat-order">{{ ar() ? 'ترتيب العرض' : 'Display Order' }}</label>
                 <input id="cat-order" type="number" formControlName="displayOrder" min="0" />
               </div>
             </div>
 
             <div class="field-row">
               <div class="field">
-                <label for="cat-name-ar">{{ar()?'الاسم بالعربية':'Name (Arabic)'}}</label>
+                <label for="cat-name-ar">{{ ar() ? 'الاسم بالعربية' : 'Name (Arabic)' }}</label>
                 <input id="cat-name-ar" type="text" formControlName="nameAr" />
               </div>
               <div class="field">
-                <label for="cat-name-en">{{ar()?'الاسم بالإنجليزية':'Name (English)'}}</label>
+                <label for="cat-name-en">{{ ar() ? 'الاسم بالإنجليزية' : 'Name (English)' }}</label>
                 <input id="cat-name-en" type="text" formControlName="nameEn" dir="ltr" />
               </div>
             </div>
 
             <div class="field">
-              <label for="cat-desc-ar">{{ar()?'الوصف بالعربية':'Description (Arabic)'}}</label>
+              <label for="cat-desc-ar">{{
+                ar() ? 'الوصف بالعربية' : 'Description (Arabic)'
+              }}</label>
               <textarea id="cat-desc-ar" rows="2" formControlName="descAr"></textarea>
             </div>
 
             <div class="field">
-              <label for="cat-desc-en">{{ar()?'الوصف بالإنجليزية':'Description (English)'}}</label>
+              <label for="cat-desc-en">{{
+                ar() ? 'الوصف بالإنجليزية' : 'Description (English)'
+              }}</label>
               <textarea id="cat-desc-en" rows="2" formControlName="descEn" dir="ltr"></textarea>
             </div>
 
@@ -100,7 +116,15 @@ import {
                 [loading]="savingCategory()"
                 [disabled]="savingCategory()"
               >
-                {{ editingCategory() ? (ar()?'حفظ التعديلات':'Save changes') : (ar()?'إنشاء التصنيف':'Create category') }}
+                {{
+                  editingCategory()
+                    ? ar()
+                      ? 'حفظ التعديلات'
+                      : 'Save changes'
+                    : ar()
+                      ? 'إنشاء التصنيف'
+                      : 'Create category'
+                }}
               </app-fm-button>
               @if (editingCategory()) {
                 <button type="button" class="text-button" (click)="cancelEditCategory()">
@@ -113,15 +137,23 @@ import {
 
         <!-- Create / Edit Service -->
         <app-fm-card
-          [title]="editingService() ? (ar() ? 'تعديل الخدمة' : 'Edit service') : (i18n.lang() === 'ar' ? 'إضافة خدمة جديدة للكتالوج' : 'Create Catalog Service')"
-          [subtitle]="ar()?'نطاق الخدمة والسعر والمدة':'Service scope, price, and duration'"
+          [title]="
+            editingService()
+              ? ar()
+                ? 'تعديل الخدمة'
+                : 'Edit service'
+              : i18n.lang() === 'ar'
+                ? 'إضافة خدمة جديدة للكتالوج'
+                : 'Create Catalog Service'
+          "
+          [subtitle]="ar() ? 'نطاق الخدمة والسعر والمدة' : 'Service scope, price, and duration'"
         >
           <form class="catalog-form" [formGroup]="serviceForm" (ngSubmit)="submitService()">
             <div class="field-row">
               <div class="field">
-                <label for="svc-category">{{ar()?'التصنيف':'Category'}}</label>
+                <label for="svc-category">{{ ar() ? 'التصنيف' : 'Category' }}</label>
                 <select id="svc-category" formControlName="categoryId">
-                  <option value="">{{ar()?'اختر التصنيف':'-- Select Category --'}}</option>
+                  <option value="">{{ ar() ? 'اختر التصنيف' : '-- Select Category --' }}</option>
                   @for (cat of categories(); track cat.id) {
                     <option [value]="cat.id">
                       {{ i18n.lang() === 'ar' ? cat.name.ar : cat.name.en }} ({{ cat.slug }})
@@ -130,7 +162,9 @@ import {
                 </select>
               </div>
               <div class="field">
-                <label for="svc-slug">{{ar()?'معرّف الرابط بالإنجليزية':'Slug (kebab-case)'}}</label>
+                <label for="svc-slug">{{
+                  ar() ? 'معرّف الرابط بالإنجليزية' : 'Slug (kebab-case)'
+                }}</label>
                 <input
                   id="svc-slug"
                   type="text"
@@ -143,47 +177,75 @@ import {
 
             <div class="field-row">
               <div class="field">
-                <label for="svc-title-ar">{{ar()?'العنوان بالعربية':'Title (Arabic)'}}</label>
+                <label for="svc-title-ar">{{ ar() ? 'العنوان بالعربية' : 'Title (Arabic)' }}</label>
                 <input id="svc-title-ar" type="text" formControlName="titleAr" />
               </div>
               <div class="field">
-                <label for="svc-title-en">{{ar()?'العنوان بالإنجليزية':'Title (English)'}}</label>
+                <label for="svc-title-en">{{
+                  ar() ? 'العنوان بالإنجليزية' : 'Title (English)'
+                }}</label>
                 <input id="svc-title-en" type="text" formControlName="titleEn" dir="ltr" />
               </div>
             </div>
 
             <div class="field">
-              <label for="svc-desc-ar">{{ar()?'الوصف بالعربية':'Description (Arabic)'}}</label>
+              <label for="svc-desc-ar">{{
+                ar() ? 'الوصف بالعربية' : 'Description (Arabic)'
+              }}</label>
               <textarea id="svc-desc-ar" rows="2" formControlName="descAr"></textarea>
             </div>
 
             <div class="field">
-              <label for="svc-desc-en">{{ar()?'الوصف بالإنجليزية':'Description (English)'}}</label>
+              <label for="svc-desc-en">{{
+                ar() ? 'الوصف بالإنجليزية' : 'Description (English)'
+              }}</label>
               <textarea id="svc-desc-en" rows="2" formControlName="descEn" dir="ltr"></textarea>
             </div>
 
             <div class="field-row">
-              <div class="field">
-                <label for="svc-pricing-type">{{ar()?'نوع التسعير':'Pricing Policy'}}</label>
-                <select id="svc-pricing-type" formControlName="pricingType">
-                  <option value="FIXED">{{i18n.t().catalog.pricingFixed}}</option>
-                  <option value="STARTING_AT">{{i18n.t().catalog.pricingStartingAt}}</option>
-                  <option value="INSPECTION_ONLY">{{i18n.t().catalog.pricingInspectionOnly}}</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="svc-fils">{{ar()?'السعر الاسترشادي بالفلس (١ دينار = ١٠٠٠ فلس)':'Indicative Amount (fils, 1 JOD = 1000 fils)'}}</label>
-                <input
-                  id="svc-fils"
-                  type="number"
-                  formControlName="indicativeAmountFils"
-                  min="0"
-                  step="500"
-                  dir="ltr"
+              <label
+                ><input
+                  type="checkbox"
+                  [checked]="quoteOnly()"
+                  (change)="quoteOnly.set($any($event.target).checked)"
                 />
-              </div>
+                {{
+                  ar() ? 'بدون سعر استرشادي — حسب عرض المزود' : 'Quote only — no indicative price'
+                }}</label
+              >
+              @if (!quoteOnly()) {
+                <div class="field">
+                  <label for="svc-pricing-type">{{
+                    ar() ? 'نوع التسعير' : 'Pricing Policy'
+                  }}</label>
+                  <select id="svc-pricing-type" formControlName="pricingType">
+                    <option value="FIXED">{{ i18n.t().catalog.pricingFixed }}</option>
+                    <option value="STARTING_AT">{{ i18n.t().catalog.pricingStartingAt }}</option>
+                    <option value="INSPECTION_ONLY">
+                      {{ i18n.t().catalog.pricingInspectionOnly }}
+                    </option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="svc-fils">{{
+                    ar()
+                      ? 'السعر الاسترشادي بالفلس (١ دينار = ١٠٠٠ فلس)'
+                      : 'Indicative Amount (fils, 1 JOD = 1000 fils)'
+                  }}</label>
+                  <input
+                    id="svc-fils"
+                    type="number"
+                    formControlName="indicativeAmountFils"
+                    min="0"
+                    step="500"
+                    dir="ltr"
+                  />
+                </div>
+              }
               <div class="field">
-                <label for="svc-duration">{{ar()?'المدة بالدقائق':'Duration (Minutes)'}}</label>
+                <label for="svc-duration">{{
+                  ar() ? 'المدة بالدقائق' : 'Duration (Minutes)'
+                }}</label>
                 <select id="svc-duration" formControlName="defaultDurationMinutes">
                   <option [ngValue]="60">60 min</option>
                   <option [ngValue]="90">90 min</option>
@@ -201,7 +263,15 @@ import {
                 [loading]="savingService()"
                 [disabled]="savingService()"
               >
-                {{ editingService() ? (ar()?'حفظ التعديلات':'Save changes') : (ar()?'إنشاء الخدمة':'Create service') }}
+                {{
+                  editingService()
+                    ? ar()
+                      ? 'حفظ التعديلات'
+                      : 'Save changes'
+                    : ar()
+                      ? 'إنشاء الخدمة'
+                      : 'Create service'
+                }}
               </app-fm-button>
               @if (editingService()) {
                 <button type="button" class="text-button" (click)="cancelEditService()">
@@ -216,17 +286,17 @@ import {
       <!-- Existing Categories Table -->
       <app-fm-card
         [title]="i18n.lang() === 'ar' ? 'التصنيفات المسجلة' : 'All Categories'"
-        [subtitle]="ar()?'التصنيفات النشطة والمؤرشفة':'Active and archived categories'"
+        [subtitle]="ar() ? 'التصنيفات النشطة والمؤرشفة' : 'Active and archived categories'"
       >
         <div class="table-wrap">
           <table class="data-table">
             <thead>
               <tr>
-                <th>{{ar()?'معرّف الرابط':'Slug'}}</th>
-                <th>{{ar()?'الاسم بالعربية والإنجليزية':'Name (AR / EN)'}}</th>
-                <th>{{ar()?'الترتيب':'Order'}}</th>
-                <th>{{ar()?'الحالة':'Status'}}</th>
-                <th>{{ar()?'الإجراءات':'Action'}}</th>
+                <th>{{ ar() ? 'معرّف الرابط' : 'Slug' }}</th>
+                <th>{{ ar() ? 'الاسم بالعربية والإنجليزية' : 'Name (AR / EN)' }}</th>
+                <th>{{ ar() ? 'الترتيب' : 'Order' }}</th>
+                <th>{{ ar() ? 'الحالة' : 'Status' }}</th>
+                <th>{{ ar() ? 'الإجراءات' : 'Action' }}</th>
               </tr>
             </thead>
             <tbody>
@@ -239,17 +309,21 @@ import {
                   <td>{{ cat.displayOrder }}</td>
                   <td>
                     <app-fm-badge [variant]="cat.isActive ? 'success' : 'neutral'">
-                      {{ cat.isActive ? (ar()?'نشط':'Active') : (ar()?'مؤرشف':'Archived') }}
+                      {{ cat.isActive ? (ar() ? 'نشط' : 'Active') : ar() ? 'مؤرشف' : 'Archived' }}
                     </app-fm-badge>
                   </td>
                   <td>
-                    <button class="text-button" (click)="editCategory(cat)">{{ar()?'تعديل':'Edit'}}</button>
+                    <button class="text-button" (click)="editCategory(cat)">
+                      {{ ar() ? 'تعديل' : 'Edit' }}
+                    </button>
                     <app-fm-button
                       variant="secondary"
                       size="sm"
                       (clicked)="promptToggleCategoryArchive(cat)"
                     >
-                      {{ cat.isActive ? (ar()?'أرشفة':'Archive') : (ar()?'استعادة':'Restore') }}
+                      {{
+                        cat.isActive ? (ar() ? 'أرشفة' : 'Archive') : ar() ? 'استعادة' : 'Restore'
+                      }}
                     </app-fm-button>
                   </td>
                 </tr>
@@ -262,19 +336,19 @@ import {
       <!-- Existing Services Table -->
       <app-fm-card
         [title]="i18n.lang() === 'ar' ? 'خدمات الكتالوج المسجلة' : 'All Catalog Services'"
-        [subtitle]="ar()?'الخدمات النشطة والمؤرشفة':'Active and archived services'"
+        [subtitle]="ar() ? 'الخدمات النشطة والمؤرشفة' : 'Active and archived services'"
       >
         <div class="table-wrap">
           <table class="data-table">
             <thead>
               <tr>
-                <th>{{ar()?'معرّف الرابط':'Slug'}}</th>
-                <th>{{ar()?'العنوان بالعربية والإنجليزية':'Title (AR / EN)'}}</th>
-                <th>{{ar()?'التصنيف':'Category'}}</th>
-                <th>{{ar()?'نوع التسعير':'Pricing Policy'}}</th>
-                <th>{{ar()?'المدة':'Duration'}}</th>
-                <th>{{ar()?'الحالة':'Status'}}</th>
-                <th>{{ar()?'الإجراءات':'Action'}}</th>
+                <th>{{ ar() ? 'معرّف الرابط' : 'Slug' }}</th>
+                <th>{{ ar() ? 'العنوان بالعربية والإنجليزية' : 'Title (AR / EN)' }}</th>
+                <th>{{ ar() ? 'التصنيف' : 'Category' }}</th>
+                <th>{{ ar() ? 'نوع التسعير' : 'Pricing Policy' }}</th>
+                <th>{{ ar() ? 'المدة' : 'Duration' }}</th>
+                <th>{{ ar() ? 'الحالة' : 'Status' }}</th>
+                <th>{{ ar() ? 'الإجراءات' : 'Action' }}</th>
               </tr>
             </thead>
             <tbody>
@@ -286,22 +360,31 @@ import {
                   <td>{{ svc.title.ar }} · {{ svc.title.en }}</td>
                   <td>{{ svc.category?.slug || svc.categoryId }}</td>
                   <td>
-                    {{ svc.pricingPolicy.pricingType }} ·
-                    {{ formatFils(svc.pricingPolicy.indicativeAmountFils) }}
+                    {{
+                      svc.pricingPolicy?.pricingType || (ar() ? 'حسب عرض السعر' : 'Quote required')
+                    }}
+                    {{
+                      svc.pricingPolicy ? formatFils(svc.pricingPolicy.indicativeAmountFils) : ''
+                    }}
                   </td>
                   <td>{{ svc.defaultDurationMinutes }} min</td>
                   <td>
                     <app-fm-badge [variant]="svc.isActive ? 'success' : 'neutral'">
-                      {{ svc.isActive ? (ar()?'نشط':'Active') : (ar()?'مؤرشف':'Archived') }}
+                      {{ svc.isActive ? (ar() ? 'نشط' : 'Active') : ar() ? 'مؤرشف' : 'Archived' }}
                     </app-fm-badge>
                   </td>
-                  <td><button class="text-button" (click)="editService(svc)">{{ar()?'تعديل':'Edit'}}</button>
+                  <td>
+                    <button class="text-button" (click)="editService(svc)">
+                      {{ ar() ? 'تعديل' : 'Edit' }}
+                    </button>
                     <app-fm-button
                       variant="secondary"
                       size="sm"
                       (clicked)="promptToggleServiceArchive(svc)"
                     >
-                      {{ svc.isActive ? (ar()?'أرشفة':'Archive') : (ar()?'استعادة':'Restore') }}
+                      {{
+                        svc.isActive ? (ar() ? 'أرشفة' : 'Archive') : ar() ? 'استعادة' : 'Restore'
+                      }}
                     </app-fm-button>
                   </td>
                 </tr>
@@ -325,7 +408,34 @@ import {
   `,
   styles: [
     `
-      @media(max-width:900px){.admin-grid{grid-template-columns:minmax(0,1fr)!important}.field-row{grid-template-columns:minmax(0,1fr)!important}}.data-table th{background:#f2f5ee;color:#51664c;font-size:12px;white-space:nowrap}.data-table td{font-size:13px}.table-wrap{max-width:100%}.catalog-form input,.catalog-form select,.catalog-form textarea{min-height:44px}.admin-catalog-page .page-header{gap:6px}
+      @media (max-width: 900px) {
+        .admin-grid {
+          grid-template-columns: minmax(0, 1fr) !important;
+        }
+        .field-row {
+          grid-template-columns: minmax(0, 1fr) !important;
+        }
+      }
+      .data-table th {
+        background: #f2f5ee;
+        color: #51664c;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .data-table td {
+        font-size: 13px;
+      }
+      .table-wrap {
+        max-width: 100%;
+      }
+      .catalog-form input,
+      .catalog-form select,
+      .catalog-form textarea {
+        min-height: 44px;
+      }
+      .admin-catalog-page .page-header {
+        gap: 6px;
+      }
       .admin-catalog-page {
         display: flex;
         flex-direction: column;
@@ -410,7 +520,11 @@ import {
 export class AdminCatalogPageComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly catalogApi = inject(CatalogApiService);
-  readonly i18n = inject(LanguageService);readonly ar=()=>this.i18n.lang()==='ar';readonly editingCategory=signal<string|null>(null);readonly editingService=signal<string|null>(null);
+  readonly i18n = inject(LanguageService);
+  readonly ar = () => this.i18n.lang() === 'ar';
+  readonly editingCategory = signal<string | null>(null);
+  readonly editingService = signal<string | null>(null);
+  readonly quoteOnly = signal(false);
 
   readonly categories = signal<CatalogCategory[]>([]);
   readonly services = signal<CatalogServiceItem[]>([]);
@@ -445,10 +559,53 @@ export class AdminCatalogPageComponent implements OnInit {
     defaultDurationMinutes: [60, [Validators.required]],
   });
 
-  editCategory(cat:CatalogCategory){this.editingCategory.set(cat.id);this.categoryForm.setValue({slug:cat.slug,displayOrder:cat.displayOrder,nameAr:cat.name.ar,nameEn:cat.name.en,descAr:cat.description.ar,descEn:cat.description.en});document.getElementById('cat-slug')?.focus();}
-  cancelEditCategory(){this.editingCategory.set(null);this.categoryForm.reset({displayOrder:this.categories().length+1});}
-  editService(svc:CatalogServiceItem){this.editingService.set(svc.id);this.serviceForm.setValue({categoryId:svc.categoryId,slug:svc.slug,titleAr:svc.title.ar,titleEn:svc.title.en,descAr:svc.description.ar,descEn:svc.description.en,pricingType:svc.pricingPolicy.pricingType,indicativeAmountFils:svc.pricingPolicy.indicativeAmountFils,defaultDurationMinutes:svc.defaultDurationMinutes});document.getElementById('svc-slug')?.focus();}
-  cancelEditService(){this.editingService.set(null);this.serviceForm.reset({categoryId:'',slug:'',titleAr:'',titleEn:'',descAr:'',descEn:'',pricingType:'STARTING_AT',indicativeAmountFils:15000,defaultDurationMinutes:60});}
+  editCategory(cat: CatalogCategory) {
+    this.editingCategory.set(cat.id);
+    this.categoryForm.setValue({
+      slug: cat.slug,
+      displayOrder: cat.displayOrder,
+      nameAr: cat.name.ar,
+      nameEn: cat.name.en,
+      descAr: cat.description.ar,
+      descEn: cat.description.en,
+    });
+    document.getElementById('cat-slug')?.focus();
+  }
+  cancelEditCategory() {
+    this.editingCategory.set(null);
+    this.categoryForm.reset({ displayOrder: this.categories().length + 1 });
+  }
+  editService(svc: CatalogServiceItem) {
+    this.quoteOnly.set(!svc.pricingPolicy);
+    this.editingService.set(svc.id);
+    this.serviceForm.setValue({
+      categoryId: svc.categoryId,
+      slug: svc.slug,
+      titleAr: svc.title.ar,
+      titleEn: svc.title.en,
+      descAr: svc.description.ar,
+      descEn: svc.description.en,
+      pricingType: svc.pricingPolicy?.pricingType || 'STARTING_AT',
+      indicativeAmountFils: svc.pricingPolicy?.indicativeAmountFils ?? 0,
+      defaultDurationMinutes: svc.defaultDurationMinutes,
+    });
+    document.getElementById('svc-slug')?.focus();
+  }
+  cancelEditService() {
+    this.quoteOnly.set(false);
+    this.editingService.set(null);
+    this.serviceForm.reset({
+      categoryId: '',
+      slug: '',
+      titleAr: '',
+      titleEn: '',
+      descAr: '',
+      descEn: '',
+      pricingType: 'STARTING_AT',
+      indicativeAmountFils: 15000,
+      defaultDurationMinutes: 60,
+    });
+  }
   ngOnInit(): void {
     this.reloadAll();
   }
@@ -478,24 +635,26 @@ export class AdminCatalogPageComponent implements OnInit {
 
     const v = this.categoryForm.getRawValue();
     this.savingCategory.set(true);
-    (this.editingCategory()?this.catalogApi.updateCategory.bind(this.catalogApi,this.editingCategory()!):this.catalogApi.createCategory.bind(this.catalogApi))({
-        slug: v.slug,
-        displayOrder: Number(v.displayOrder),
-        name: { ar: v.nameAr, en: v.nameEn },
-        description: { ar: v.descAr, en: v.descEn },
-      })
-      .subscribe({
-        next: () => {
-          this.savingCategory.set(false);
-          this.editingCategory.set(null);this.successMessage.set(this.ar()?'تم حفظ التصنيف.':'Category saved.');
-          this.categoryForm.reset({ displayOrder: this.categories().length + 1 });
-          this.reloadAll();
-        },
-        error: (err: HttpErrorResponse) => {
-          this.savingCategory.set(false);
-          this.handleError(err);
-        },
-      });
+    (this.editingCategory()
+      ? this.catalogApi.updateCategory.bind(this.catalogApi, this.editingCategory()!)
+      : this.catalogApi.createCategory.bind(this.catalogApi))({
+      slug: v.slug,
+      displayOrder: Number(v.displayOrder),
+      name: { ar: v.nameAr, en: v.nameEn },
+      description: { ar: v.descAr, en: v.descEn },
+    }).subscribe({
+      next: () => {
+        this.savingCategory.set(false);
+        this.editingCategory.set(null);
+        this.successMessage.set(this.ar() ? 'تم حفظ التصنيف.' : 'Category saved.');
+        this.categoryForm.reset({ displayOrder: this.categories().length + 1 });
+        this.reloadAll();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.savingCategory.set(false);
+        this.handleError(err);
+      },
+    });
   }
 
   submitService(): void {
@@ -508,35 +667,39 @@ export class AdminCatalogPageComponent implements OnInit {
 
     const v = this.serviceForm.getRawValue();
     this.savingService.set(true);
-    (this.editingService()?this.catalogApi.updateService.bind(this.catalogApi,this.editingService()!):this.catalogApi.createService.bind(this.catalogApi))({
-        categoryId: v.categoryId,
-        slug: v.slug,
-        title: { ar: v.titleAr, en: v.titleEn },
-        description: { ar: v.descAr, en: v.descEn },
-        pricingPolicy: {
-          pricingType: v.pricingType,
-          indicativeAmountFils: Math.round(Number(v.indicativeAmountFils)),
-        },
-        defaultDurationMinutes: Number(v.defaultDurationMinutes),
-      })
-      .subscribe({
-        next: () => {
-          this.savingService.set(false);
-          this.editingService.set(null);this.successMessage.set(this.ar()?'تم حفظ الخدمة.':'Service saved.');
-          this.serviceForm.patchValue({
-            slug: '',
-            titleAr: '',
-            titleEn: '',
-            descAr: '',
-            descEn: '',
-          });
-          this.reloadAll();
-        },
-        error: (err: HttpErrorResponse) => {
-          this.savingService.set(false);
-          this.handleError(err);
-        },
-      });
+    (this.editingService()
+      ? this.catalogApi.updateService.bind(this.catalogApi, this.editingService()!)
+      : this.catalogApi.createService.bind(this.catalogApi))({
+      categoryId: v.categoryId,
+      slug: v.slug,
+      title: { ar: v.titleAr, en: v.titleEn },
+      description: { ar: v.descAr, en: v.descEn },
+      pricingPolicy: this.quoteOnly()
+        ? null
+        : {
+            pricingType: v.pricingType,
+            indicativeAmountFils: Math.round(Number(v.indicativeAmountFils)),
+          },
+      defaultDurationMinutes: Number(v.defaultDurationMinutes),
+    }).subscribe({
+      next: () => {
+        this.savingService.set(false);
+        this.editingService.set(null);
+        this.successMessage.set(this.ar() ? 'تم حفظ الخدمة.' : 'Service saved.');
+        this.serviceForm.patchValue({
+          slug: '',
+          titleAr: '',
+          titleEn: '',
+          descAr: '',
+          descEn: '',
+        });
+        this.reloadAll();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.savingService.set(false);
+        this.handleError(err);
+      },
+    });
   }
 
   promptToggleCategoryArchive(cat: CatalogCategory): void {

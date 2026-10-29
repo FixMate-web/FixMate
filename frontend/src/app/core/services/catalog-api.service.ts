@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, expand, map, reduce } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export type PricingType = 'FIXED' | 'STARTING_AT' | 'INSPECTION_ONLY';
@@ -36,7 +36,7 @@ export interface CatalogServiceItem {
     pricingType: PricingType;
     indicativeAmountFils: number;
     currency: 'JOD';
-  };
+  } | null;
   defaultDurationMinutes: number;
   isActive: boolean;
 }
@@ -97,6 +97,14 @@ export class CatalogApiService {
     return this.http.get<PaginatedServicesResponse>(`${this.apiBase}/services`, { params });
   }
 
+  getAllServices(): Observable<CatalogServiceItem[]> {
+    return this.getServices({limit:50}).pipe(
+      expand(page => page.page < page.totalPages ? this.getServices({limit:50,page:page.page+1}) : EMPTY),
+      map(page=>page.items),
+      reduce((all,items)=>[...all,...items], [] as CatalogServiceItem[]),
+    );
+  }
+
   getServiceBySlug(slug: string): Observable<CatalogServiceItem> {
     return this.http.get<CatalogServiceItem>(
       `${this.apiBase}/services/${encodeURIComponent(slug)}`,
@@ -146,7 +154,7 @@ export class CatalogApiService {
     pricingPolicy: {
       pricingType: PricingType;
       indicativeAmountFils: number;
-    };
+    } | null;
     defaultDurationMinutes: number;
   }): Observable<CatalogServiceItem> {
     return this.http.post<CatalogServiceItem>(`${this.apiBase}/services`, payload);
@@ -162,7 +170,7 @@ export class CatalogApiService {
       pricingPolicy: {
         pricingType: PricingType;
         indicativeAmountFils: number;
-      };
+      } | null;
       defaultDurationMinutes: number;
       isActive: boolean;
     }>,

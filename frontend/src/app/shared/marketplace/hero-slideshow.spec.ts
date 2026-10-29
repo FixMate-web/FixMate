@@ -1,0 +1,85 @@
+import { TestBed } from '@angular/core/testing';
+import { HeroSlideshowComponent } from './hero-slideshow.component';
+
+describe('Hero slideshow lifecycle', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) =>
+      setTimeout(() => callback(0), 16),
+    );
+    vi.stubGlobal('cancelAnimationFrame', (id: number) => clearTimeout(id));
+    vi.stubGlobal(
+      'Image',
+      class {
+        src = '';
+        decode() {
+          return Promise.resolve();
+        }
+      },
+    );
+    Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+  });
+  afterEach(() => {
+    TestBed.resetTestingModule();
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+  function create(reduced: boolean) {
+    vi.stubGlobal('matchMedia', () => ({
+      matches: reduced,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }));
+    TestBed.configureTestingModule({ imports: [HeroSlideshowComponent] });
+    const fixture = TestBed.createComponent(HeroSlideshowComponent);
+    fixture.detectChanges();
+    return fixture;
+  }
+  it('loads the first image immediately, changes twice, and pauses when hidden', async () => {
+    const fixture = create(false);
+    const component = fixture.componentInstance;
+    expect(fixture.nativeElement.querySelectorAll('img').length).toBe(1);
+    expect(fixture.nativeElement.querySelector('img').getAttribute('fetchpriority')).toBe('high');
+    await vi.advanceTimersByTimeAsync(7100);
+    expect(component.active()).toBe('kitchen');
+    await vi.advanceTimersByTimeAsync(7100);
+    expect(component.active()).toBe('living');
+    Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+    document.dispatchEvent(new Event('visibilitychange'));
+    await vi.advanceTimersByTimeAsync(21000);
+    expect(component.active()).toBe('living');
+    expect(component.running()).toBe(false);
+    Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+    document.dispatchEvent(new Event('visibilitychange'));
+    await vi.advanceTimersByTimeAsync(7100);
+    expect(component.active()).toBe('interior');
+    fixture.destroy();
+    await vi.advanceTimersByTimeAsync(21000);
+    expect(component.active()).toBe('interior');
+  });
+  it('keeps two fixed DOM slots and does not restart the outgoing animation', async () => {
+    const fixture = create(false);
+    const first = fixture.nativeElement.querySelector('[data-slot="0"]');
+    await vi.advanceTimersByTimeAsync(7100);
+    fixture.detectChanges();
+    const second = fixture.nativeElement.querySelector('[data-slot="1"]');
+    const outgoingName = first.classList.contains('zoom-a');
+    expect(fixture.nativeElement.querySelector('[data-slot="0"]')).toBe(first);
+    await vi.advanceTimersByTimeAsync(500);
+    fixture.detectChanges();
+    expect(first.classList.contains('zoom-a')).toBe(outgoingName);
+    await vi.advanceTimersByTimeAsync(6600);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('[data-slot="0"]')).toBe(first);
+    expect(fixture.nativeElement.querySelector('[data-slot="1"]')).toBe(second);
+    expect(second.classList.contains('active')).toBe(false);
+  });
+
+  it('keeps a static photograph and does not preload when reduced motion is requested', async () => {
+    const fixture = create(true);
+    await vi.advanceTimersByTimeAsync(30000);
+    expect(fixture.componentInstance.active()).toBe('exterior');
+    expect(fixture.componentInstance.mounted().length).toBe(1);
+    expect(fixture.componentInstance.running()).toBe(false);
+  });
+});
