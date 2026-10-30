@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import helmet from 'helmet';
+import { NextFunction, Request, Response } from 'express';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {
@@ -17,7 +18,14 @@ async function bootstrap(): Promise<void> {
     .map((origin) => origin.trim())
     .filter((origin) => origin.length > 0);
 
+  // Render terminates TLS at its ingress; trust only the nearest proxy hop.
+  app.set('trust proxy', 1);
   app.use(helmet());
+  // API responses can contain tokens and private account data. Never cache at a CDN.
+  app.use((_req: Request, res: Response, next: NextFunction) => {
+    res.setHeader('Cache-Control', 'no-store');
+    next();
+  });
 
   app.enableCors({
     origin: allowedOrigins,
@@ -38,8 +46,8 @@ async function bootstrap(): Promise<void> {
 
   app.enableShutdownHooks();
 
-  await app.listen(port);
-  logger.log(`FixMate Backend listening on http://localhost:${port}/api/v1`);
+  await app.listen(port, '0.0.0.0');
+  logger.log(`FixMate Backend listening on 0.0.0.0:${port}/api/v1`);
 }
 
 void bootstrap();

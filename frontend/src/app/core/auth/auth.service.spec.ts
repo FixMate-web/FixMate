@@ -1,9 +1,10 @@
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { sanitizeReturnUrl } from '../guards/auth.guard';
 import { authInterceptor } from './auth.interceptor';
 import { AuthService } from './auth.service';
+import { environment } from '../../../environments/environment';
 
 describe('Part 05 — AuthService, Interceptor & ReturnUrl Security', () => {
   let service: AuthService;
@@ -81,4 +82,47 @@ describe('Part 05 — AuthService, Interceptor & ReturnUrl Security', () => {
     expect(sanitizeReturnUrl('//evil.example.com')).toBe('/dashboard');
     expect(sanitizeReturnUrl('\\\\evil.example.com')).toBe('/dashboard');
   });
+  const session = { user: { id: 'u1', fullName: 'Sara', email: 'sara@example.com', role: 'CUSTOMER', status: 'ACTIVE', preferredLanguage: 'ar' }, accessToken: 'renewed-token', expiresInSeconds: 900 };
+
+  it('restores a session after reload and shares concurrent refresh requests', () => {
+    let restored = 0;
+    service.ensureInitialized().subscribe(ok => { if (ok) restored++; });
+    service.ensureInitialized().subscribe(ok => { if (ok) restored++; });
+    const refresh = httpMock.expectOne(`${environment.apiBaseUrl}/auth/refresh`);
+    expect(refresh.request.withCredentials).toBe(true);
+    expect(refresh.request.headers.get('X-Requested-With')).toBe('FixMateClient');
+    refresh.flush(session);
+    expect(restored).toBe(2);
+    expect(service.isAuthenticated()).toBe(true);
+  });
+
+  it('retries an expired access request with a refreshed in-memory token', () => {
+    service.fetchMe().subscribe();
+    httpMock.expectOne(`${environment.apiBaseUrl}/users/me`).flush({}, { status: 401, statusText: 'Expired' });
+    httpMock.expectOne(`${environment.apiBaseUrl}/auth/refresh`).flush(session);
+    const retried = httpMock.expectOne(`${environment.apiBaseUrl}/users/me`);
+    expect(retried.request.headers.get('Authorization')).toBe('Bearer renewed-token');
+    expect(retried.request.headers.has('x-fixmate-auth-retried')).toBe(false);
+    retried.flush(session.user);
+  });
+
+  it('clears the session when refresh cookies are blocked, expired or revoked', () => {
+    service.login({ email: 'sara@example.com', password: 'Password123' }).subscribe();
+    httpMock.expectOne(`${environment.apiBaseUrl}/auth/login`).flush(session);
+    service.refreshSession().subscribe(ok => expect(ok).toBe(false));
+    httpMock.expectOne(`${environment.apiBaseUrl}/auth/refresh`).flush({}, { status: 401, statusText: 'Unauthorized' });
+    expect(service.getAccessToken()).toBeNull();
+    expect(service.isAuthenticated()).toBe(false);
+  });
+
+  it('does not leak bearer tokens to URLs sharing only an API string prefix', () => {
+    service.login({ email: 'sara@example.com', password: 'Password123' }).subscribe();
+    httpMock.expectOne(`${environment.apiBaseUrl}/auth/login`).flush(session);
+    const url = `${environment.apiBaseUrl}-untrusted/users/me`;
+    TestBed.inject(HttpClient).get(url).subscribe();
+    const untrusted = httpMock.expectOne(url);
+    expect(untrusted.request.headers.has('Authorization')).toBe(false);
+    untrusted.flush({});
+  });
+
 });

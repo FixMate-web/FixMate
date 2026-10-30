@@ -450,8 +450,11 @@ export async function seedCanonicalCatalog(
 }
 
 async function runCli(): Promise<void> {
+  if (process.env.NODE_ENV === 'production' && !process.env.MONGODB_URI) {
+    throw new Error('MONGODB_URI is required in production.');
+  }
   const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/fixmate';
-  await mongoose.connect(mongoUri);
+  await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 5000, connectTimeoutMS: 10000 });
   try {
     const categoryModel =
       (mongoose.models[Category.name] as Model<CategoryDocument>) ||
@@ -471,7 +474,9 @@ async function runCli(): Promise<void> {
 
 if (require.main === module) {
   runCli().catch((err: unknown) => {
-    const message = err instanceof Error ? err.message : String(err);
+    const message = process.env.NODE_ENV === 'production'
+      ? 'Failed. Check configuration, connectivity and database permissions.'
+      : err instanceof Error ? err.message : String(err);
     process.stderr.write(`[FixMate Catalog Seed Error] ${message}\n`);
     process.exit(1);
   });

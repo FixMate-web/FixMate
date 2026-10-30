@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build:vercel": "ng build --configuration production && node tools/vercel-output.cjs",
+    "test:deployment": "node --test tools/vercel-output.test.cjs"
   },
   "private": true,
   "packageManager": "npm@11.19.0",
@@ -29,5 +31,9 @@
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",
     "vitest": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=24.15.0 <25",
+    "npm": ">=11 <12"
   }
 }

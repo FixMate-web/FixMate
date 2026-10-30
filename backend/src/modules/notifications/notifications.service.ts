@@ -68,7 +68,7 @@ export class NotificationsService {
     });
 
     // Safe local-stub email notification log (no real external emails sent in local/test mode)
-    this.logger.log(
+    if (process.env.NODE_ENV !== 'production') this.logger.log(
       `[EmailStub] Queued local notification stub type=${input.type} recipient=${recipientObjectId.toString()} subject="${input.title.en}"`,
     );
 

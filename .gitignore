@@ -67,3 +67,6 @@ Thumbs.db
 
 # Local visual checks and temporary design captures
 artifacts/
+
+# Generated Vercel build output and local project linkage
+.vercel/

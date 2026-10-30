@@ -62,4 +62,23 @@ describe('validateEnvironment', () => {
       }),
     ).toThrow(/PORT/);
   });
+  it('accepts Atlas SRV URIs and rejects unsafe production configuration without exposing values', () => {
+    const production = { ...validBaseEnv, NODE_ENV: 'production',
+      MONGODB_URI: 'mongodb+srv://user:sentinel-password@cluster.example.com/fixmate',
+      CORS_ORIGINS: 'https://fixmate.example.com', JWT_ACCESS_SECRET: 'a'.repeat(48) };
+    expect(validateEnvironment(production).MONGODB_URI).toContain('mongodb+srv://');
+    for (const CORS_ORIGINS of ['*', 'https://*.example.com', 'https://fixmate.example.com/path', 'http://localhost:4200', '']) {
+      expect(() => validateEnvironment({ ...production, CORS_ORIGINS })).toThrow(/CORS_ORIGINS/);
+    }
+    const missingOrigin: Record<string, unknown> = { ...production };
+    delete missingOrigin.CORS_ORIGINS;
+    expect(() => validateEnvironment(missingOrigin)).toThrow(/CORS_ORIGINS/);
+    for (const JWT_ACCESS_SECRET of ['replace-with-at-least-32-char-random-secret-key', 'short']) {
+      expect(() => validateEnvironment({ ...production, JWT_ACCESS_SECRET })).toThrow(/JWT_ACCESS_SECRET/);
+    }
+    try { validateEnvironment({ ...production, PORT: 'invalid' }); } catch (error) {
+      expect(String(error)).not.toContain('sentinel-password');
+    }
+  });
+
 });

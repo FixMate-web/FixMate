@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { environment } from '../environments/environment';
 import { authGuard, roleGuard } from './core/guards/auth.guard';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-layout.component';
@@ -63,14 +64,14 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/public/contact-page.component').then((m) => m.ContactPageComponent),
       },
-      {
+      ...(environment.enableDevShowcase ? [{
         path: 'ui-showcase',
         title: 'Design System Showcase | FixMate',
         loadComponent: () =>
           import('./features/public/ui-showcase-page.component').then(
             (m) => m.UiShowcasePageComponent,
           ),
-      },
+      }] : []),
     ],
   },
   {
