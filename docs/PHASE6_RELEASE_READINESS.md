@@ -1,4 +1,6 @@
-# FixMate — Phase 6 Release Readiness, QA & Deployment Runbook (Checkpoint C7)
+# FixMate — Historical Phase 6 Release Readiness (Checkpoint C7)
+
+Current deployment instructions and results supersede the examples below: [deployment guide](DEPLOYMENT_GUIDE.md), [verification](DEPLOYMENT_VERIFICATION.md).
 
 **Timestamp:** 2026-10-29T18:41:00+03:00  
 **Scope:** Parts 21 & 22 — Comprehensive QA Verification, Security Audit & Cloud Deployment Runbook (Vercel + Render + MongoDB Atlas)

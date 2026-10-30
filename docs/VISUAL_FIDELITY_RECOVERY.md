@@ -2,7 +2,7 @@
 
 ## Starting point and reference
 
-Started from clean `feat/premium-reference-transformation`, HEAD `621b8dc763f40e8e28602059368e06bc5e6e3646`. Changes are isolated on `fix/visual-fidelity-overhaul`. No backend implementation, schemas, authentication contracts, or application routes were replaced.
+Started from a clean working tree, HEAD `621b8dc763f40e8e28602059368e06bc5e6e3646`. Changes are isolated on `fix/visual-fidelity-overhaul`. No backend implementation, schemas, authentication contracts, or application routes were replaced.
 
 The Browser skill runtime reported “No browser is available” and an empty browser list. Installed Google Chrome was used through the existing Playwright dependency for real local rendering. Initial the design reference navigation produced a blank screenshot and its web response requested robot verification. A later ordinary navigation succeeded at desktop and mobile sizes; no restriction was bypassed. The live page and supplied screenshots were both inspected. Live computed styles confirmed a 588px hero column at x=423, 946px content width, 48px/50.4px desktop headings with the proprietary Rise font. FixMate uses independently licensed Inter instead.
 
