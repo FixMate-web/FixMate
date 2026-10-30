@@ -1,6 +1,6 @@
 # FixMate photography and fonts
 
-Updated 2026-10-30. Photographs are illustrative stock imagery or the AI-generated service scenes documented below, not completed FixMate projects or photographs of listed providers. No Thumbtack assets are used. All displayed homepage images are served locally as WebP. The seven-scene service hero inventory below supersedes the older editorial slideshow uses in the original table.
+Updated 2026-10-30. Photographs are illustrative stock imagery or the AI-generated service scenes documented below, not completed FixMate projects or photographs of listed providers. All displayed homepage images are served locally as WebP. The seven-scene service hero inventory below supersedes the older editorial slideshow uses in the original table.
 
 ## Homepage asset provenance
 
@@ -21,7 +21,7 @@ Updated 2026-10-30. Photographs are illustrative stock imagery or the AI-generat
 
 Licenses: [Unsplash License](https://unsplash.com/license), [Pexels License](https://www.pexels.com/license/). Source pages mark these as free photographs; no Unsplash+ assets were selected. Images were downloaded and converted with Pillow, keeping appropriate high-resolution source crops. Hero uses responsive 480/960/1920w variants and high fetch priority; below-fold images load lazily.
 
-Inherited `hero/home-*.webp` and `home-interior.jpg` remain available for existing secondary-page fallbacks. They are not the new homepage hero. The prior inventory incorrectly listed nonexistent `services/` assets and described the AC guitar image as a technician; those claims are superseded by this inventory.
+The undocumented legacy `hero/home-*` and `home-interior.jpg` files were removed. The About page now reuses the documented living-room photograph.
 
 ## Fonts
 
@@ -31,7 +31,7 @@ Inter and Noto Sans Arabic are self-hosted WOFF2 files in `frontend/public/fonts
 
 These seven **AI-generated illustrative photographs** replace only the four homepage slideshow backgrounds. They are not photographs of real FixMate professionals, customers, homes or completed work. Generated with the built-in OpenAI `image_gen` tool, one independent scene per image; furniture moving received one targeted composition refinement. No third-party stock or competitor imagery was used for this set. No exclusive-rights or stock-license claim is made.
 
-Generation output is natively 1672×941 (approximately 16:9), preserved without artificial upscaling. WebP quality 87, with true 960×540 responsive versions. Full prompts, original-output references, SHA-256 hashes and asset measurements are recorded in [generation provenance](../artifacts/service-heroes/generation-provenance.json).
+Generation output is natively 1672×941 (approximately 16:9), preserved without artificial upscaling. WebP quality 87, with true 960×540 responsive versions. Full prompts, original-output references, SHA-256 hashes and asset measurements are recorded in [generation provenance](hero-generation-provenance.json).
 
 | Asset under `frontend/public/images/hero/` | Existing category | Native WebP | 960×540 WebP |
 | --- | --- | ---: | ---: |
@@ -43,6 +43,6 @@ Generation output is natively 1672×941 (approximately 16:9), preserved without 
 | `hero-interior-painting.webp` | Painting / الدهان والديكور | 1672×941, 150.1 KiB | 70.3 KiB |
 | `hero-garden-maintenance.webp` | Landscaping / تنسيق وصيانة الحدائق | 1672×941, 318.2 KiB | 156.4 KiB |
 
-Each photo is a single scene, not a collage. The foreground interface and existing overlay remain unchanged. The background image alone mirrors in RTL, preserving the scene’s quiet side behind the text; independent CSS `scale` leaves the zoom animation untouched. Per-scene focal positions accommodate desktop and mobile crops. Existing scene captions now describe the actual active service in Arabic and English.
+Each photo is a single scene, not a collage. The main foreground interface remains unchanged; the informational caption overlay was removed. The background image alone mirrors in RTL, preserving the scene’s quiet side behind the text; independent CSS `scale` leaves the zoom animation untouched. Per-scene focal positions accommodate desktop and mobile crops.
 
 Only the first image has high fetch priority. Upcoming images use matching `srcset`/`sizes` when preloaded and decoded, so viewport/DPR selection matches the displayed image. The seven full-size images are not eagerly fetched. Rotation remains 7000ms, fade 1100ms, zoom to 1.075 over 8200ms. Existing editorial photographs remain available for their other page uses.

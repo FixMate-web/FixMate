@@ -66,13 +66,13 @@ const ids = ['cleaning', 'plumbing', 'electrical', 'air-conditioning', 'furnitur
       const image = await page.locator('.hero-slide.active').evaluate(img => ({ id: img.dataset.slide, source: img.currentSrc, loaded: img.complete && img.naturalWidth > 0, opacity: +getComputedStyle(img).opacity, mirrored: getComputedStyle(img).scale }));
       assert(image.loaded && image.opacity === 1);
       assert(image.source.includes('hero-' + id));
-      const caption = await page.locator('.hero-caption-pill').innerText();
-      assert(caption.length > 20);
+      assert.equal(await page.locator('.hero-caption-pill').count(), 0);
+      assert.equal(await page.locator('.discovery-transition').count(), 1);
       assert.equal(image.mirrored, config.lang === 'ar' ? '-1 1' : 'none');
       assert.deepEqual(await page.locator('.hero-left-col').boundingBox(), foreground);
       const file = `${config.lang}-${config.width}-${id}.png`;
       await page.screenshot({ path: path.join(output, file) });
-      report.slides.push({ ...config, id, caption, image, screenshot: file });
+      report.slides.push({ ...config, id, image, screenshot: file });
     }
     const samples = await page.evaluate(() => { clearInterval(window.heroSampleTimer); return window.heroSamples; });
     let resets = 0, enlarged = false; const previous = new Map();

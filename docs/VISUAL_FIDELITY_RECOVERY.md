@@ -2,9 +2,9 @@
 
 ## Starting point and reference
 
-Started from clean `feat/premium-thumbtack-transformation`, HEAD `621b8dc763f40e8e28602059368e06bc5e6e3646`. Changes are isolated on `fix/visual-fidelity-overhaul`. No backend implementation, schemas, authentication contracts, or application routes were replaced.
+Started from clean `feat/premium-reference-transformation`, HEAD `621b8dc763f40e8e28602059368e06bc5e6e3646`. Changes are isolated on `fix/visual-fidelity-overhaul`. No backend implementation, schemas, authentication contracts, or application routes were replaced.
 
-The Browser skill runtime reported “No browser is available” and an empty browser list. Installed Google Chrome was used through the existing Playwright dependency for real local rendering. Initial Thumbtack navigation produced a blank screenshot and its web response requested robot verification. A later ordinary navigation succeeded at desktop and mobile sizes; no restriction was bypassed. The live page and supplied screenshots were both inspected. Live computed styles confirmed a 588px hero column at x=423, 946px content width, 48px/50.4px desktop headings with the proprietary Rise font. FixMate uses independently licensed Inter instead.
+The Browser skill runtime reported “No browser is available” and an empty browser list. Installed Google Chrome was used through the existing Playwright dependency for real local rendering. Initial the design reference navigation produced a blank screenshot and its web response requested robot verification. A later ordinary navigation succeeded at desktop and mobile sizes; no restriction was bypassed. The live page and supplied screenshots were both inspected. Live computed styles confirmed a 588px hero column at x=423, 946px content width, 48px/50.4px desktop headings with the proprietary Rise font. FixMate uses independently licensed Inter instead.
 
 ## Screenshot specification
 
@@ -47,7 +47,7 @@ Run `node frontend/tools/visual-review.cjs` from the repository root while Angul
 
 ## Limits
 
-- Thumbtack loaded on ordinary retry. Its desktop/mobile appearance and computed styles were inspected; attempted desktop Explore/category/theme clicks did not consistently produce a visible change in the partially loaded session. Those interactions are not claimed as observed working reference behavior. FixMate’s equivalents were exercised independently.
+- the design reference loaded on ordinary retry. Its desktop/mobile appearance and computed styles were inspected; attempted desktop Explore/category/theme clicks did not consistently produce a visible change in the partially loaded session. Those interactions are not claimed as observed working reference behavior. FixMate’s equivalents were exercised independently.
 - Only two services exist per current catalog category. Selecting a category correctly shows those two, rather than duplicating cards to fill four slots.
 - The local provider directory is empty. Real profile data, authenticated booking completion, provider onboarding submission, and account creation were not fabricated for visual testing. Existing backend tests cover business logic, but these authenticated UI flows still need a seeded approved account walkthrough.
 - Secondary pages receive shared typography, image, form, filter, and provider-row improvements. They have not all undergone the same detailed reference reconstruction as the homepage.
@@ -62,5 +62,5 @@ Desktop header is white and approximately 72px tall. At 390px, the reference use
 - Frontend tests: 8 suites / 23 tests PASS.
 - Backend build: PASS; backend tests: 9 suites / 42 tests PASS. Backend source remains unchanged.
 - Browser: all 16 requested viewport/language combinations passed overflow and loaded-image assertions; zero page errors. Live suggestions/search (including Irbid URL preservation), category filtering, project themes, dialogs, dropdown keyboard/outside closing, mobile menu, catalog/detail/auth routes and the protected requests route were exercised. See `artifacts/visual/verification.json`.
-- Three visual review stages were performed with real Chrome screenshots. Desktop proportions were compared against the supplied screenshots and subsequently confirmed against live Thumbtack geometry.
+- Three visual review stages were performed with real Chrome screenshots. Desktop proportions were compared against the supplied screenshots and subsequently confirmed against live the design reference geometry.
 - Git changes are intentionally uncommitted on the recovery branch; no unrelated files were staged.

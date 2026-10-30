@@ -3,11 +3,10 @@ import {
   Component,
   DestroyRef,
   inject,
-  output,
   signal,
 } from '@angular/core';
 
-import { HERO_SLIDES as SLIDES, HeroSlide } from './hero-slides';
+import { HERO_SLIDES as SLIDES } from './hero-slides';
 
 @Component({
   selector: 'app-hero-slideshow',
@@ -114,7 +113,6 @@ import { HERO_SLIDES as SLIDES, HeroSlide } from './hero-slides';
   ],
 })
 export class HeroSlideshowComponent {
-  readonly activeSlideChange = output<HeroSlide>();
   // Slots never reorder. A reused image can restart only while its layer is fully hidden.
   readonly active = signal(SLIDES[0].id);
   readonly activeSlot = signal(0);
@@ -207,7 +205,6 @@ export class HeroSlideshowComponent {
         this.index = next;
         this.activeSlot.set(nextSlot);
         this.active.set(SLIDES[next].id);
-        this.activeSlideChange.emit(SLIDES[next]);
         this.pending = undefined;
         this.schedule();
       });

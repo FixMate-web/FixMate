@@ -52,24 +52,6 @@
   line-height: 1.45;
   margin: 0 0 22px;
 }
-.hero-caption-pill {
-  position: absolute;
-  bottom: 76px;
-  inset-inline-end: 24px;
-  border-radius: 12px;
-  padding: 10px 14px;
-  background: rgba(7, 47, 64, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  text-align: start;
-  font-size: 12px;
-  max-width: 300px;
-  strong {
-    display: block;
-    font-size: 11px;
-    color: #7dd3fc;
-    margin-bottom: 2px;
-  }
-}
 .centered-section-header {
   text-align: center;
   margin: 0 auto 32px;
@@ -519,8 +501,7 @@
   }
 }
 @media (max-width: 767px) {
-  .sticky-discovery,
-  .hero-caption-pill {
+  .sticky-discovery {
     display: none;
   }
   .hero-fullbleed {

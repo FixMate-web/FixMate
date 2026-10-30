@@ -64,3 +64,6 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# Local visual checks and temporary design captures
+artifacts/

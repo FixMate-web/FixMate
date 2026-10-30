@@ -36,7 +36,7 @@ https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=cro
 
 The image is not a representation of a listed provider or completed FixMate job. The attempted generated hero was interrupted and no generated asset is used.
 
-Product references consulted: https://www.taskrabbit.com/ and https://www.justlife.com/ (discovery-first navigation, concise service presentation). Thumbtack returned a verification page. No reference-site assets or proprietary layouts were copied.
+Product references consulted: https://www.taskrabbit.com/ and https://www.justlife.com/ (discovery-first navigation, concise service presentation). the design reference returned a verification page. No reference-site assets or proprietary layouts were copied.
 
 ## Remaining review
 
