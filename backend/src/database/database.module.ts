@@ -16,19 +16,34 @@ import { DOMAIN_PERSISTENCE_MODULES } from './models/domain-persistence.modules'
 
         return {
           uri,
+          // Await explicitly so retry logging receives only a sanitized error.
+          lazyConnection: true,
           autoIndex: nodeEnv !== 'production',
           serverSelectionTimeoutMS: 5000,
-          connectionFactory: (connection: Connection) => {
+          connectTimeoutMS: 10000,
+          retryAttempts: 3,
+          retryDelay: 1000,
+          verboseRetryLog: false,
+          connectionErrorFactory: () => new Error(
+            'MongoDB connection failed. Check MONGODB_URI, DNS, TLS, database credentials and Atlas Network Access.',
+          ),
+          connectionFactory: async (connection: Connection) => {
             connection.on('connected', () => {
               logger.log('MongoDB connection established');
             });
             connection.on('disconnected', () => {
               logger.warn('MongoDB connection disconnected');
             });
-            connection.on('error', (err: Error) => {
-              logger.error(`MongoDB connection error: ${err.message}`);
+            connection.on('error', () => {
+              logger.error('MongoDB connection error; check connectivity and database configuration.');
             });
-            return connection;
+            try {
+              await connection.asPromise();
+              return connection;
+            } catch {
+              await connection.close().catch(() => undefined);
+              throw new Error('MongoDB connection failed. Check URI, DNS, TLS, credentials and Network Access.');
+            }
           },
         };
       },

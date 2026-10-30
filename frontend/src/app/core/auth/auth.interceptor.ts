@@ -10,10 +10,15 @@ import { catchError, Observable, switchMap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
 
-const RETRY_HEADER = 'x-fixmate-auth-retried';
-
 function isTrustedApiRequest(url: string): boolean {
-  return url.startsWith(environment.apiBaseUrl) || url.startsWith('/api/v1');
+  try {
+    const base = new URL(environment.apiBaseUrl, window.location.origin);
+    const target = new URL(url, window.location.origin);
+    return target.origin === base.origin &&
+      (target.pathname === base.pathname || target.pathname.startsWith(`${base.pathname}/`));
+  } catch {
+    return false;
+  }
 }
 
 function isAuthEndpoint(url: string): boolean {
@@ -50,8 +55,7 @@ export const authInterceptor: HttpInterceptorFn = (
       if (
         error instanceof HttpErrorResponse &&
         error.status === 401 &&
-        !isAuthEndpoint(req.url) &&
-        !req.headers.has(RETRY_HEADER)
+        !isAuthEndpoint(req.url)
       ) {
         return authService.refreshSession().pipe(
           switchMap((refreshed) => {
@@ -62,7 +66,6 @@ export const authInterceptor: HttpInterceptorFn = (
             const retriedReq = req.clone({
               setHeaders: {
                 Authorization: `Bearer ${newToken}`,
-                [RETRY_HEADER]: 'true',
               },
             });
             return next(retriedReq);

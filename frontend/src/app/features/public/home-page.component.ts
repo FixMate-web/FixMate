@@ -27,7 +27,6 @@ import { ProviderCardComponent } from '../../shared/marketplace/provider-card.co
 import { ScrollRevealDirective } from '../../shared/ui/scroll-reveal.directive';
 import { HowItWorksComponent } from '../../shared/marketplace/how-it-works.component';
 import { HeroSlideshowComponent } from '../../shared/marketplace/hero-slideshow.component';
-import { HERO_SLIDES } from '../../shared/marketplace/hero-slides';
 import { DiscoveryCatalogStore } from '../../shared/marketplace/discovery-catalog.store';
 import { money, pricingLabel } from '../../shared/marketplace/marketplace.utils';
 
@@ -350,7 +349,6 @@ const HOME_RESOURCE_CARDS: HomeResourceCard[] = [
 export class HomePageComponent {
   readonly i18n = inject(LanguageService);
   readonly ar = () => this.i18n.lang() === 'ar';
-  readonly heroSlide = signal(HERO_SLIDES[0]);
   private readonly api = inject(CatalogApiService);
   private readonly providersApi = inject(ProvidersApiService);
   private readonly destroyRef = inject(DestroyRef);
@@ -371,7 +369,7 @@ export class HomePageComponent {
   readonly providersLoading = signal(true);
   readonly providersError = signal(false);
 
-  // Interactive Thumbtack-style state signals
+  // Interactive discovery state signals
   readonly selectedCategorySlug = signal<string>('cleaning');
   readonly exploreTabs = EXPLORE_PROJECT_TABS;
   readonly activeExploreTabId = signal<string>('maintenance');

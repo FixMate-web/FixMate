@@ -220,7 +220,21 @@ export class AuthService {
       throw new ForbiddenException('Account is suspended or deactivated.');
     }
 
-    return this.issueSessionForUser(user, meta, existingSession.familyId, newSessionId);
+    const result = await this.issueSessionForUser(user, meta, existingSession.familyId, newSessionId);
+    // A replay/logout can revoke the family while the successor is being inserted.
+    // Revocation marks ancestors too, so that an in-flight insertion cannot escape it.
+    const parentStillRotated = await this.refreshSessionModel.exists({
+      sessionId,
+      revocationReason: 'ROTATED',
+    });
+    if (!parentStillRotated) {
+      await this.refreshSessionModel.updateOne(
+        { sessionId: newSessionId, revokedAt: null },
+        { $set: { revokedAt: new Date(), revocationReason: 'REPLAY_DETECTED' } },
+      );
+      throw new UnauthorizedException('Refresh session family was revoked during rotation.');
+    }
+    return result;
   }
 
   async logout(rawCookieValue: string | null): Promise<{ loggedOut: true }> {
@@ -332,8 +346,12 @@ export class AuthService {
     reason: 'LOGOUT' | 'REPLAY_DETECTED' | 'ACCOUNT_SUSPENDED',
   ): Promise<void> {
     await this.refreshSessionModel.updateMany(
-      { familyId, revokedAt: null },
-      { $set: { revokedAt: new Date(), revocationReason: reason } },
+      { familyId },
+      [{ $set: {
+        // Keep the original revocation time while recording the family-wide reason.
+        revokedAt: { $ifNull: ['$revokedAt', new Date()] },
+        revocationReason: reason,
+      } }],
     );
   }
 

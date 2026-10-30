@@ -2,7 +2,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { getStorageToken, ThrottlerModule, ThrottlerStorageService } from '@nestjs/throttler';
 import { Model } from 'mongoose';
 import * as request from 'supertest';
 import {
@@ -24,6 +24,8 @@ import {
 import { bootstrapAdminAccount } from '../../scripts/bootstrap-admin';
 import { UsersModule } from '../users/users.module';
 import { AuthModule } from './auth.module';
+import { AuthService } from './auth.service';
+import { JWT_AUDIENCE, JWT_ISSUER } from './jwt.strategy';
 
 describe('Part 05 — Auth & Users Integration Tests', () => {
   let app: INestApplication;
@@ -36,11 +38,11 @@ describe('Part 05 — Auth & Users Integration Tests', () => {
     'mongodb://127.0.0.1:27017/fixmate_phase2_auth_test';
 
   beforeAll(async () => {
-    process.env.NODE_ENV = 'test';
+    process.env.NODE_ENV = 'production';
     process.env.PORT = '3000';
     process.env.MONGODB_URI = testDbUri;
-    process.env.CORS_ORIGINS = 'http://localhost:4200';
-    process.env.JWT_ACCESS_SECRET = 'test-only-jwt-access-secret-key-phase-2';
+    process.env.CORS_ORIGINS = 'https://fixmate.example.com';
+    process.env.JWT_ACCESS_SECRET = 'integration-fixture-access-secret-'.repeat(2);
     process.env.JWT_ACCESS_TTL_SECONDS = '900';
     process.env.REFRESH_SESSION_TTL_DAYS = '7';
 
@@ -92,6 +94,8 @@ describe('Part 05 — Auth & Users Integration Tests', () => {
   });
 
   beforeEach(async () => {
+    // Isolate rate windows between cases while keeping the real guard/limits enabled.
+    app.get<ThrottlerStorageService>(getStorageToken()).onApplicationShutdown();
     await Promise.all([
       userModel.deleteMany({}),
       providerProfileModel.deleteMany({}),
@@ -120,6 +124,9 @@ describe('Part 05 — Auth & Users Integration Tests', () => {
     const rtCookie = cookies.find((c: string) => c.startsWith('fixmate_rt='));
     expect(rtCookie).toBeDefined();
     expect(rtCookie).toContain('HttpOnly');
+    expect(rtCookie).toContain('Secure');
+    expect(rtCookie).toContain('SameSite=Lax');
+    expect(rtCookie).not.toContain('Domain=');
     expect(rtCookie).toContain('Path=/api/v1/auth');
     return (rtCookie as string).split(';')[0];
   }
@@ -278,7 +285,7 @@ describe('Part 05 — Auth & Users Integration Tests', () => {
     await request(app.getHttpServer())
       .post('/api/v1/auth/refresh')
       .set('Cookie', cookie1)
-      .set('Origin', 'http://localhost:4200')
+      .set('Origin', 'https://fixmate.example.com')
       .expect(403);
 
     // Untrusted Origin header -> 403 CSRF rejection
@@ -294,7 +301,7 @@ describe('Part 05 — Auth & Users Integration Tests', () => {
       .post('/api/v1/auth/refresh')
       .set('Cookie', cookie1)
       .set('X-Requested-With', 'FixMateClient')
-      .set('Origin', 'http://localhost:4200')
+      .set('Origin', 'https://fixmate.example.com')
       .expect(200);
 
     const cookie2 = extractRefreshCookie(refresh1);
@@ -305,7 +312,7 @@ describe('Part 05 — Auth & Users Integration Tests', () => {
       .post('/api/v1/auth/refresh')
       .set('Cookie', cookie1)
       .set('X-Requested-With', 'FixMateClient')
-      .set('Origin', 'http://localhost:4200')
+      .set('Origin', 'https://fixmate.example.com')
       .expect(401);
 
     // Verify cookie2 was also revoked due to family replay detection
@@ -313,7 +320,7 @@ describe('Part 05 — Auth & Users Integration Tests', () => {
       .post('/api/v1/auth/refresh')
       .set('Cookie', cookie2)
       .set('X-Requested-With', 'FixMateClient')
-      .set('Origin', 'http://localhost:4200')
+      .set('Origin', 'https://fixmate.example.com')
       .expect(401);
   });
 
@@ -364,7 +371,7 @@ describe('Part 05 — Auth & Users Integration Tests', () => {
       .post('/api/v1/auth/logout')
       .set('Cookie', cookie)
       .set('X-Requested-With', 'FixMateClient')
-      .set('Origin', 'http://localhost:4200')
+      .set('Origin', 'https://fixmate.example.com')
       .expect(200);
 
     // Refresh after logout -> 401
@@ -372,8 +379,66 @@ describe('Part 05 — Auth & Users Integration Tests', () => {
       .post('/api/v1/auth/refresh')
       .set('Cookie', cookie)
       .set('X-Requested-With', 'FixMateClient')
-      .set('Origin', 'http://localhost:4200')
+      .set('Origin', 'https://fixmate.example.com')
       .expect(401);
+  });
+
+  it('rejects expired refresh sessions, missing production origins and expired access tokens', async () => {
+    const registered = await request(app.getHttpServer()).post('/api/v1/auth/register')
+      .send({ fullName: 'Expiry Fixture', email: 'expiry@example.com', password: 'StrongPassword123' }).expect(201);
+    const cookie = extractRefreshCookie(registered);
+    await request(app.getHttpServer()).post('/api/v1/auth/refresh').set('Cookie', cookie)
+      .set('X-Requested-With', 'FixMateClient').expect(403);
+    const { JwtService } = await import('@nestjs/jwt');
+    const expiredAccess = app.get(JwtService).sign({ sub: registered.body.user.id, role: UserRole.CUSTOMER, tokenType: 'access' },
+      { expiresIn: -1, issuer: JWT_ISSUER, audience: JWT_AUDIENCE, algorithm: 'HS256' });
+    await request(app.getHttpServer()).get('/api/v1/users/me')
+      .set('Authorization', `Bearer ${expiredAccess}`).expect(401);
+    const renewed = await request(app.getHttpServer()).post('/api/v1/auth/refresh').set('Cookie', cookie)
+      .set('Origin', 'https://fixmate.example.com').set('X-Requested-With', 'FixMateClient').expect(200);
+    const rotated = extractRefreshCookie(renewed);
+    expect(rotated).not.toBe(cookie);
+    await request(app.getHttpServer()).get('/api/v1/users/me')
+      .set('Authorization', `Bearer ${renewed.body.accessToken}`).expect(200);
+    await refreshSessionModel.updateMany({}, { $set: { expiresAt: new Date(Date.now() - 1000) } });
+    await request(app.getHttpServer()).post('/api/v1/auth/refresh').set('Cookie', rotated)
+      .set('Origin', 'https://fixmate.example.com').set('X-Requested-With', 'FixMateClient').expect(401);
+  });
+
+  it.each(['replay', 'logout'])('cannot create a live successor after %s revokes a family during rotation', async (action) => {
+    const registered = await request(app.getHttpServer()).post('/api/v1/auth/register')
+      .send({ fullName: 'Rotation Race', email: 'race@example.com', password: 'StrongPassword123' }).expect(201);
+    const cookie = extractRefreshCookie(registered);
+    const service = app.get(AuthService) as any;
+    const issue = service.issueSessionForUser.bind(service);
+    let release!: () => void;
+    let reached!: () => void;
+    const gate = new Promise<void>(resolve => { release = resolve; });
+    const paused = new Promise<void>(resolve => { reached = resolve; });
+    const spy = jest.spyOn(service, 'issueSessionForUser').mockImplementationOnce(async (...args) => {
+      reached(); await gate; return issue(...args);
+    });
+    const refresh = () => request(app.getHttpServer()).post('/api/v1/auth/refresh').set('Cookie', cookie)
+      .set('Origin', 'https://fixmate.example.com').set('X-Requested-With', 'FixMateClient');
+    const rotating = refresh().then(result => result);
+    try {
+      await paused;
+      if (action === 'replay') await refresh().expect(401);
+      else await request(app.getHttpServer()).post('/api/v1/auth/logout').set('Cookie', cookie)
+        .set('Origin', 'https://fixmate.example.com').set('X-Requested-With', 'FixMateClient').expect(200);
+    } finally {
+      release(); spy.mockRestore();
+    }
+    const result = await rotating;
+    expect(result.status).toBe(401);
+    expect(await refreshSessionModel.countDocuments({ userId: registered.body.user.id, revokedAt: null })).toBe(0);
+  });
+
+  it('limits authentication attempts without disabling the production throttler', async () => {
+    for (let attempt = 0; attempt < 10; attempt++) {
+      await request(app.getHttpServer()).post('/api/v1/auth/login').send({}).expect(400);
+    }
+    await request(app.getHttpServer()).post('/api/v1/auth/login').send({}).expect(429);
   });
 
   it('provisions an ADMIN account safely via bootstrapAdminAccount and blocks production without override', async () => {

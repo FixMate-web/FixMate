@@ -14,10 +14,10 @@ import { LanguageService } from '../../core/i18n/language.service';
     </header>
     <img
       class="editorial-image"
-      src="/images/home-interior.jpg"
+      src="/images/editorial/living.webp"
       alt=""
-      width="1600"
-      height="1067"
+      width="1920"
+      height="1440"
       loading="lazy"
     />
     <div class="editorial-grid">

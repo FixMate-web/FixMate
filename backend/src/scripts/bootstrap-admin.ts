@@ -83,6 +83,9 @@ export async function bootstrapAdminAccount(
 }
 
 async function runCli(): Promise<void> {
+  if (process.env.NODE_ENV === 'production' && !process.env.MONGODB_URI) {
+    throw new Error('MONGODB_URI is required in production.');
+  }
   const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/fixmate';
   const email = process.env.ADMIN_BOOTSTRAP_EMAIL || '';
   const password = process.env.ADMIN_BOOTSTRAP_PASSWORD || '';
@@ -112,7 +115,9 @@ async function runCli(): Promise<void> {
 
 if (require.main === module) {
   runCli().catch((err: Error) => {
-    console.error(`[bootstrap-admin] Error: ${err.message}`);
+    console.error(process.env.NODE_ENV === 'production'
+      ? '[bootstrap-admin] Failed. Check explicit production opt-in, configuration, account conflicts and connectivity.'
+      : `[bootstrap-admin] Error: ${err.message}`);
     process.exit(1);
   });
 }

@@ -36,4 +36,14 @@ describe('HealthService & HealthController', () => {
     expect(response.status).toBe('degraded');
     expect(response.database.status).toBe('disconnected');
   });
+  it('returns 503 for disconnected readiness while liveness stays successful', () => {
+    const service = new HealthService(mockConfigService, { readyState: 0 } as Connection);
+    const controller = new HealthController(service);
+    expect(controller.checkLiveness()).toEqual({ status: 'ok' });
+    try { controller.checkHealth(); throw new Error('expected readiness failure'); } catch (error) {
+      expect((error as { getStatus(): number }).getStatus()).toBe(503);
+    }
+    expect(new HealthService(mockConfigService).getHealthStatus().status).toBe('degraded');
+  });
+
 });

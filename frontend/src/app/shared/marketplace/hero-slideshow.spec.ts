@@ -84,23 +84,17 @@ describe('Hero slideshow lifecycle', () => {
     expect(fixture.componentInstance.mounted().length).toBe(1);
     expect(fixture.componentInstance.running()).toBe(false);
   });
-  it('represents seven distinct existing categories with bilingual service metadata', () => {
+  it('represents seven distinct existing categories with service metadata', () => {
     expect(HERO_SLIDES).toHaveLength(7);
     expect(new Set(HERO_SLIDES.map((s) => s.src)).size).toBe(7);
     expect(new Set(HERO_SLIDES.map((s) => s.categorySlug)).size).toBe(7);
     for (const slide of HERO_SLIDES) {
       expect(DISCOVERY_TAXONOMY.some((c) => c.slug === slide.categorySlug)).toBe(true);
-      expect(slide.caption.en).toBeTruthy();
-      expect(slide.caption.ar).toBeTruthy();
-      expect(slide.description.en).toBeTruthy();
-      expect(slide.description.ar).toBeTruthy();
     }
   });
-  it('cycles through all seven scenes, emits their captions, and wraps to the first with two slots', async () => {
+  it('cycles through all seven scenes and wraps to the first with two slots', async () => {
     const fixture = create(false);
     const component = fixture.componentInstance;
-    const emitted: string[] = [];
-    component.activeSlideChange.subscribe((slide) => emitted.push(slide.id));
     for (let n = 1; n <= 7; n++) {
       await vi.advanceTimersByTimeAsync(7100);
       fixture.detectChanges();
@@ -108,7 +102,6 @@ describe('Hero slideshow lifecycle', () => {
       expect(fixture.nativeElement.querySelectorAll('img')).toHaveLength(2);
       expect(fixture.nativeElement.querySelectorAll('.active')).toHaveLength(1);
     }
-    expect(emitted).toEqual([...HERO_SLIDES.slice(1), HERO_SLIDES[0]].map((s) => s.id));
   });
   it('preloads only the upcoming image with the same responsive candidates as the displayed layer', async () => {
     const fixture = create(false);

@@ -7,7 +7,7 @@
 <!-- SECTION 1: FULL-WIDTH HERO WITH FIXMATE JORDAN COMPOSITION              -->
 <!-- ======================================================================= -->
 <section class="hero-fullbleed">
-  <app-hero-slideshow (activeSlideChange)="heroSlide.set($event)" />
+  <app-hero-slideshow />
 
   <div class="fm-container hero-content-wrap">
     <div class="hero-left-col">
@@ -28,10 +28,6 @@
     </div>
   </div>
 
-  <div class="hero-caption-pill">
-    <strong>{{ heroSlide().caption[i18n.lang()] }}</strong>
-    <span>{{ heroSlide().description[i18n.lang()] }}</span>
-  </div>
 </section>
 
 <!-- ======================================================================= -->

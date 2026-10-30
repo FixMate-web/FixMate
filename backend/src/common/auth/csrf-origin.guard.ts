@@ -51,6 +51,10 @@ export class CsrfOriginGuard implements CanActivate {
 
     const candidateOrigin = this.extractOrigin(originHeader) ?? this.extractOrigin(refererHeader);
 
+    if (!candidateOrigin && this.configService.get<string>('NODE_ENV') === 'production') {
+      throw new ForbiddenException('CSRF protection: Origin or Referer is required.');
+    }
+
     if (candidateOrigin && !this.allowedOrigins.has(candidateOrigin.toLowerCase())) {
       throw new ForbiddenException('CSRF protection: untrusted request origin.');
     }

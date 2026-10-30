@@ -90,12 +90,12 @@ FixMate strictly separates **account authentication status** (`users.status`) fr
 
 ### 4.2 Explicit CSRF Defense on Cookie-Authenticated Endpoints
 Because CORS alone does not prevent Cross-Site Request Forgery on cookie-bearing `POST` requests, `POST /api/v1/auth/refresh` and `POST /api/v1/auth/logout` enforce two layers of CSRF defense (`CsrfOriginGuard`):
-1. **`Origin` / `Referer` Allowlist Check:** If an `Origin` or `Referer` header is present, its origin must match one of the configured `CORS_ORIGINS` (e.g., `http://localhost:4200`). Any mismatched browser origin is rejected with `403 Forbidden`.
+1. **`Origin` / `Referer` Allowlist Check:** Production requires an `Origin` or `Referer`; its origin must match one of the configured `CORS_ORIGINS` (e.g., `http://localhost:4200`). Any mismatched browser origin is rejected with `403 Forbidden`.
 2. **Custom Header Requirement (`X-Requested-With: FixMateClient`):** Requests must include `X-Requested-With: FixMateClient`. HTML `<form>` submissions and simple cross-site requests cannot set custom headers without triggering a CORS preflight, which the server denies for untrusted origins.
 
 ### 4.3 Local vs. Production Deployment Topology Note
 - **Local Development:** `http://localhost:4200` (Angular) and `http://localhost:3000` (NestJS) are considered **same-site** by modern browsers (`localhost`), so `SameSite=Lax` cookies work seamlessly with `withCredentials: true`.
-- **Production Cloud Prerequisite (Vercel + Render):** Deploying frontend on `*.vercel.app` and backend on `*.onrender.com` places them on different eTLD+1 public suffixes, where browsers block third-party cookies. For production deployment (future phase), either:
+- **Production Cloud Prerequisite (Vercel + Render):** Deploying frontend on `*.vercel.app` and backend on `*.onrender.com` places them on different eTLD+1 public suffixes, where browsers block third-party cookies. The current deployment branch implements option 1 below; see [the deployment guide](DEPLOYMENT_GUIDE.md). For other topologies, either:
   1. Configure a Vercel rewrite rule (`/api/v1/:path*` → Render backend URL) so the browser communicates same-origin, **or**
   2. Host under a shared custom domain (`app.fixmate.jo` and `api.fixmate.jo`).
 
@@ -123,3 +123,7 @@ In Phase 2, local MongoDB runs as a single container without requiring a multi-n
 
 ## 7. Explicitly Deferred Auth Features (Phase 4)
 - **Email Verification & Password Reset Emails:** Because SMTP/Nodemailer and BullMQ background workers belong to Phase 4, Phase 2 does **not** expose fake "verification email sent" or "password reset link emailed" screens.
+
+## Rotation and family-revocation concurrency
+
+Family revocation marks ancestors as well as active sessions, preserving original revocation timestamps. After inserting a rotated successor, refresh verifies that its predecessor still has the ROTATED reason; if replay or logout revoked the family during insertion, the successor is revoked and the request returns 401. This closes the in-flight successor race without changing the stored schemas or requiring replica-set transactions. Deterministic integration tests pause insertion and exercise both replay and logout during that window.

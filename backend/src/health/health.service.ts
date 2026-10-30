@@ -41,7 +41,7 @@ export class HealthService {
       ? (MONGOOSE_READY_STATE_MAP[this.mongoConnection.readyState] ?? 'disconnected')
       : 'unconfigured';
 
-    const isHealthy = dbState === 'connected' || dbState === 'unconfigured';
+    const isHealthy = dbState === 'connected';
 
     return {
       status: isHealthy ? 'ok' : 'degraded',

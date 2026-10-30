@@ -2,7 +2,7 @@
 
 All 56 photographs are locally hosted WebP files. They illustrate service subjects and environments; none represents an actual FixMate provider, completed booking, or availability. Images were resized and cropped through CSS; individual focal points are in the shared taxonomy.
 
-Photographs are from Pexels under the [Pexels License](https://www.pexels.com/license/). No Thumbtack reference photography is used. The bed-bug service uses an explicitly noted mattress-context photograph rather than a misidentified insect.
+Photographs are from Pexels under the [Pexels License](https://www.pexels.com/license/). The bed-bug service uses an explicitly noted mattress-context photograph rather than a misidentified insect.
 
 | Category | Service / local asset | Source |
 | --- | --- | --- |
@@ -65,7 +65,7 @@ Photographs are from Pexels under the [Pexels License](https://www.pexels.com/li
 
 Hero photographs reuse the independently sourced exterior, kitchen, living room, and architectural-interior images recorded in [image-sources.md](image-sources.md). Responsive 960px variants are now supplied for the next-slide preload.
 
-Logo: the user-provided original in `docs/fixmate_astra_visual_references/brand/fixmate-logo-original.png` is copied unchanged to `frontend/public/brand/fixmate-logo-original.png`. Transparent variants preserve the colored pixels and remove neutral near-white background pixels; no emblem was regenerated.
+Logo: the user-provided original is preserved at `frontend/public/brand/fixmate-logo-original.png`. Transparent variants preserve the colored pixels and remove neutral near-white background pixels; no emblem was regenerated.
 
 ### Targeted motion refinement photographs — 29 October 2026
 

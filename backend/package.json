@@ -19,7 +19,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "bootstrap:admin": "ts-node src/scripts/bootstrap-admin.ts",
     "seed:catalog": "ts-node src/scripts/seed-catalog.ts",
-    "seed:demo": "ts-node src/scripts/seed-demo.ts"
+    "seed:demo": "ts-node src/scripts/seed-demo.ts",
+    "db:indexes": "node dist/scripts/ensure-indexes.js",
+    "seed:catalog:prod": "node dist/scripts/seed-catalog.js",
+    "bootstrap:admin:prod": "node dist/scripts/bootstrap-admin.js"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.0",
@@ -78,5 +81,12 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "engines": {
+    "node": ">=24.15.0 <25",
+    "npm": ">=11 <12"
+  },
+  "overrides": {
+    "multer": "2.5.0"
   }
 }

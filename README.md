@@ -29,7 +29,7 @@ The application uses a standalone Angular frontend and a modular NestJS REST API
 
 The Arabic homepage brings service photography, project search, governorate selection, and category discovery into one flow.
 
-![FixMate Arabic homepage showing plumbing service photography, project search, and category navigation](docs/screenshots/homepage-ar.png)
+![FixMate Arabic homepage showing cleaning service photography, project search, and category navigation](docs/screenshots/homepage-ar.png)
 
 ### Service catalog · دليل الخدمات
 
@@ -399,7 +399,7 @@ Other scripts in `frontend/tools/` and older verification reports may target ear
 - Passwords use **bcrypt with cost 12**.
 - Short-lived JWT access tokens are held in frontend memory, not browser local/session storage.
 - Refresh sessions use the **`fixmate_rt` HttpOnly cookie**, database-backed rotation, and replay detection. The cookie is scoped to `/api/v1/auth`, uses `SameSite=Lax`, and is marked `Secure` in production.
-- Cookie-based refresh and logout require the `X-Requested-With: FixMateClient` header and an allowed origin when an origin is present.
+- Cookie-based refresh and logout require the `X-Requested-With: FixMateClient` header and an allowed origin (or Referer); production requires one of these origin headers.
 - Server-side JWT, role, account-status, and ownership checks enforce authorization. Angular guards provide navigation behavior, not the security boundary.
 - CORS, Helmet, strict DTO validation, and authentication-endpoint throttling provide additional controls.
 - Provider listing approval does not claim government certification, insurance, background clearance, or guaranteed workmanship.
@@ -408,7 +408,7 @@ Logout revokes the refresh-session family and clears the client's in-memory toke
 
 ## Production considerations
 
-The repository includes production build commands, but a hosted environment still needs deployment configuration:
+Deployment configuration for Atlas, Render and Vercel is included. Follow the [deployment guide](docs/DEPLOYMENT_GUIDE.md) for account setup, initialization and live verification:
 
 - Use production secrets and an appropriate MongoDB deployment; do not copy local environment files or demo data.
 - Route frontend `/api/v1` requests to NestJS. Configure SPA fallbacks for frontend routes without intercepting API requests.
@@ -430,7 +430,7 @@ The repository includes production build commands, but a hosted environment stil
 | Dashboards and notifications | [Dashboard verification](docs/PHASE4_DASHBOARDS_VERIFICATION.md), [Notifications verification](docs/PHASE5_ADVANCED_VERIFICATION.md) |
 | Jordanian pricing | [Pricing research and assumptions](docs/jordan-service-pricing-research.md) |
 | Design and photography | [Design system](docs/02-ui/DESIGN_SYSTEM.md), [Image sources](docs/image-sources.md), [Discovery image sources](docs/discovery-image-sources.md) |
-| Deployment assessment | [Release-readiness notes](docs/PHASE6_RELEASE_READINESS.md) |
+| Deployment | [Atlas / Render / Vercel guide](docs/DEPLOYMENT_GUIDE.md), [current verification](docs/DEPLOYMENT_VERIFICATION.md) |
 
 Some documents describe earlier development phases. Their feature lists, counts, and deployment examples are historical context; current source code, package scripts, and executable tests determine actual behavior.
 
